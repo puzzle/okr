@@ -18,6 +18,7 @@ import { MemberListTableComponent } from './member-list-table/member-list-table.
 import { MemberListMobileComponent } from './member-list-mobile/member-list-mobile.component';
 import { DialogService } from '../../services/dialog.service';
 import { provideHttpClient } from '@angular/common/http';
+import { ArchiveTeamDialogComponent } from '../../shared/dialog/archive-dialog/archive-dialog.component';
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -29,7 +30,9 @@ const userServiceMock = {
 const teamServiceMock = {
   getAllTeams: jest.fn(),
   deleteTeam: jest.fn(),
-  removeUserFromTeam: jest.fn()
+  removeUserFromTeam: jest.fn(),
+  archiveTeam: jest.fn(),
+  unarchiveTeam: jest.fn()
 };
 
 const activatedRouteMock = {
@@ -87,10 +90,14 @@ describe('MemberListComponent', () => {
       .mockReturnValue(of([]));
     userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
     userServiceMock.getCurrentUser.mockReturnValue(of(testUser));
+
+    fixture.detectChanges();
   });
 
   afterEach(() => {
     teamServiceMock.deleteTeam.mockReset();
+    teamServiceMock.archiveTeam.mockClear();
+    teamServiceMock.unarchiveTeam.mockClear();
   });
 
   it('should create', () => {
@@ -184,6 +191,7 @@ describe('MemberListComponent', () => {
   });
 
   it('ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly', fakeAsync(() => {
+    teamServiceMock.getAllTeams.mockClear();
     userServiceMock.getUsers.mockReturnValue(of(users));
     teamServiceMock.getAllTeams.mockReturnValue(of([team1,
       team2,
@@ -192,7 +200,7 @@ describe('MemberListComponent', () => {
     tick();
     expect(teamServiceMock.getAllTeams)
       .toHaveBeenCalledTimes(1);
-    expect(component.selectedTeam$.value)
+    expect(component.selectedTeam())
       .toBe(team1);
     expect(component.dataSource.data.length)
       .toBe(1);
@@ -211,7 +219,7 @@ describe('MemberListComponent', () => {
         team3]));
       component.ngAfterViewInit();
       tick();
-      expect(component.selectedTeam$.value)
+      expect(component.selectedTeam())
         .toBe(undefined);
       expect(component.dataSource.data.length)
         .toBe(users.length);
@@ -259,7 +267,7 @@ describe('MemberListComponent', () => {
   }));
 
   it('addMemberToTeam should open dialog', () => {
-    component.selectedTeam$.next(team1);
+    fixture.componentRef.setInput('selectedTeam', team1);
     component.dataSource = new MatTableDataSource<UserTableEntry>([]);
     dialogService.open.mockReturnValue({
       afterClosed: () => of(null)
@@ -275,22 +283,9 @@ describe('MemberListComponent', () => {
       }));
   });
 
-  it('should showAddMemberToTeam if selectedTeam is set and selectedTeam is writable', () => {
-    component.selectedTeam$.next(undefined);
-    expect(component.showAddMemberToTeam())
-      .toBeFalsy();
-    const teamCopy = { ...team1 };
-    teamCopy.isWriteable = false;
-    component.selectedTeam$.next(teamCopy);
-    expect(component.showAddMemberToTeam())
-      .toBeFalsy();
-    teamCopy.isWriteable = true;
-    expect(component.showAddMemberToTeam())
-      .toBeTruthy();
-  });
 
   it('edit team should open dialog', () => {
-    component.selectedTeam$.next(team1);
+    fixture.componentRef.setInput('selectedTeam', team1);
     dialogService.open.mockReturnValue({
       afterClosed: () => of(null)
     });
@@ -302,5 +297,169 @@ describe('MemberListComponent', () => {
           team: team1
         }
       }));
+  });
+
+  it('archiveTeam should open dialog, update markedAsArchivedAt, and call teamService if a quarter is selected', fakeAsync(() => {
+    const teamToArchive = { ...team1,
+      markedAsArchivedAt: null };
+    const selectedQuarter = { startDate: new Date('2026-07-01') };
+
+    // Route component.dialog to the mock if they differ in your component
+    (component as any).dialog = dialogService;
+    dialogService.open.mockReturnValue({
+      afterClosed: () => of(selectedQuarter)
+    });
+    teamServiceMock.archiveTeam.mockReturnValue(of(null));
+
+    component.archiveTeam(teamToArchive);
+    tick();
+
+    expect(dialogService.open)
+      .toHaveBeenCalledWith(ArchiveTeamDialogComponent, expect.objectContaining({
+        panelClass: 'okr-dialog-panel-small'
+      }));
+    expect(teamToArchive.markedAsArchivedAt)
+      .toBe(selectedQuarter.startDate);
+    expect(teamServiceMock.archiveTeam)
+      .toHaveBeenCalledTimes(1);
+    expect(teamServiceMock.archiveTeam)
+      .toHaveBeenCalledWith(teamToArchive);
+  }));
+
+  it('archiveTeam should not call teamService if dialog is canceled', fakeAsync(() => {
+    const teamToArchive = { ...team1 };
+
+    (component as any).dialog = dialogService;
+    dialogService.open.mockReturnValue({
+      afterClosed: () => of(undefined)
+    });
+
+    component.archiveTeam(teamToArchive);
+    tick();
+
+    expect(teamServiceMock.archiveTeam)
+      .toHaveBeenCalledTimes(0);
+  }));
+
+  it('unarchiveTeam should open confirm dialog, clear markedAsArchivedAt, and call teamService if confirmed', fakeAsync(() => {
+    const teamToUnarchive = { ...team1,
+      markedAsArchivedAt: new Date('2026-01-01') };
+
+    dialogService.openConfirmDialog.mockReturnValue({
+      afterClosed: () => of(true)
+    });
+    teamServiceMock.unarchiveTeam.mockReturnValue(of(null));
+
+    component.unarchiveTeam(teamToUnarchive);
+    tick();
+
+    expect(dialogService.openConfirmDialog)
+      .toHaveBeenCalledWith('CONFIRMATION.UNARCHIVE.TEAM', expect.objectContaining({
+        team: teamToUnarchive.name
+      }));
+    expect(teamToUnarchive.markedAsArchivedAt)
+      .toBeNull();
+    expect(teamServiceMock.unarchiveTeam)
+      .toHaveBeenCalledTimes(1);
+    expect(teamServiceMock.unarchiveTeam)
+      .toHaveBeenCalledWith(teamToUnarchive.id);
+  }));
+
+  it('unarchiveTeam should not call teamService if confirm dialog is canceled', fakeAsync(() => {
+    const teamToUnarchive = { ...team1,
+      markedAsArchivedAt: new Date('2026-01-01') };
+
+    dialogService.openConfirmDialog.mockReturnValue({
+      afterClosed: () => of(false)
+    });
+
+    component.unarchiveTeam(teamToUnarchive);
+    tick();
+
+    expect(teamServiceMock.unarchiveTeam)
+      .toHaveBeenCalledTimes(0);
+    expect(teamToUnarchive.markedAsArchivedAt)
+      .not.toBeNull();
+  }));
+
+  describe('Computed Signal: showInviteMember', () => {
+    it('should return true when no team is selected and user is OKR champion', () => {
+      component.selectedTeam.set(undefined);
+      userServiceMock.getCurrentUser.mockReturnValue({ ...testUser,
+        isOkrChampion: true });
+
+      expect(component.showInviteMember())
+        .toBeTruthy();
+    });
+
+    it('should return false when a team is selected, even if user is OKR champion', () => {
+      component.selectedTeam.set(team1);
+      userServiceMock.getCurrentUser.mockReturnValue({ ...testUser,
+        isOkrChampion: true });
+
+      expect(component.showInviteMember())
+        .toBeFalsy();
+    });
+
+    it('should return false when no team is selected but user is NOT OKR champion', () => {
+      component.selectedTeam.set(undefined);
+      userServiceMock.getCurrentUser.mockReturnValue({ ...testUser,
+        isOkrChampion: false });
+
+      expect(component.showInviteMember())
+        .toBeFalsy();
+    });
+  });
+
+  describe('Computed Signal: isTeamWriteable', () => {
+    it('should return false if selectedTeam is undefined', () => {
+      component.selectedTeam.set(undefined);
+      expect(component.isTeamWriteable())
+        .toBeFalsy();
+    });
+
+    it('should return false if selectedTeam is not writeable', () => {
+      const teamCopy = { ...team1,
+        isWriteable: false };
+      component.selectedTeam.set(teamCopy);
+
+      expect(component.isTeamWriteable())
+        .toBeFalsy();
+    });
+
+    it('should return true if selectedTeam is writeable', () => {
+      const writeableTeam = { ...team1,
+        isWriteable: true };
+      component.selectedTeam.set(writeableTeam);
+
+      expect(component.isTeamWriteable())
+        .toBeTruthy();
+    });
+  });
+
+  describe('Computed Signal: isTeamArchived', () => {
+    it('should return false if selectedTeam is undefined', () => {
+      component.selectedTeam.set(undefined);
+      expect(component.isTeamArchived())
+        .toBeFalsy();
+    });
+
+    it('should return false if team markedAsArchivedAt is null', () => {
+      const teamCopy = { ...team1,
+        markedAsArchivedAt: null };
+      component.selectedTeam.set(teamCopy);
+
+      expect(component.isTeamArchived())
+        .toBeFalsy();
+    });
+
+    it('should return true if team has a markedAsArchivedAt date', () => {
+      const archivedTeam = { ...team1,
+        markedAsArchivedAt: new Date('2026-06-01') };
+      component.selectedTeam.set(archivedTeam);
+
+      expect(component.isTeamArchived())
+        .toBeTruthy();
+    });
   });
 });

@@ -17,7 +17,8 @@ import { Team } from '../../types/model/team';
 import { TeamStatus } from '../../types/enums/team-status';
 
 const teamServiceMock = {
-  getAllTeams: jest.fn()
+  getAllTeams: jest.fn(),
+  loadTeamsForQuarter: jest.fn()
 };
 
 const refreshDataServiceMock = {
@@ -379,5 +380,31 @@ describe('TeamFilterComponent', () => {
           markedAsArchivedAt: null,
           status: TeamStatus.ACTIVE }
       ]);
+  });
+
+  it('should load teams for specific quarter when quarter query param is present', async() => {
+    teamServiceMock.loadTeamsForQuarter.mockClear();
+
+    const routerHarness = await RouterTestingHarness.create();
+
+    await routerHarness.navigateByUrl('/?quarter=42');
+
+    expect(teamServiceMock.loadTeamsForQuarter)
+      .toHaveBeenCalledTimes(1);
+    expect(teamServiceMock.loadTeamsForQuarter)
+      .toHaveBeenCalledWith(42);
+  });
+
+  it('should load teams with undefined quarter when quarter query param is absent', async() => {
+    teamServiceMock.loadTeamsForQuarter.mockClear();
+
+    const routerHarness = await RouterTestingHarness.create();
+
+    await routerHarness.navigateByUrl('/');
+
+    expect(teamServiceMock.loadTeamsForQuarter)
+      .toHaveBeenCalledTimes(1);
+    expect(teamServiceMock.loadTeamsForQuarter)
+      .toHaveBeenCalledWith(undefined);
   });
 });

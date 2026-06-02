@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
@@ -17,7 +17,8 @@ import { SharedModule } from '../../shared.module';
     MatButtonModule,
     FormsModule,
     AsyncPipe,
-    SharedModule
+    SharedModule,
+    MatDialogClose
   ]
 })
 export class ArchiveTeamDialogComponent implements OnInit {

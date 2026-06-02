@@ -18,7 +18,6 @@ import { User } from '../../shared/types/model/user';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TeamStatus } from '../../shared/types/enums/team-status';
-import Spy = jasmine.Spy;
 
 const teams: Team[] = [
   {
@@ -91,7 +90,7 @@ describe('SearchTeamManagementComponent', () => {
   let teamServiceMock: Partial<TeamService>;
   let userServiceMock: Partial<UserService>;
   let activatedRouteMock: Partial<ActivatedRoute>;
-  let navigateSpy: Spy;
+  let navigateSpy: jest.SpyInstance;
   beforeEach(async() => {
     jest.useFakeTimers();
 
@@ -149,7 +148,8 @@ describe('SearchTeamManagementComponent', () => {
       .compileComponents();
   });
   beforeEach(() => {
-    navigateSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl') as unknown as Spy;
+    navigateSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl')
+      .mockResolvedValue(true);
     fixture = TestBed.createComponent(SearchTeamManagementComponent);
     component = fixture.componentInstance;
 

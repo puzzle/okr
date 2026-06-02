@@ -29,7 +29,9 @@ describe('ShowEditRoleComponent', () => {
     fixture = TestBed.createComponent(ShowEditRoleComponent);
     component = fixture.componentInstance;
 
-    component.userTeam = userTeam;
+    fixture.componentRef.setInput('userTeam', userTeam);
+    fixture.componentRef.setInput('isWriteable', true);
+    fixture.componentRef.setInput('isArchived', false);
 
     fixture.detectChanges();
   });

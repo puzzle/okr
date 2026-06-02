@@ -139,10 +139,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
 
         return this.teamService.unarchiveTeam(selectedTeam.id);
       }))
-      .subscribe({
-        next: () => console.log(`Successfully unarchived team: ${selectedTeam.name}`),
-        error: (err) => console.error('Failed to unarchive team:', err)
-      });
+      .subscribe();
   }
 
   addMemberToTeam() {
@@ -170,7 +167,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
 
   editTeam(): void {
     const dialogRef = this.dialogService.open(AddEditTeamDialogComponent, {
-      data: { team: this.selectedTeam() } // Read signal
+      data: { team: this.selectedTeam() }
     });
     dialogRef.afterClosed()
       .subscribe(() => this.cd.markForCheck());

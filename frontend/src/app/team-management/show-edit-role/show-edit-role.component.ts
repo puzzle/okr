@@ -34,6 +34,10 @@ export class ShowEditRoleComponent {
     this.edit = false;
   }
 
+  /*
+   * we set edit async, to ensure hostListener can detect outside-of-element clicks correctly
+   * otherwise element of event.target is already hidden
+   */
   setEditAsync($event: MouseEvent, edit: boolean) {
     $event.stopPropagation();
     setTimeout(() => {

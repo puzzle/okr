@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MemberListMobileComponent } from './member-list-mobile.component';
-import { Team } from '../../../shared/types/model/team';
-import { BehaviorSubject } from 'rxjs';
 import { team1 } from '../../../shared/test-data';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { MatTableDataSource } from '@angular/material/table';
@@ -31,7 +29,7 @@ describe('MemberListMobileComponent', () => {
   });
 
   it('should navigate to correct path if no team is selected', () => {
-    component.selectedTeam$ = new BehaviorSubject<Team | undefined>(undefined);
+    fixture.componentRef.setInput('selectedTeam', undefined);
     const userTableEntry: any = {
       id: 1
     };
@@ -40,7 +38,7 @@ describe('MemberListMobileComponent', () => {
   });
 
   it('should navigate to correct path team is selected', () => {
-    component.selectedTeam$ = new BehaviorSubject<Team | undefined>(team1);
+    fixture.componentRef.setInput('selectedTeam', team1);
     const userTableEntry: any = {
       id: 1
     };

@@ -21,6 +21,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { UserTeam } from '../../shared/types/model/user-team';
 
 describe('MemberDetailComponent', () => {
   let component: MemberDetailComponent;
@@ -213,4 +214,55 @@ describe('MemberDetailComponent', () => {
     expect(userTeam.isTeamAdmin)
       .toBeTruthy();
   }));
+
+  it.each([
+    [true,
+      true,
+      true],
+    [true,
+      false,
+      true],
+    [false,
+      true,
+      true],
+    [false,
+      false,
+      false]
+  ])('should return %s when team.isWriteable is %s and selectedUserIsLoggedInUser is %s', (isWriteable: boolean, isLoggedInUser: boolean, expected: boolean) => {
+    const mockUserTeam = {
+      team: { isWriteable: isWriteable }
+    } as UserTeam;
+
+    component.selectedUserIsLoggedInUser = isLoggedInUser;
+
+    expect(component.hasPermission(mockUserTeam))
+      .toBe(expected);
+  });
+
+  it('should return true if team has a markedAsArchivedAt date', () => {
+    const mockUserTeam = {
+      team: {
+        id: 101,
+        version: 1,
+        name: 'Team',
+        description: 'A new Team',
+        isWriteable: true,
+        markedAsArchivedAt: new Date('2026-01-01'),
+        status: 'ACTIVE'
+      },
+      isTeamAdmin: false
+    } as UserTeam;
+
+    expect(component.isTeamArchived(mockUserTeam))
+      .toBe(true);
+  });
+
+  it('should return false if team markedAsArchivedAt is null', () => {
+    const mockUserTeam = {
+      team: { markedAsArchivedAt: null }
+    } as UserTeam;
+
+    expect(component.isTeamArchived(mockUserTeam))
+      .toBe(false);
+  });
 });

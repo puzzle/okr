@@ -2,11 +2,10 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 
 import { MemberListTableComponent } from './member-list-table.component';
 import { team1, testUser } from '../../../shared/test-data';
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { UserService } from '../../../services/user.service';
 import { TeamService } from '../../../services/team.service';
-import { Team } from '../../../shared/types/model/team';
 import { MatTableModule } from '@angular/material/table';
 import { DialogService } from '../../../services/dialog.service';
 
@@ -49,7 +48,6 @@ describe('MemberListTableComponent', () => {
 
     component = fixture.componentInstance;
 
-    component.selectedTeam$ = new BehaviorSubject<Team | undefined>(undefined);
     teamServiceMock.removeUserFromTeam.mockReset();
     userServiceMock.reloadUsers.mockReset();
     userServiceMock.reloadCurrentUser.mockReset();
@@ -67,9 +65,9 @@ describe('MemberListTableComponent', () => {
   });
 
   it('should set displayedColumns for all teams correctly', fakeAsync(() => {
-    component.selectedTeam$.next(undefined);
+    fixture.componentRef.setInput('selectedTeam', undefined);
     tick();
-    expect(component.displayedColumns)
+    expect(component.displayedColumns())
       .toStrictEqual([
         'icon',
         'name',
@@ -80,9 +78,9 @@ describe('MemberListTableComponent', () => {
   }));
 
   it('should set displayedColumns for admin team correctly', fakeAsync(() => {
-    component.selectedTeam$.next(team1);
+    fixture.componentRef.setInput('selectedTeam', team1);
     tick();
-    expect(component.displayedColumns)
+    expect(component.displayedColumns())
       .toStrictEqual(['icon',
         'name',
         'role']);
@@ -91,9 +89,9 @@ describe('MemberListTableComponent', () => {
   it('should set displayedColumns for admin team correctly', fakeAsync(() => {
     const team = { ...team1 };
     team.isWriteable = true;
-    component.selectedTeam$.next(team);
+    fixture.componentRef.setInput('selectedTeam', team);
     tick();
-    expect(component.displayedColumns)
+    expect(component.displayedColumns())
       .toStrictEqual([
         'icon',
         'name',
@@ -111,7 +109,7 @@ describe('MemberListTableComponent', () => {
     const entry = {
       id: 1
     };
-    component.selectedTeam$.next(team1);
+    fixture.componentRef.setInput('selectedTeam', team1);
     teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
@@ -125,7 +123,7 @@ describe('MemberListTableComponent', () => {
     expect(teamServiceMock.removeUserFromTeam)
       .toHaveBeenCalledTimes(1);
     expect(teamServiceMock.removeUserFromTeam)
-      .toHaveBeenCalledWith(entry.id, component.selectedTeam$.value);
+      .toHaveBeenCalledWith(entry.id, component.selectedTeam());
     expect(userServiceMock.reloadUsers)
       .toHaveBeenCalledTimes(1);
     expect(userServiceMock.reloadCurrentUser)
@@ -136,7 +134,7 @@ describe('MemberListTableComponent', () => {
     const entry = {
       id: 1
     };
-    component.selectedTeam$.next(team1);
+    fixture.componentRef.setInput('selectedTeam', team1);
     teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
@@ -190,5 +188,59 @@ describe('MemberListTableComponent', () => {
     ut.userTeamList = [];
     expect(() => component.getSingleUserTeam(ut))
       .toThrow('it should have exactly one UserTeam at this point');
+  });
+
+  describe('isTeamWriteable', () => {
+    it('should return false if selectedTeam is undefined', () => {
+      fixture.componentRef.setInput('selectedTeam', undefined);
+
+      expect(component.isTeamWriteable())
+        .toBe(false);
+    });
+
+    it('should return false if selectedTeam is not writeable', () => {
+      const team = { ...team1,
+        isWriteable: false };
+      fixture.componentRef.setInput('selectedTeam', team);
+
+      expect(component.isTeamWriteable())
+        .toBe(false);
+    });
+
+    it('should return true if selectedTeam is writeable', () => {
+      const team = { ...team1,
+        isWriteable: true };
+      fixture.componentRef.setInput('selectedTeam', team);
+
+      expect(component.isTeamWriteable())
+        .toBe(true);
+    });
+  });
+
+  describe('isTeamArchived', () => {
+    it('should return false if selectedTeam is undefined', () => {
+      fixture.componentRef.setInput('selectedTeam', undefined);
+
+      expect(component.isTeamArchived())
+        .toBe(false);
+    });
+
+    it('should return false if team markedAsArchivedAt is null', () => {
+      const team = { ...team1,
+        markedAsArchivedAt: null };
+      fixture.componentRef.setInput('selectedTeam', team);
+
+      expect(component.isTeamArchived())
+        .toBe(false);
+    });
+
+    it('should return true if team has a markedAsArchivedAt date', () => {
+      const team = { ...team1,
+        markedAsArchivedAt: new Date('2026-06-01') };
+      fixture.componentRef.setInput('selectedTeam', team);
+
+      expect(component.isTeamArchived())
+        .toBe(true);
+    });
   });
 });

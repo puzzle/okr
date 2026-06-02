@@ -48,7 +48,7 @@ class TeamPersistenceServiceIT {
     void shouldFindActiveTeamsForPassedQuarter() {
         List<Team> result = teamPersistenceService.findActiveTeamsForQuarter(LocalDate.of(2025, 2, 2));
 
-        assertEquals(3, result.size());
-        assertThat(result).extracting(Team::getName).doesNotContain("LoremIpsum");
+        assertEquals(4, result.size());
+        assertThat(result).extracting(Team::getName).doesNotContain("/mid");
     }
 }

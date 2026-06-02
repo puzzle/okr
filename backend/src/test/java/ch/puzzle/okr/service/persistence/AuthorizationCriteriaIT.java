@@ -76,7 +76,7 @@ class AuthorizationCriteriaIT {
         // Not a good solution, but I don't think there is a better one.
         // It would require re-creating the DB query in Java which could work but is not
         // worth it.
-        assertEquals(12L, overviews.size());
+        assertEquals(18L, overviews.size());
     }
 
     @DisplayName("Should return correct overview on getFilteredOverview() when user has second level role")

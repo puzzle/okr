@@ -67,7 +67,8 @@ insert into team (id, version, name, description, status, marked_as_archived_at)
 values (4, 1, '/BBT', 'The Berufsbildungsteam', 'ACTIVE', null),
        (8, 1, 'we are cube.³', 'The UX department', 'ACTIVE', null),
        (5, 1, 'Puzzle ITC', 'Represents the company itself', 'ACTIVE', null),
-       (6, 1, 'LoremIpsum', 'Our competitors are jumping the shark target rich environment', 'ARCHIVED', '2023-07-25');
+       (6, 1, 'LoremIpsum', 'Our competitors are jumping the shark target rich environment', 'ACTIVE', null),
+       (7, 1, '/mid', 'Originally /mid, now archived', 'ARCHIVED', '2023-07-25');
 
 -- map existing users to teams
 INSERT INTO person_team (id, version, person_id, team_id, team_admin)

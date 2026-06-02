@@ -1,20 +1,79 @@
 import { TestBed } from '@angular/core/testing';
 
 import { TeamService } from './team.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { team1 } from '../shared/test-data';
 
 describe('TeamService', () => {
   let service: TeamService;
+  let httpTestingController: HttpTestingController;
+
+  const API_URL = '/api/v2/teams';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      providers: [provideHttpClient(),
+        provideHttpClientTesting()]
     });
     service = TestBed.inject(TeamService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   it('should be created', () => {
     expect(service)
       .toBeTruthy();
+  });
+
+  describe('archiveTeam', () => {
+    it('should correctly extract markedAsArchivedAt, send PUT request, and reload teams', () => {
+      const reloadSpy = jest.spyOn(service, 'reloadTeams')
+        .mockImplementation(() => {});
+
+      const archiveDate = new Date('2022-01-01');
+      const copyOfTeam = { ...team1,
+        markedAsArchivedAt: archiveDate };
+
+      service.archiveTeam(copyOfTeam)
+        .subscribe();
+
+      const req = httpTestingController.expectOne(`${API_URL}/${copyOfTeam.id}/archive`);
+
+      expect(req.request.method)
+        .toBe('PUT');
+      expect(req.request.body)
+        .toEqual({ markedAsArchivedAt: archiveDate });
+
+      req.flush(null);
+
+      expect(reloadSpy)
+        .toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('unarchiveTeam', () => {
+    it('should send unarchive PUT request with null body and reload teams', () => {
+      const reloadSpy = jest.spyOn(service, 'reloadTeams')
+        .mockImplementation(() => {});
+
+      service.unarchiveTeam(team1.id)
+        .subscribe();
+
+      const req = httpTestingController.expectOne(`${API_URL}/${team1.id}/unarchive`);
+
+      expect(req.request.method)
+        .toBe('PUT');
+      expect(req.request.body)
+        .toBeNull();
+
+      req.flush(null);
+
+      expect(reloadSpy)
+        .toHaveBeenCalledTimes(1);
+    });
   });
 });

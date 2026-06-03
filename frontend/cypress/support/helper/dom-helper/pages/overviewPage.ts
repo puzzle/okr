@@ -28,6 +28,10 @@ export default class CyOverviewPage extends Page {
     this.visitQuarter(3);
   }
 
+  visitOldQuarter() {
+    this.visitQuarter(4);
+  }
+
   visitQuarter(quarter: number) {
     cy.visit(`/?quarter=${quarter}`);
   }

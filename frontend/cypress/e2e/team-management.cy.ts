@@ -43,6 +43,94 @@ describe('okr team-management', () => {
     }
   });
 
+  describe('archiving and un-archiving', () => {
+    let teamManagementPage: TeamManagementPage;
+    beforeEach(() => {
+      cy.loginAsUser(users.gl);
+      teamManagementPage = TeamManagementPage.do()
+        .visitViaURL();
+    });
+
+    it('should exclude team from overview filter after being archived', () => {
+      teamManagementPage.archiveTeam('/BBT')
+        .changeLastActiveQuarter('Q4 2023')
+        .submit();
+
+      // Check that the team is NOT visible in the new quarter
+      TeamManagementPage.do()
+        .backToOverview();
+
+      cy.getByTestId('quarter-filter')
+        .contains('Aktuell');
+
+      FilterHelper.do()
+        .optionShouldNotBeSelected('Alle')
+        .toggleOption('Alle');
+
+      cy.get('.team-title')
+        .then((elements) => {
+          const texts: string[] = elements.map((_, el) => Cypress.$(el)
+            .text())
+            .get();
+          expect(texts).to.not.include('/BBT');
+        });
+
+      // Check that the team is visible in the old quarter
+      CyOverviewPage.do()
+        .visitOldQuarter();
+
+      FilterHelper.do()
+        .getOption('/BBT')
+        .should('exist');
+
+      // Unarchive team again
+      TeamManagementPage.do()
+        .visitViaURL()
+        .unarchiveTeam('/BBT')
+        .submit();
+    });
+
+    it('should archive /BBT and as a result disable all edit buttons', () => {
+      teamManagementPage.archiveTeam('/BBT')
+        .cancel();
+
+      teamManagementPage.archiveTeam('/BBT')
+        .changeLastActiveQuarter('Q4 2023')
+        .submit();
+
+      cy.getByTestId('edit-role')
+        .find('button')
+        .should('be.disabled');
+      cy.getByTestId('edit-team-button')
+        .find('button')
+        .should('be.disabled');
+      cy.getByTestId('add-team-member')
+        .should('be.disabled');
+      cy.getByTestId('member-list-more')
+        .find('button')
+        .should('be.disabled');
+      cy.getByTestId('teamMoreButton')
+        .find('button')
+        .should('not.be.disabled');
+
+      navigateToUser('Paco Eggimann');
+      cy.contains('tr.mat-mdc-row', '/BBT')
+        .within(() => {
+          cy.getByTestId('edit-role')
+            .find('button')
+            .should('be.disabled');
+          cy.getByTestId('delete-team-member')
+            .find('button')
+            .should('be.disabled');
+        });
+
+      // Unarchive team again
+      cy.realPress('Escape');
+      teamManagementPage.unarchiveTeam('/BBT')
+        .submit();
+    });
+  });
+
   describe('as "GL"', () => {
     let teamManagementPage: TeamManagementPage;
     before(() => {

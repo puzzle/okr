@@ -75,7 +75,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         this.teamService.loadTeamsForQuarter(quarterId);
       });
 
-    this.subscription = this.teamService.getAllTeams()
+    this.subscription = this.teamService.getQuarterTeams()
       .pipe(takeUntil(this.unsubscribe$), filter((teams) => teams.length > 0))
       .subscribe((teams: Team[]) => {
         this.teams$.next(teams);

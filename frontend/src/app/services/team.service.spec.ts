@@ -31,7 +31,7 @@ describe('TeamService', () => {
 
   describe('archiveTeam', () => {
     it('should correctly extract markedAsArchivedAt, send PUT request, and reload teams', () => {
-      const reloadSpy = jest.spyOn(service, 'reloadTeams')
+      const reloadSpy = jest.spyOn(service, 'reloadState')
         .mockImplementation(() => {});
 
       const archiveDate = new Date('2022-01-01');
@@ -57,7 +57,7 @@ describe('TeamService', () => {
 
   describe('unarchiveTeam', () => {
     it('should send unarchive PUT request with null body and reload teams', () => {
-      const reloadSpy = jest.spyOn(service, 'reloadTeams')
+      const reloadSpy = jest.spyOn(service, 'reloadState')
         .mockImplementation(() => {});
 
       service.unarchiveTeam(team1.id)

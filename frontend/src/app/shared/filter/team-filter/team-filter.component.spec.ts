@@ -17,7 +17,7 @@ import { Team } from '../../types/model/team';
 import { TeamStatus } from '../../types/enums/team-status';
 
 const teamServiceMock = {
-  getAllTeams: jest.fn(),
+  getQuarterTeams: jest.fn(),
   loadTeamsForQuarter: jest.fn()
 };
 
@@ -55,7 +55,7 @@ describe('TeamFilterComponent', () => {
     });
     fixture = TestBed.createComponent(TeamFilterComponent);
     component = fixture.componentInstance;
-    teamServiceMock.getAllTeams.mockReturnValue(of(teamList));
+    teamServiceMock.getQuarterTeams.mockReturnValue(of(teamList));
     refreshDataServiceMock
       .markDataRefresh()
       .mockImplementation(() => refreshDataServiceMock.reloadOverviewSubject.next(null));
@@ -238,7 +238,7 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
     expect(component.teams$.value)
       .toStrictEqual(teamList);
-    teamServiceMock.getAllTeams.mockReturnValue(of([team2,
+    teamServiceMock.getQuarterTeams.mockReturnValue(of([team2,
       team1]));
     fixture.detectChanges();
     expect(component.teams$.value)

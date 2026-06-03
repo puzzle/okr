@@ -120,7 +120,7 @@ jobs:
             npm run start &
 
       - name: Cypress run e2e tests
-        uses: cypress-io/github-action@v7.3.0
+        uses: cypress-io/github-action@v7.4.0
         env:
           PORT: ${{ inputs.COMMIT_HASH != '' && '4200' || '8080'}}
         with:

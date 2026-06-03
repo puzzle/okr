@@ -23,27 +23,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 class OverviewPersistenceServiceIT {
     private static final List<OverviewId> expectedOverviewIds = List
             .of( // index:
-                    OverviewId.of(4L, 5L, 9L, 15L), // 0
-                    OverviewId.of(4L, 5L, 10L, 14L), // 1
-                    OverviewId.of(4L, 6L, 12L, 12L), // 2
-                    OverviewId.of(4L, 6L, 13L, 11L), // 3
-                    OverviewId.of(4L, 6L, 14L, 10L), // 4
-                    OverviewId.of(5L, 3L, 3L, 9L), // 5
-                    OverviewId.of(5L, 3L, 4L, 8L), // 6
-                    OverviewId.of(5L, 3L, 5L, 7L), // 7
-                    OverviewId.of(5L, 4L, 6L, 5L), // 8
-                    OverviewId.of(5L, 4L, 7L, 4L), // 9
-                    OverviewId.of(5L, 4L, 8L, 2L), // 10
-                    OverviewId.of(6L, 8L, 18L, 20L), // 11
-                    OverviewId.of(6L, 8L, 19L, 19L), // 12
-                    OverviewId.of(6L, 9L, 15L, 18L), // 13
-                    OverviewId.of(6L, 9L, 16L, 17L), // 14
-                    OverviewId.of(6L, 9L, 17L, 16L), // 15
-                    OverviewId.of(6L, 10L, -1L, -1L), // 16
-                    OverviewId.of(8L, -1L, -1L, -1L), // 17
-                    OverviewId.of(5L, -1L, -1L, -1L), // 18
-                    OverviewId.of(6L, -1L, -1L, -1L), // 19
-                    OverviewId.of(4L, -1L, -1L, -1L)); // 20
+                OverviewId.of(4L, 5L, 9L, 15L), // 0
+                OverviewId.of(4L, 5L, 10L, 14L), // 1
+                OverviewId.of(4L, 6L, 12L, 12L), // 2
+                OverviewId.of(4L, 6L, 13L, 11L), // 3
+                OverviewId.of(4L, 6L, 14L, 10L), // 4
+                OverviewId.of(5L, 3L, 3L, 9L), // 5
+                OverviewId.of(5L, 3L, 4L, 8L), // 6
+                OverviewId.of(5L, 3L, 5L, 7L), // 7
+                OverviewId.of(5L, 4L, 6L, 5L), // 8
+                OverviewId.of(5L, 4L, 7L, 4L), // 9
+                OverviewId.of(5L, 4L, 8L, 2L), // 10
+                OverviewId.of(6L, 8L, 18L, 20L), // 11
+                OverviewId.of(6L, 8L, 19L, 19L), // 12
+                OverviewId.of(6L, 9L, 15L, 18L), // 13
+                OverviewId.of(6L, 9L, 16L, 17L), // 14
+                OverviewId.of(6L, 9L, 17L, 16L), // 15
+                OverviewId.of(6L, 10L, -1L, -1L), // 16
+                OverviewId.of(8L, -1L, -1L, -1L), // 17
+                OverviewId.of(5L, -1L, -1L, -1L), // 18
+                OverviewId.of(6L, -1L, -1L, -1L), // 19
+                OverviewId.of(4L, -1L, -1L, -1L)); // 20
 
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 

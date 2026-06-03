@@ -282,7 +282,7 @@ describe('tabbing workflows', () => {
       tabAndCheck('routerLink-to-overview', 'Zurück zur OKR Übersicht');
       tabAndCheck('teamManagementSearch');
       tabAndCheck('add-team', 'Team erfassen');
-      tabAndCheck('all-teams-selector', 'Alle Teams (4)');
+      tabAndCheck('all-teams-selector', 'Alle Teams (5)');
       tabAndCheck('invite-member', 'Member registrieren');
     });
     it('should tab create team', () => {

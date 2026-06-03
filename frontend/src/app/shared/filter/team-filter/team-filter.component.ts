@@ -41,6 +41,8 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
 
   private subscription?: Subscription;
 
+  private isInitialLoad = true;
+
   showMoreTeams = true;
 
   isMobile = false;
@@ -81,15 +83,17 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         this.teams$.next(teams);
 
         const teamQuery = this.route.snapshot.queryParams['teams'];
-        const teamIds = getValueFromQuery(teamQuery);
-        const knownTeams = this.getAllTeamIds()
-          .filter((teamId) => teamIds?.includes(teamId));
 
-        if (knownTeams.length == 0) {
+        if (this.isInitialLoad && teamQuery === undefined) {
           this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser())
             .map((t) => t.id);
+          this.isInitialLoad = false;
         } else {
-          this.activeTeams = knownTeams;
+          const teamIds = getValueFromQuery(teamQuery);
+          this.activeTeams = this.getAllTeamIds()
+            .filter((teamId) => teamIds?.includes(teamId));
+
+          this.isInitialLoad = false;
         }
 
         if (this.isMobile) {

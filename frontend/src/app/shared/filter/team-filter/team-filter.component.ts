@@ -55,6 +55,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.isInitialLoad = true;
     this.refreshTeamData();
 
     this.breakpointObserver
@@ -83,18 +84,21 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         this.teams$.next(teams);
 
         const teamQuery = this.route.snapshot.queryParams['teams'];
+        const teamIds = getValueFromQuery(teamQuery);
+        const knownTeams = this.getAllTeamIds()
+          .filter((teamId) => teamIds?.includes(teamId));
 
-        if (this.isInitialLoad && teamQuery === undefined) {
+        const isInitialLoadWithoutParam = this.isInitialLoad && teamQuery === undefined;
+        const hasQueryButNoKnownTeams = teamQuery !== undefined && knownTeams.length === 0;
+
+        if (isInitialLoadWithoutParam || hasQueryButNoKnownTeams) {
           this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser())
             .map((t) => t.id);
-          this.isInitialLoad = false;
         } else {
-          const teamIds = getValueFromQuery(teamQuery);
-          this.activeTeams = this.getAllTeamIds()
-            .filter((teamId) => teamIds?.includes(teamId));
-
-          this.isInitialLoad = false;
+          this.activeTeams = knownTeams;
         }
+
+        this.isInitialLoad = false;
 
         if (this.isMobile) {
           this.teams$.next(this.sortTeamsToggledPriority());

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { BehaviorSubject, filter, Subject, Subscription, takeUntil } from 'rxjs';
+import { BehaviorSubject, filter, Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 import { Team } from '../../types/model/team';
 import { TeamService } from '../../../services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +14,8 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   templateUrl: './team-filter.component.html',
   styleUrls: ['./team-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false
+  standalone: false,
+  providers: [TeamService]
 })
 export class TeamFilterComponent implements OnInit, OnDestroy {
   private teamService = inject(TeamService);
@@ -35,96 +36,96 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
 
   activeTeams: number[] = [];
 
-  protected readonly trackByFn = trackByFn;
-
-  private unsubscribe$ = new Subject<void>();
-
-  private subscription?: Subscription;
-
-  private isInitialLoad = true;
-
   showMoreTeams = true;
 
   isMobile = false;
 
+  protected readonly trackByFn = trackByFn;
+
+  private unsubscribe$ = new Subject<void>();
+
+  private isInitialLoad = true;
+
   constructor() {
-    this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.unsubscribe$))
+    this.refreshDataService.reloadOverviewSubject
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this.refreshTeamData();
+        this.teamService.reload();
       });
   }
 
   ngOnInit(): void {
     this.isInitialLoad = true;
-    this.refreshTeamData();
+
+    this.route.queryParams
+      .pipe(map((params) => (params['quarter'] ? Number(params['quarter']) : undefined)), distinctUntilChanged(), takeUntil(this.unsubscribe$))
+      .subscribe((quarterId) => {
+        this.teamService.loadTeams({ quarterId });
+      });
+
+    this.teamService.getTeams()
+      .pipe(filter((teams) => teams.length > 0), takeUntil(this.unsubscribe$))
+      .subscribe((teams: Team[]) => {
+        this.processIncomingTeams(teams);
+      });
 
     this.breakpointObserver
       .observe(['(min-width: 1px) and (max-width: 767px)'])
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         this.isMobile = result.matches;
-      });
-  }
-
-  private refreshTeamData() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    this.route.queryParams
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((params) => {
-        const quarterId = params['quarter'] ? Number(params['quarter']) : undefined;
-        this.teamService.loadTeamsForQuarter(quarterId);
-      });
-
-    this.subscription = this.teamService.getQuarterTeams()
-      .pipe(takeUntil(this.unsubscribe$), filter((teams) => teams.length > 0))
-      .subscribe((teams: Team[]) => {
-        this.teams$.next(teams);
-
-        const teamQuery = this.route.snapshot.queryParams['teams'];
-        const teamIds = getValueFromQuery(teamQuery);
-        const knownTeams = this.getAllTeamIds()
-          .filter((teamId) => teamIds?.includes(teamId));
-
-        const isInitialLoadWithoutParam = this.isInitialLoad && teamQuery === undefined;
-        const hasQueryButNoKnownTeams = teamQuery !== undefined && knownTeams.length === 0;
-
-        if (isInitialLoadWithoutParam || hasQueryButNoKnownTeams) {
-          this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser())
-            .map((t) => t.id);
-        } else {
-          this.activeTeams = knownTeams;
-        }
-
-        this.isInitialLoad = false;
-
         if (this.isMobile) {
           this.teams$.next(this.sortTeamsToggledPriority());
         }
-        this.changeTeamFilterParams();
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  changeTeamFilterParams() {
+  private processIncomingTeams(teams: Team[]): void {
+    this.teams$.next(teams);
+
+    const teamQuery = this.route.snapshot.queryParams['teams'];
+    const teamIds = getValueFromQuery(teamQuery);
+    const knownTeams = this.getAllTeamIds()
+      .filter((teamId) => teamIds?.includes(teamId));
+
+    const isInitialLoadWithoutParam = this.isInitialLoad && teamQuery === undefined;
+    const hasQueryButNoKnownTeams = teamQuery !== undefined && knownTeams.length === 0;
+
+    if (isInitialLoadWithoutParam || hasQueryButNoKnownTeams) {
+      this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser())
+        .map((t) => t.id);
+    } else {
+      this.activeTeams = knownTeams;
+    }
+
+    this.isInitialLoad = false;
+
+    if (this.isMobile) {
+      this.teams$.next(this.sortTeamsToggledPriority());
+    }
+    this.changeTeamFilterParams();
+  }
+
+  changeTeamFilterParams(): void {
     const params = { teams: this.activeTeams.join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
+
     this.router
-      .navigate([], { queryParams: optionalParams })
+      .navigate([], { queryParams: optionalParams,
+        queryParamsHandling: 'merge' })
       .then(() => this.refreshDataService.teamFilterReady.next());
   }
 
-  toggleSelection(id: number) {
+  toggleSelection(id: number): void {
     if (this.areAllTeamsShown()) {
       this.activeTeams = [id];
     } else if (this.activeTeams.includes(id)) {
-      if (this.activeTeams.length == this.minTeams) {
+      if (this.activeTeams.length === this.minTeams) {
         return;
       }
       this.activeTeams = this.activeTeams.filter((teamId) => teamId !== id);
@@ -138,11 +139,11 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     this.changeTeamFilterParams();
   }
 
-  areAllTeamsShown() {
+  areAllTeamsShown(): boolean {
     return areEqual(this.activeTeams, this.getAllTeamIds());
   }
 
-  toggleAll() {
+  toggleAll(): void {
     if (this.areAllTeamsShown() && this.minTeams > 0) {
       return;
     }
@@ -150,7 +151,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     this.changeTeamFilterParams();
   }
 
-  getAllTeamIds() {
+  getAllTeamIds(): number[] {
     return this.teams$.getValue()
       .map((team) => team.id);
   }
@@ -161,7 +162,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     return teamName ?? 'no team name';
   }
 
-  sortTeamsToggledPriority() {
+  sortTeamsToggledPriority(): Team[] {
     return this.teams$.getValue()
       .sort((a, b) => {
         const aToggled = this.activeTeams.includes(a.id) ? 0 : 1;
@@ -170,7 +171,6 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         if (aToggled !== bToggled) {
           return aToggled - bToggled;
         }
-
         return a.name.localeCompare(b.name);
       });
   }

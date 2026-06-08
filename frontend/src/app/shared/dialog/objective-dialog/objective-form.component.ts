@@ -20,7 +20,8 @@ import { KeyResultDto } from '../../types/DTOs/key-result-dto';
   selector: 'app-objective-form',
   templateUrl: './objective-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false
+  standalone: false,
+  providers: [TeamService]
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
@@ -107,8 +108,11 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.teams$ = this.teamService.getAllTeams()
+    this.teamService.loadTeams();
+
+    this.teams$ = this.teamService.getTeams()
       .pipe(takeUntil(this.unsubscribe$));
+
     this.quarters$ = this.quarterService.getAllQuarters();
     this.currentQuarter$ = this.quarterService.getCurrentQuarter();
     this.keyResults$ = this.data.objective.objectiveId

@@ -13,6 +13,8 @@ import { ActivatedRoute } from '@angular/router';
 export class TeamListComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
 
+  private readonly teamService = inject(TeamService);
+
   public teams$: Observable<Team[]>;
 
   public selectedTeamId: number | undefined;
@@ -20,8 +22,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   constructor() {
-    const teamService = inject(TeamService);
-    this.teams$ = teamService.getAllTeams()
+    this.teams$ = this.teamService.getTeams()
       .pipe(map((teams) => {
         return [...teams].sort((a, b) => {
           // --- RULE 1: Sort by Archived Status ---
@@ -39,7 +40,10 @@ export class TeamListComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.route.paramMap.pipe(takeUntil(this.unsubscribe$))
+    this.teamService.loadTeams();
+
+    this.route.paramMap
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((params) => {
         const teamId = params.get('teamId');
         this.selectedTeamId = teamId ? parseInt(teamId) : undefined;

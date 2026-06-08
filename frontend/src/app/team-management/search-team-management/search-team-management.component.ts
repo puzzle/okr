@@ -23,7 +23,8 @@ export interface FilteredTeam extends Team {
   selector: 'app-search-team-management',
   templateUrl: './search-team-management.component.html',
   styleUrl: './search-team-management.component.scss',
-  standalone: false
+  standalone: false,
+  providers: [TeamService]
 })
 export class SearchTeamManagementComponent {
   private readonly userService = inject(UserService);
@@ -49,7 +50,9 @@ export class SearchTeamManagementComponent {
   private users: User[] = [];
 
   constructor() {
-    combineLatest([this.teamService.getAllTeams(),
+    this.teamService.loadTeams();
+
+    combineLatest([this.teamService.getTeams(),
       this.userService.getUsers()])
       .pipe(takeUntilDestroyed())
       .subscribe(([teams,
@@ -108,15 +111,12 @@ export class SearchTeamManagementComponent {
     if (indexA === indexB) {
       return 0;
     }
-
     if (indexB === -1) {
       return -1;
     }
-
     if (indexA === -1) {
       return 1;
     }
-
     return indexA - indexB;
   }
 
@@ -139,7 +139,6 @@ export class SearchTeamManagementComponent {
   private filterUsers(users: User[], filterValue: string): FilteredUser[] {
     return users
       .filter((user) => this.containsText(user.firstName + user.lastName + user.email, filterValue))
-
       .map((user) => ({
         ...user,
         displayValue: `${user.firstName} ${user.lastName} (${user.email})`,

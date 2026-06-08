@@ -8,7 +8,8 @@ import { UserTeam } from '../../shared/types/model/user-team';
   selector: 'app-add-user-team',
   templateUrl: './add-user-team.component.html',
   styleUrl: './add-user-team.component.scss',
-  standalone: false
+  standalone: false,
+  providers: [TeamService]
 })
 export class AddUserTeamComponent implements OnInit, OnDestroy {
   private readonly teamService = inject(TeamService);
@@ -29,19 +30,17 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
-    this.allAdminTeams$ = this.teamService.getAllTeams()
-      .pipe(takeUntil(this.unsubscribe$), map((teams) => {
-        return teams.filter((t) => t.isWriteable);
-      }));
+    this.teamService.loadTeams();
+
+    this.allAdminTeams$ = this.teamService.getTeams()
+      .pipe(takeUntil(this.unsubscribe$), map((teams) => teams.filter((t) => t.isWriteable)));
 
     this.selectableAdminTeams$ = combineLatest([this.allAdminTeams$,
       this.currentTeams$])
       .pipe(takeUntil(this.unsubscribe$), map(([allTeams,
         userTeams]) => {
         const currentTeamIds = userTeams.map((ut) => ut.team.id);
-        return allTeams.filter((t) => {
-          return !currentTeamIds.includes(t.id);
-        });
+        return allTeams.filter((t) => !currentTeamIds.includes(t.id));
       }));
   }
 

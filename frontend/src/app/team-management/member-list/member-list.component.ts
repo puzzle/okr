@@ -45,14 +45,18 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   private unsubscribe$ = new Subject<void>();
 
   public ngAfterViewInit() {
+    this.teamService.loadTeams();
+
     this.userService
       .getUsers()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((users) => this.allUsersSubj.next(users));
+
     const teamId$ = this.route.paramMap.pipe(map((params) => params.get('teamId')));
+
     combineLatest([this.allUsersSubj.asObservable(),
       teamId$,
-      this.teamService.getAllTeams()])
+      this.teamService.getTeams()])
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(([users,
         teamIdParam,
@@ -115,9 +119,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
 
   archiveTeam(selectedTeam: Team) {
     this.dialog
-      .open(ArchiveTeamDialogComponent, {
-        panelClass: 'okr-dialog-panel-small'
-      })
+      .open(ArchiveTeamDialogComponent, { panelClass: 'okr-dialog-panel-small' })
       .afterClosed()
       .pipe(filter((selectedQuarter: Quarter | undefined) => !!selectedQuarter), mergeMap((selectedQuarter: Quarter) => {
         selectedTeam.markedAsArchivedAt = selectedQuarter.startDate;
@@ -127,16 +129,13 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   }
 
   unarchiveTeam(selectedTeam: Team) {
-    const data = {
-      team: selectedTeam.name
-    };
+    const data = { team: selectedTeam.name };
 
     this.dialogService
       .openConfirmDialog('CONFIRMATION.UNARCHIVE.TEAM', data)
       .afterClosed()
       .pipe(filter((confirm) => confirm), mergeMap(() => {
         selectedTeam.markedAsArchivedAt = null;
-
         return this.teamService.unarchiveTeam(selectedTeam.id);
       }))
       .subscribe();

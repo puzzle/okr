@@ -25,7 +25,9 @@ export class TeamManagementMobileFilterComponent {
   selectedTeam: Team | undefined | 'alle';
 
   constructor() {
-    combineLatest([this.teamService.getAllTeams(),
+    this.teamService.loadTeams();
+
+    combineLatest([this.teamService.getTeams(),
       this.route.paramMap])
       .pipe(takeUntilDestroyed())
       .subscribe(([teams,

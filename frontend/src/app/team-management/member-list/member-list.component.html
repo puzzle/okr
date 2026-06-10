@@ -170,7 +170,7 @@
   <p class="d-block d-md-none text-small mx-2 mt-2">Members: {{ dataSource.data.length }}</p>
 
   <div class="d-none d-md-block">
-    <app-member-list-table [dataSource]="dataSource" [selectedTeam]="selectedTeam()"></app-member-list-table>
+    <app-member-list-table [dataSource]="dataSource" [currentTeam]="selectedTeam()"></app-member-list-table>
   </div>
   <div class="d-block d-md-none">
     <app-member-list-mobile [dataSource]="dataSource" [selectedTeam]="selectedTeam()"></app-member-list-mobile>

@@ -123,7 +123,7 @@ describe('MemberListTableComponent', () => {
     expect(teamServiceMock.removeUserFromTeam)
       .toHaveBeenCalledTimes(1);
     expect(teamServiceMock.removeUserFromTeam)
-      .toHaveBeenCalledWith(entry.id, component.selectedTeam());
+      .toHaveBeenCalledWith(entry.id, component.currentTeam());
     expect(userServiceMock.reloadUsers)
       .toHaveBeenCalledTimes(1);
     expect(userServiceMock.reloadCurrentUser)

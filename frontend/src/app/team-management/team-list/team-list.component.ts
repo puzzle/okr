@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TeamService } from '../../services/team.service';
-import { Observable, Subject, map, takeUntil } from 'rxjs';
+import { Observable, map } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Team } from '../../shared/types/model/team';
 import { ActivatedRoute } from '@angular/router';
 
@@ -10,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './team-list.component.scss',
   standalone: false
 })
-export class TeamListComponent implements OnInit, OnDestroy {
+export class TeamListComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   private readonly teamService = inject(TeamService);
@@ -19,39 +20,29 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
   public selectedTeamId: number | undefined;
 
-  private unsubscribe$ = new Subject<void>();
 
   constructor() {
     this.teams$ = this.teamService.getTeams()
       .pipe(map((teams) => {
         return [...teams].sort((a, b) => {
-          // --- RULE 1: Sort by Archived Status ---
           const aIsArchived = !!a.markedAsArchivedAt;
           const bIsArchived = !!b.markedAsArchivedAt;
-
           if (aIsArchived !== bIsArchived) {
             return aIsArchived ? 1 : -1;
           }
-
-          // --- RULE 2: Sort Alphabetically ---
           return a.name.localeCompare(b.name);
         });
       }));
-  }
-
-  public ngOnInit(): void {
-    this.teamService.loadTeams();
 
     this.route.paramMap
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(takeUntilDestroyed())
       .subscribe((params) => {
         const teamId = params.get('teamId');
         this.selectedTeamId = teamId ? parseInt(teamId) : undefined;
       });
   }
 
-  public ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  public ngOnInit(): void {
+    this.teamService.loadTeams();
   }
 }

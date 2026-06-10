@@ -58,11 +58,12 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     this.isInitialLoad = true;
 
     this.route.queryParams
-      .pipe(map((params) => (params['quarter'] ? Number(params['quarter']) : undefined)), distinctUntilChanged(), takeUntil(this.unsubscribe$))
+      .pipe(map((params) => {
+        return params['quarter'] ? Number(params['quarter']) : undefined;
+      }), distinctUntilChanged(), takeUntil(this.unsubscribe$))
       .subscribe((quarterId) => {
         this.teamService.loadTeams({ quarterId });
       });
-
     this.teamService.getTeams()
       .pipe(filter((teams) => teams.length > 0), takeUntil(this.unsubscribe$))
       .subscribe((teams: Team[]) => {

@@ -6,7 +6,7 @@ import { Team } from '../../../shared/types/model/team';
 import { TeamService } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/route-utils';
-import { filter, mergeMap, Subject } from 'rxjs';
+import { filter, mergeMap } from 'rxjs';
 import { UserTeam } from '../../../shared/types/model/user-team';
 import { DialogService } from '../../../services/dialog.service';
 
@@ -39,8 +39,6 @@ export class MemberListTableComponent {
     'name',
     'role'];
 
-  private unsubscribe$ = new Subject<void>();
-
   displayedColumns = computed(() => {
     const team = this.currentTeam();
     if (team) {
@@ -53,17 +51,28 @@ export class MemberListTableComponent {
     return this.allColumns;
   });
 
+  isTeamWriteable = computed(() => !!this.currentTeam()?.isWriteable);
+
+  isTeamArchived = computed(() => !!this.currentTeam()?.markedAsArchivedAt);
+
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
+
+    const team = this.currentTeam();
+    if (!team) {
+      return;
+    }
+
     const i18nData = {
       user: `${entry.firstName} ${entry.lastName}`,
-      team: this.currentTeam()?.name
+      team: team.name
     };
+
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(entry.id, this.currentTeam() as Team)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(entry.id, team)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -97,8 +106,4 @@ export class MemberListTableComponent {
     }
     return userTableEntry.userTeamList[0];
   }
-
-  isTeamWriteable = computed(() => !!this.currentTeam()?.isWriteable);
-
-  isTeamArchived = computed(() => !!this.currentTeam()?.markedAsArchivedAt);
 }

@@ -14,7 +14,7 @@
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef>Name</th>
     <td mat-cell *matCellDef="let element">
-      <a [routerLink]="getMemberDetailsLink(element, selectedTeam())">
+      <a [routerLink]="getMemberDetailsLink(element, currentTeam())">
         {{ element.firstName }} {{ element.lastName }}
       </a>
     </td>
@@ -63,7 +63,7 @@
       @if (isTeamWriteable()) {
       <div class="menu">
         <span
-          [matTooltip]="isTeamArchived() ? 'Aktion nicht möglich, da das Team archiviert ist.' : ''"
+          [matTooltip]="'Aktion nicht möglich, da das Team archiviert ist'"
           [matTooltipDisabled]="!isTeamArchived()"
         >
           <app-puzzle-icon-button
@@ -96,7 +96,7 @@
   <tr
     mat-row
     class="cursor-pointer"
-    [routerLink]="getMemberDetailsLink(row, selectedTeam())"
+    [routerLink]="getMemberDetailsLink(row, currentTeam())"
     *matRowDef="let row; columns: displayedColumns()"
   ></tr>
 

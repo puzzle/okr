@@ -14,7 +14,7 @@ import { getRouteToUserDetails } from '../../../shared/route-utils';
 export class MemberListMobileComponent {
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;
 
-  selectedTeam = input<Team | undefined>();
+  selectedTeam = input<Team>();
 
   getMemberDetailsLink(userTableEntry: UserTableEntry) {
     return getRouteToUserDetails(userTableEntry.id, this.selectedTeam()?.id);

@@ -4,9 +4,9 @@
 
   @if (isWriteable()) {
   <span
-    [matTooltip]="isArchived() ? 'Rolle kann nicht bearbeitet werden, da das Team archiviert ist.' : ''"
+    [matTooltip]="'Rolle kann nicht bearbeitet werden, da das Team archiviert ist.'"
     [matTooltipDisabled]="!isArchived()"
-    style="display: inline-block;"
+    class="d-inline-block"
   >
     <app-puzzle-icon-button
       (click)="isArchived() ? $event.stopPropagation() : setEditAsync($event, true)"

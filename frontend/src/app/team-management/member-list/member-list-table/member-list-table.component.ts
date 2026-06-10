@@ -25,7 +25,7 @@ export class MemberListTableComponent {
 
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;
 
-  selectedTeam = input<Team | undefined>();
+  currentTeam = input<Team>();
 
   private allColumns = [
     'icon',
@@ -42,7 +42,7 @@ export class MemberListTableComponent {
   private unsubscribe$ = new Subject<void>();
 
   displayedColumns = computed(() => {
-    const team = this.selectedTeam();
+    const team = this.currentTeam();
     if (team) {
       const cols = [...this.teamColumns];
       if (team.isWriteable) {
@@ -58,12 +58,12 @@ export class MemberListTableComponent {
     event.preventDefault();
     const i18nData = {
       user: `${entry.firstName} ${entry.lastName}`,
-      team: this.selectedTeam()?.name
+      team: this.currentTeam()?.name
     };
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(entry.id, this.selectedTeam() as Team)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(entry.id, this.currentTeam() as Team)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -98,7 +98,7 @@ export class MemberListTableComponent {
     return userTableEntry.userTeamList[0];
   }
 
-  isTeamWriteable = computed(() => !!this.selectedTeam()?.isWriteable);
+  isTeamWriteable = computed(() => !!this.currentTeam()?.isWriteable);
 
-  isTeamArchived = computed(() => !!this.selectedTeam()?.markedAsArchivedAt);
+  isTeamArchived = computed(() => !!this.currentTeam()?.markedAsArchivedAt);
 }

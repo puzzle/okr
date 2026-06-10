@@ -1,6 +1,6 @@
 <app-dialog-template-core [title]="'Team archivieren'">
   <ng-container content>
-    <div class="dialog-content">
+    <div>
       <div class="col">
         <div class="okr-form-row okr-form-label-input-container">
           <label class="okr-form-label okr-form-col" for="archive-quarter">
@@ -15,14 +15,14 @@
               [compareWith]="compareById"
               [attr.data-testId]="'archiveQuarterSelect'"
             >
-              @for (quarter of availableQuarters$ | async; track quarter.id) {
+              @for (quarter of availableQuarters(); track quarter.id) {
               <option [ngValue]="quarter">
                 {{ quarter.fullLabel() }}
               </option>
               }
             </select>
 
-            <p class="text-muted small mt-2 mb-0" style="font-size: 0.85em; line-height: 1.2;">
+            <p class="text-muted small mt-4 mb-0">
               Das Team wird ab dem <b>darauffolgenden Quartal</b> ausgeblendet und kann ab sofort nicht mehr bearbeitet werden.
               Das Team kann zu einem beliebigen Zeitpunkt wieder reaktiviert werden.
             </p>

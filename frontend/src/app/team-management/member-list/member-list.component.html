@@ -2,16 +2,12 @@
   <div id="member-header">
     <div class="team-title">
       <div class="d-flex px-3">
-        @if (selectedTeam()) {
-        <h2>{{ selectedTeam()!.name }}</h2>
+        @if (selectedTeam(); as team) {
+        <h2>{{ team.name }}</h2>
         }
         @if (isTeamWriteable()) {
         <span
-          [matTooltip]="
-      isTeamArchived()
-        ? 'Bearbeiten nicht möglich, da das Team archiviert ist.'
-        : ''
-    "
+          [matTooltip]="'Bearbeiten nicht möglich, da das Team archiviert ist.'"
           [matTooltipDisabled]="!isTeamArchived()"
         >
           <app-puzzle-icon-button
@@ -35,13 +31,8 @@
     <div class="action-button d-none d-md-flex">
       @if (isTeamWriteable()) {
       <span
-        [matTooltip]="
-      isTeamArchived()
-        ? 'Hinzufügen nicht möglich, da das Team archiviert ist.'
-        : ''
-    "
+        [matTooltip]="'Hinzufügen nicht möglich, da das Team archiviert ist.'"
         [matTooltipDisabled]="!isTeamArchived()"
-        [style.display]="'inline-block'"
       >
         <button
           (click)="!isTeamArchived() && addMemberToTeam()"
@@ -97,19 +88,11 @@
         @if (isTeamWriteable()) {
         <span
           class="d-block d-md-none"
-          [matTooltip]="
-      isTeamArchived()
-        ? 'Hinzufügen nicht möglich, da das Team archiviert ist.'
-        : ''
-    "
+          [matTooltip]="'Hinzufügen nicht möglich, da das Team archiviert ist.'"
           [matTooltipDisabled]="!isTeamArchived()"
         >
           <button
-            (click)="
-        isTeamArchived()
-          ? $event.stopPropagation()
-          : addMemberToTeam()
-      "
+            (click)="addMemberToTeam()"
             [disabled]="isTeamArchived()"
             mat-menu-item
             [attr.data-testId]="'teamAddMemberButton'"
@@ -132,9 +115,10 @@
             <span class="font-size-14">Team löschen</span>
           </span>
         </button>
+        @if (selectedTeam(); as team) {
         @if (!isTeamArchived()) {
         <button
-          (click)="archiveTeam(selectedTeam()!)"
+          (click)="archiveTeam(team)"
           mat-menu-item
           [attr.data-testId]="'teamArchiveButton'"
         >
@@ -149,7 +133,7 @@
         </button>
         } @else {
         <button
-          (click)="unarchiveTeam(selectedTeam()!)"
+          (click)="unarchiveTeam(team)"
           mat-menu-item
           [attr.data-testId]="'teamUnarchiveButton'"
         >
@@ -162,6 +146,7 @@
             <span class="font-size-14">Team reaktivieren</span>
           </span>
         </button>
+        }
         }
       </mat-menu>
     </div>

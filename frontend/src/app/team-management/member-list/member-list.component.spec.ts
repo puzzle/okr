@@ -1,4 +1,3 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { of } from 'rxjs';
@@ -9,7 +8,7 @@ import { User } from '../../shared/types/model/user';
 import { team1, team2, team3, testUser, users } from '../../shared/test-data';
 import { convertFromUser, convertFromUsers, UserTableEntry } from '../../shared/types/model/user-table-entry';
 import { UserRole } from '../../shared/types/enums/user-role';
-import { TeamService } from '../../services/team.service';
+import { TeamStateService } from '../../services/team.state.service';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { AddEditTeamDialogComponent } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -19,6 +18,7 @@ import { MemberListMobileComponent } from './member-list-mobile/member-list-mobi
 import { DialogService } from '../../services/dialog.service';
 import { provideHttpClient } from '@angular/common/http';
 import { ArchiveTeamDialogComponent } from '../../shared/dialog/archive-dialog/archive-dialog.component';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -27,10 +27,10 @@ const userServiceMock = {
   getCurrentUser: jest.fn()
 };
 
-const teamServiceMock = {
-  getAllTeams: jest.fn(),
+const teamStateServiceMock = {
+  loadTeams: jest.fn(),
+  getTeams: jest.fn(),
   deleteTeam: jest.fn(),
-  removeUserFromTeam: jest.fn(),
   archiveTeam: jest.fn(),
   unarchiveTeam: jest.fn()
 };
@@ -66,8 +66,8 @@ describe('MemberListComponent', () => {
           useValue: userServiceMock },
         { provide: ActivatedRoute,
           useValue: activatedRouteMock },
-        { provide: TeamService,
-          useValue: teamServiceMock },
+        { provide: TeamStateService,
+          useValue: teamStateServiceMock },
         { provide: Router,
           useValue: routerMock },
         { provide: DialogService,
@@ -88,16 +88,20 @@ describe('MemberListComponent', () => {
 
     jest.spyOn(userServiceMock, 'getUsers')
       .mockReturnValue(of([]));
+    teamStateServiceMock.getTeams.mockReturnValue(of([]));
+
     userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
-    userServiceMock.getCurrentUser.mockReturnValue(of(testUser));
+    userServiceMock.getCurrentUser.mockReturnValue(testUser);
 
     fixture.detectChanges();
   });
 
   afterEach(() => {
-    teamServiceMock.deleteTeam.mockReset();
-    teamServiceMock.archiveTeam.mockClear();
-    teamServiceMock.unarchiveTeam.mockClear();
+    teamStateServiceMock.deleteTeam.mockReset();
+    teamStateServiceMock.archiveTeam.mockClear();
+    teamStateServiceMock.unarchiveTeam.mockClear();
+    dialogService.open.mockClear();
+    dialogService.openConfirmDialog.mockClear();
   });
 
   it('should create', () => {
@@ -149,38 +153,26 @@ describe('MemberListComponent', () => {
 
   it('should test method convertFromUsers', () => {
     const usersCopy: User[] = JSON.parse(JSON.stringify(users));
-    usersCopy[0].userTeamList.push({
-      id: 1,
+    usersCopy[0].userTeamList.push({ id: 1,
       team: team1,
-      isTeamAdmin: true
-    });
+      isTeamAdmin: true });
     usersCopy[0].isOkrChampion = true;
-    usersCopy[1].userTeamList.push({
-      id: 2,
+    usersCopy[1].userTeamList.push({ id: 2,
       team: team1,
-      isTeamAdmin: false
-    });
-    usersCopy[2].userTeamList.push({
-      id: 3,
+      isTeamAdmin: false });
+    usersCopy[2].userTeamList.push({ id: 3,
       team: team2,
-      isTeamAdmin: false
-    });
-    usersCopy[3].userTeamList.push({
-      id: 4,
+      isTeamAdmin: false });
+    usersCopy[3].userTeamList.push({ id: 4,
       team: team1,
-      isTeamAdmin: false
-    }, {
-      id: 5,
+      isTeamAdmin: false }, { id: 5,
       team: team2,
-      isTeamAdmin: true
-    });
+      isTeamAdmin: true });
 
     const userTableEntries = convertFromUsers(usersCopy, null);
     expect(userTableEntries.length)
       .toBe(4);
-    // test that it makes a deep copy
     expect(userTableEntries).not.toBe(usersCopy);
-    // should be sorted
     expect(userTableEntries.map((ut) => ut.firstName))
       .toStrictEqual([
         'Bob',
@@ -191,14 +183,16 @@ describe('MemberListComponent', () => {
   });
 
   it('ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly', fakeAsync(() => {
-    teamServiceMock.getAllTeams.mockClear();
+    teamStateServiceMock.loadTeams.mockClear();
     userServiceMock.getUsers.mockReturnValue(of(users));
-    teamServiceMock.getAllTeams.mockReturnValue(of([team1,
+    teamStateServiceMock.getTeams.mockReturnValue(of([team1,
       team2,
       team3]));
+
     component.ngAfterViewInit();
     tick();
-    expect(teamServiceMock.getAllTeams)
+
+    expect(teamStateServiceMock.loadTeams)
       .toHaveBeenCalledTimes(1);
     expect(component.selectedTeam())
       .toBe(team1);
@@ -214,11 +208,13 @@ describe('MemberListComponent', () => {
     });
     TestBed.runInInjectionContext(() => {
       userServiceMock.getUsers.mockReturnValue(of(users));
-      teamServiceMock.getAllTeams.mockReturnValue(of([team1,
+      teamStateServiceMock.getTeams.mockReturnValue(of([team1,
         team2,
         team3]));
+
       component.ngAfterViewInit();
       tick();
+
       expect(component.selectedTeam())
         .toBe(undefined);
       expect(component.dataSource.data.length)
@@ -226,22 +222,21 @@ describe('MemberListComponent', () => {
     });
   }));
 
-  it('deleteTeam should trigger teamService.deleteTeam and navigate', fakeAsync(() => {
+  it('deleteTeam should trigger teamStateService.deleteTeam and navigate', fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
-    teamServiceMock.deleteTeam.mockReturnValue(of(null));
+    teamStateServiceMock.deleteTeam.mockReturnValue(of(null));
     dialogService.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(true)
     });
 
     const team = team1;
-
     component.deleteTeam(team);
     tick();
 
-    expect(teamServiceMock.deleteTeam)
+    expect(teamStateServiceMock.deleteTeam)
       .toHaveBeenCalledTimes(1);
-    expect(teamServiceMock.deleteTeam)
-      .toHaveBeenCalledTimes(team.id);
+    expect(teamStateServiceMock.deleteTeam)
+      .toHaveBeenCalledWith(team.id);
     expect(routerMock.navigateByUrl)
       .toHaveBeenCalledWith('team-management');
     expect(routerMock.navigateByUrl)
@@ -252,9 +247,9 @@ describe('MemberListComponent', () => {
       .toHaveBeenCalledTimes(1);
   }));
 
-  it('deleteTeam should not trigger teamService.deleteTeam if dialog is canceled', fakeAsync(() => {
+  it('deleteTeam should not trigger teamStateService.deleteTeam if dialog is canceled', fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
-    teamServiceMock.deleteTeam.mockReturnValue(of(null));
+    teamStateServiceMock.deleteTeam.mockReturnValue(of(null));
     dialogService.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(false)
     });
@@ -262,12 +257,12 @@ describe('MemberListComponent', () => {
     component.deleteTeam(team1);
     tick();
 
-    expect(teamServiceMock.deleteTeam)
+    expect(teamStateServiceMock.deleteTeam)
       .toHaveBeenCalledTimes(0);
   }));
 
   it('addMemberToTeam should open dialog', () => {
-    fixture.componentRef.setInput('selectedTeam', team1);
+    component.selectedTeam.set(team1);
     component.dataSource = new MatTableDataSource<UserTableEntry>([]);
     dialogService.open.mockReturnValue({
       afterClosed: () => of(null)
@@ -283,9 +278,8 @@ describe('MemberListComponent', () => {
       }));
   });
 
-
   it('edit team should open dialog', () => {
-    fixture.componentRef.setInput('selectedTeam', team1);
+    component.selectedTeam.set(team1);
     dialogService.open.mockReturnValue({
       afterClosed: () => of(null)
     });
@@ -299,17 +293,16 @@ describe('MemberListComponent', () => {
       }));
   });
 
-  it('archiveTeam should open dialog, update markedAsArchivedAt, and call teamService if a quarter is selected', fakeAsync(() => {
+  it('archiveTeam should open dialog, update markedAsArchivedAt, and call teamStateService if a quarter is selected', fakeAsync(() => {
     const teamToArchive = { ...team1,
       markedAsArchivedAt: null };
     const selectedQuarter = { startDate: new Date('2026-07-01') };
 
-    // Route component.dialog to the mock if they differ in your component
     (component as any).dialog = dialogService;
     dialogService.open.mockReturnValue({
       afterClosed: () => of(selectedQuarter)
     });
-    teamServiceMock.archiveTeam.mockReturnValue(of(null));
+    teamStateServiceMock.archiveTeam.mockReturnValue(of(null));
 
     component.archiveTeam(teamToArchive);
     tick();
@@ -320,13 +313,13 @@ describe('MemberListComponent', () => {
       }));
     expect(teamToArchive.markedAsArchivedAt)
       .toBe(selectedQuarter.startDate);
-    expect(teamServiceMock.archiveTeam)
+    expect(teamStateServiceMock.archiveTeam)
       .toHaveBeenCalledTimes(1);
-    expect(teamServiceMock.archiveTeam)
+    expect(teamStateServiceMock.archiveTeam)
       .toHaveBeenCalledWith(teamToArchive);
   }));
 
-  it('archiveTeam should not call teamService if dialog is canceled', fakeAsync(() => {
+  it('archiveTeam should not call teamStateService if dialog is canceled', fakeAsync(() => {
     const teamToArchive = { ...team1 };
 
     (component as any).dialog = dialogService;
@@ -337,18 +330,18 @@ describe('MemberListComponent', () => {
     component.archiveTeam(teamToArchive);
     tick();
 
-    expect(teamServiceMock.archiveTeam)
+    expect(teamStateServiceMock.archiveTeam)
       .toHaveBeenCalledTimes(0);
   }));
 
-  it('unarchiveTeam should open confirm dialog, clear markedAsArchivedAt, and call teamService if confirmed', fakeAsync(() => {
+  it('unarchiveTeam should open confirm dialog, clear markedAsArchivedAt, and call teamStateService if confirmed', fakeAsync(() => {
     const teamToUnarchive = { ...team1,
       markedAsArchivedAt: new Date('2026-01-01') };
 
     dialogService.openConfirmDialog.mockReturnValue({
       afterClosed: () => of(true)
     });
-    teamServiceMock.unarchiveTeam.mockReturnValue(of(null));
+    teamStateServiceMock.unarchiveTeam.mockReturnValue(of(null));
 
     component.unarchiveTeam(teamToUnarchive);
     tick();
@@ -359,13 +352,13 @@ describe('MemberListComponent', () => {
       }));
     expect(teamToUnarchive.markedAsArchivedAt)
       .toBeNull();
-    expect(teamServiceMock.unarchiveTeam)
+    expect(teamStateServiceMock.unarchiveTeam)
       .toHaveBeenCalledTimes(1);
-    expect(teamServiceMock.unarchiveTeam)
+    expect(teamStateServiceMock.unarchiveTeam)
       .toHaveBeenCalledWith(teamToUnarchive.id);
   }));
 
-  it('unarchiveTeam should not call teamService if confirm dialog is canceled', fakeAsync(() => {
+  it('unarchiveTeam should not call teamStateService if confirm dialog is canceled', fakeAsync(() => {
     const teamToUnarchive = { ...team1,
       markedAsArchivedAt: new Date('2026-01-01') };
 
@@ -376,17 +369,17 @@ describe('MemberListComponent', () => {
     component.unarchiveTeam(teamToUnarchive);
     tick();
 
-    expect(teamServiceMock.unarchiveTeam)
+    expect(teamStateServiceMock.unarchiveTeam)
       .toHaveBeenCalledTimes(0);
-    expect(teamToUnarchive.markedAsArchivedAt)
-      .not.toBeNull();
+    expect(teamToUnarchive.markedAsArchivedAt).not.toBeNull();
   }));
 
   describe('Computed Signal: showInviteMember', () => {
     it('should return true when no team is selected and user is OKR champion', () => {
-      component.selectedTeam.set(undefined);
+      component.selectedTeam.set(team1);
       userServiceMock.getCurrentUser.mockReturnValue({ ...testUser,
         isOkrChampion: true });
+      component.selectedTeam.set(undefined);
 
       expect(component.showInviteMember())
         .toBeTruthy();

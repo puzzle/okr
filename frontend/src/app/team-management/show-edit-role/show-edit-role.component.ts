@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Output, inject, input } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Output, inject, input, Signal, computed } from '@angular/core';
 import { UserTeam } from '../../shared/types/model/user-team';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -22,9 +22,9 @@ export class ShowEditRoleComponent {
 
   edit = false;
 
-  isWriteable = input.required<boolean>();
+  isWriteable: Signal<boolean> = computed(() => this.userTeam().team.isWriteable);
 
-  isArchived = input.required<boolean>();
+  isArchived: Signal<boolean> = computed(() => !!this.userTeam().team.markedAsArchivedAt);
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: MouseEvent) {

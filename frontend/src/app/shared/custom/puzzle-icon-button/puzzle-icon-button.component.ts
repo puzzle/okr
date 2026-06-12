@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 
 @Component({
   selector: 'app-puzzle-icon-button',
@@ -7,25 +7,22 @@ import { Component, Input } from '@angular/core';
   standalone: false
 })
 export class PuzzleIconButtonComponent {
-  @Input({ required: true })
-  icon!: string;
+  icon = input.required<string>();
 
-  @Input({ required: true })
-  alt!: string;
+  alt = input.required<string>();
 
-  @Input({ required: false })
-  size = 24;
+  size = input<number>(24);
 
-  @Input() disabled = false;
+  disabled = input<boolean>(false);
 
   readonly padding = 4;
 
-  imgSize = this.size - 2 * this.padding;
+  imgSize = computed(() => this.size() - 2 * this.padding);
 
-  getStyle() {
+  style = computed(() => {
     return {
-      'border-radius': this.size / 2 + 'px',
-      padding: this.padding + 'px'
+      'border-radius': `${this.size() / 2}px`,
+      padding: `${this.padding}px`
     };
-  }
+  });
 }

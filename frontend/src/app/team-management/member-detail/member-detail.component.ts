@@ -7,8 +7,8 @@ import { Team } from '../../shared/types/model/team';
 import { UserTeam } from '../../shared/types/model/user-team';
 import { TranslateService } from '@ngx-translate/core';
 import { MatTable } from '@angular/material/table';
-import { TeamService } from '../../services/team.service';
 import { DialogService } from '../../services/dialog.service';
+import { TeamStateService } from '../../services/team.state.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -23,7 +23,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   private readonly translateService = inject(TranslateService);
 
-  private readonly teamService = inject(TeamService);
+  private readonly teamStateService = inject(TeamStateService);
 
   private readonly cd = inject(ChangeDetectorRef);
 
@@ -96,7 +96,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamStateService.removeUserFromTeam(user.id, userTeam.team)))
       .subscribe(() => {
         this.loadUser(user.id);
         this.userService.reloadUsers();
@@ -108,7 +108,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     // make a copy and set value of real object after successful request
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;
-    this.teamService.updateOrAddTeamMembership(user.id, newUserTeam)
+    this.teamStateService.updateOrAddTeamMembership(user.id, newUserTeam)
       .subscribe(() => {
         userTeam.isTeamAdmin = isAdmin;
         this.loadUser(user.id);
@@ -120,7 +120,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   addTeamMembership(userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
-    this.teamService.updateOrAddTeamMembership(user.id, userTeam)
+    this.teamStateService.updateOrAddTeamMembership(user.id, userTeam)
       .subscribe(() => {
         this.loadUser(user.id);
         this.userService.reloadUsers();
@@ -145,7 +145,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.userService.setIsOkrChampion(user, okrChampion)
       .subscribe(() => {
         this.loadUser(user.id);
-        this.teamService.reload();
+        this.teamStateService.reload();
       });
   }
 

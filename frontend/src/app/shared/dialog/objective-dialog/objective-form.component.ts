@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/quarter';
-import { TeamService } from '../../../services/team.service';
 import { Team } from '../../types/model/team';
 import { QuarterService } from '../../../services/quarter.service';
 import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
@@ -15,18 +14,18 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
 import { KeyResultDto } from '../../types/DTOs/key-result-dto';
+import { TeamStateService } from '../../../services/team.state.service';
 
 @Component({
   selector: 'app-objective-form',
   templateUrl: './objective-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
-  providers: [TeamService]
+  standalone: false
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
 
-  private teamService = inject(TeamService);
+  private teamStateService = inject(TeamStateService);
 
   private quarterService = inject(QuarterService);
 
@@ -108,9 +107,9 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.teamService.loadTeams();
+    this.teamStateService.loadTeams();
 
-    this.teams$ = this.teamService.getTeams()
+    this.teams$ = this.teamStateService.getTeams()
       .pipe(takeUntil(this.unsubscribe$));
 
     this.quarters$ = this.quarterService.getAllQuarters();

@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { User } from '../../shared/types/model/user';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/user-table-entry';
-import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/team';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { AddEditTeamDialogComponent } from '../add-edit-team-dialog/add-edit-team-dialog.component';
@@ -14,6 +13,7 @@ import { DialogService } from '../../services/dialog.service';
 import { Quarter } from '../../shared/types/model/quarter';
 import { MatDialog } from '@angular/material/dialog';
 import { ArchiveTeamDialogComponent } from '../../shared/dialog/archive-dialog/archive-dialog.component';
+import { TeamStateService } from '../../services/team.state.service';
 
 @Component({
   selector: 'app-member-list',
@@ -28,7 +28,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
 
   private readonly cd = inject(ChangeDetectorRef);
 
-  private readonly teamService = inject(TeamService);
+  private readonly teamStateService = inject(TeamStateService);
 
   private readonly router = inject(Router);
 
@@ -45,7 +45,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   private unsubscribe$ = new Subject<void>();
 
   public ngAfterViewInit() {
-    this.teamService.loadTeams();
+    this.teamStateService.loadTeams();
 
     this.userService
       .getUsers()
@@ -56,7 +56,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
 
     combineLatest([this.allUsersSubj.asObservable(),
       teamId$,
-      this.teamService.getTeams()])
+      this.teamStateService.getTeams()])
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(([users,
         teamIdParam,
@@ -108,7 +108,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.TEAM', data)
       .afterClosed()
-      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamStateService.deleteTeam(selectedTeam.id)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -123,7 +123,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
       .afterClosed()
       .pipe(filter((selectedQuarter: Quarter | undefined) => !!selectedQuarter), mergeMap((selectedQuarter: Quarter) => {
         selectedTeam.markedAsArchivedAt = selectedQuarter.startDate;
-        return this.teamService.archiveTeam(selectedTeam);
+        return this.teamStateService.archiveTeam(selectedTeam);
       }))
       .subscribe();
   }
@@ -136,7 +136,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
       .afterClosed()
       .pipe(filter((confirm) => confirm), mergeMap(() => {
         selectedTeam.markedAsArchivedAt = null;
-        return this.teamService.unarchiveTeam(selectedTeam.id);
+        return this.teamStateService.unarchiveTeam(selectedTeam.id);
       }))
       .subscribe();
   }

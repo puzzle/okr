@@ -1,18 +1,17 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Team } from '../../shared/types/model/team';
-import { TeamService } from '../../services/team.service';
 import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
 import { UserTeam } from '../../shared/types/model/user-team';
+import { TeamStateService } from '../../services/team.state.service';
 
 @Component({
   selector: 'app-add-user-team',
   templateUrl: './add-user-team.component.html',
   styleUrl: './add-user-team.component.scss',
-  standalone: false,
-  providers: [TeamService]
+  standalone: false
 })
 export class AddUserTeamComponent implements OnInit, OnDestroy {
-  private readonly teamService = inject(TeamService);
+  private readonly teamStateService = inject(TeamStateService);
 
   @Output()
   addUserTeam = new EventEmitter<UserTeam>();
@@ -30,9 +29,9 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
-    this.teamService.loadTeams();
+    this.teamStateService.loadTeams();
 
-    this.allAdminTeams$ = this.teamService.getTeams()
+    this.allAdminTeams$ = this.teamStateService.getTeams()
       .pipe(takeUntil(this.unsubscribe$), map((teams) => teams.filter((t) => t.isWriteable)));
 
     this.selectableAdminTeams$ = combineLatest([this.allAdminTeams$,

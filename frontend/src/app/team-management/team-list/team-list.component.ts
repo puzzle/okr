@@ -1,9 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { TeamService } from '../../services/team.service';
 import { Observable, map } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Team } from '../../shared/types/model/team';
 import { ActivatedRoute } from '@angular/router';
+import { TeamStateService } from '../../services/team.state.service';
 
 @Component({
   selector: 'app-team-list',
@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 export class TeamListComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
-  private readonly teamService = inject(TeamService);
+  private readonly teamStateService = inject(TeamStateService);
 
   public teams$: Observable<Team[]>;
 
@@ -22,7 +22,7 @@ export class TeamListComponent implements OnInit {
 
 
   constructor() {
-    this.teams$ = this.teamService.getTeams()
+    this.teams$ = this.teamStateService.getTeams()
       .pipe(map((teams) => {
         return [...teams].sort((a, b) => {
           const aIsArchived = !!a.markedAsArchivedAt;
@@ -43,6 +43,6 @@ export class TeamListComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.teamService.loadTeams();
+    this.teamStateService.loadTeams();
   }
 }

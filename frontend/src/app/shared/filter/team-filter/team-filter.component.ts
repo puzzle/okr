@@ -1,24 +1,23 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { BehaviorSubject, filter, Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 import { Team } from '../../types/model/team';
-import { TeamService } from '../../../services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from '../../common';
 import { RefreshDataService } from '../../../services/refresh-data.service';
 import { UserService } from '../../../services/user.service';
 import { extractTeamsFromUser } from '../../types/model/user';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { TeamStateService } from '../../../services/team.state.service';
 
 @Component({
   selector: 'app-team-filter',
   templateUrl: './team-filter.component.html',
   styleUrls: ['./team-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
-  providers: [TeamService]
+  standalone: false
 })
 export class TeamFilterComponent implements OnInit, OnDestroy {
-  private teamService = inject(TeamService);
+  private teamStateService = inject(TeamStateService);
 
   private route = inject(ActivatedRoute);
 
@@ -50,7 +49,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this.teamService.reload();
+        this.teamStateService.reload();
       });
   }
 
@@ -62,9 +61,9 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         return params['quarter'] ? Number(params['quarter']) : undefined;
       }), distinctUntilChanged(), takeUntil(this.unsubscribe$))
       .subscribe((quarterId) => {
-        this.teamService.loadTeams({ quarterId });
+        this.teamStateService.loadTeams({ quarterId });
       });
-    this.teamService.getTeams()
+    this.teamStateService.getTeams()
       .pipe(filter((teams) => teams.length > 0), takeUntil(this.unsubscribe$))
       .subscribe((teams: Team[]) => {
         this.processIncomingTeams(teams);

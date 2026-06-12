@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/team';
 import { User } from '../../shared/types/model/user';
 import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { getRouteToTeam, getRouteToUserDetails } from '../../shared/route-utils';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TeamStateService } from '../../services/team.state.service';
 
 export interface FilteredUser extends User {
   displayValue: string;
@@ -23,13 +23,12 @@ export interface FilteredTeam extends Team {
   selector: 'app-search-team-management',
   templateUrl: './search-team-management.component.html',
   styleUrl: './search-team-management.component.scss',
-  standalone: false,
-  providers: [TeamService]
+  standalone: false
 })
 export class SearchTeamManagementComponent {
   private readonly userService = inject(UserService);
 
-  private readonly teamService = inject(TeamService);
+  private readonly teamStateService = inject(TeamStateService);
 
   private readonly router = inject(Router);
 
@@ -50,9 +49,9 @@ export class SearchTeamManagementComponent {
   private users: User[] = [];
 
   constructor() {
-    this.teamService.loadTeams();
+    this.teamStateService.loadTeams();
 
-    combineLatest([this.teamService.getTeams(),
+    combineLatest([this.teamStateService.getTeams(),
       this.userService.getUsers()])
       .pipe(takeUntilDestroyed())
       .subscribe(([teams,

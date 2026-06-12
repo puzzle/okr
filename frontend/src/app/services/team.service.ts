@@ -4,6 +4,7 @@ import { Team } from '../shared/types/model/team';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../shared/types/model/user';
 import { UserTeam } from '../shared/types/model/user-team';
+import { UserService } from './user.service';
 
 export interface TeamFilters {
   quarterId?: number;
@@ -12,6 +13,8 @@ export interface TeamFilters {
 @Injectable()
 export class TeamService {
   private http = inject(HttpClient);
+
+  private userService = inject(UserService);
 
   private readonly API_URL = '/api/v2/teams';
 
@@ -73,11 +76,17 @@ export class TeamService {
   archiveTeam(team: Team): Observable<void> {
     const payload = { markedAsArchivedAt: team.markedAsArchivedAt };
     return this.http.put<void>(`${this.API_URL}/${team.id}/archive`, payload)
-      .pipe(tap(() => this.reload()));
+      .pipe(tap(() => {
+        this.reload();
+        this.userService.reloadUsers();
+      }));
   }
 
   unarchiveTeam(id: number): Observable<void> {
     return this.http.put<void>(`${this.API_URL}/${id}/unarchive`, null)
-      .pipe(tap(() => this.reload()));
+      .pipe(tap(() => {
+        this.reload();
+        this.userService.reloadUsers();
+      }));
   }
 }

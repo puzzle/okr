@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
@@ -24,15 +24,32 @@ export class ArchiveTeamDialogComponent {
 
   private readonly dialogRef = inject(MatDialogRef<ArchiveTeamDialogComponent>);
 
-  availableQuarters = toSignal(this.quarterService.getAllQuarters(), { initialValue: [] });
+  readonly availableQuarters = toSignal(this.quarterService.getAllQuarters(), { initialValue: [] });
 
-  selectedQuarter = toSignal(this.quarterService.getCurrentQuarter(), { initialValue: undefined });
+  readonly currentQuarter = toSignal(this.quarterService.getCurrentQuarter(), { initialValue: undefined });
 
-  compareById(q1: Quarter, q2: Quarter): boolean {
-    return q1 && q2 ? q1.id === q2.id : q1 === q2;
+  readonly selectedQuarter = signal<Quarter | undefined>(undefined);
+
+  private readonly initializeSelection = effect(() => {
+    const current = this.currentQuarter();
+    const quarters = this.availableQuarters();
+
+    if (!current || this.selectedQuarter()) {
+      return;
+    }
+
+    const matchingQuarter = quarters.find((q) => q.id === current.id);
+
+    if (matchingQuarter) {
+      this.selectedQuarter.set(matchingQuarter);
+    }
+  });
+
+  compareById(q1: Quarter | null, q2: Quarter | null): boolean {
+    return q1?.id === q2?.id;
   }
 
   onSave(): void {
-    this.dialogRef.close(this.selectedQuarter);
+    this.dialogRef.close(this.selectedQuarter());
   }
 }

@@ -17,7 +17,7 @@ export class TeamService {
 
   private readonly API_URL = '/api/v2/teams';
 
-  fetchTeams(filters: TeamFilters = {}): Observable<Team[]> {
+  getAllTeams(filters: TeamFilters = {}): Observable<Team[]> {
     let params = new HttpParams();
     if (filters.quarterId !== undefined && filters.quarterId !== null) {
       params = params.set('quarterId', filters.quarterId.toString());

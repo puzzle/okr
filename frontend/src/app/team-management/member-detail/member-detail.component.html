@@ -74,7 +74,7 @@
               class="d-inline-block"
             >
               <app-puzzle-icon-button
-                (click)="!isTeamArchived(element) && removeUserFromTeam(element, userRef)"
+                (click)="removeUserFromTeam(element, userRef)"
                 [disabled]="isTeamArchived(element)"
                 [attr.data-testId]="'delete-team-member'"
                 icon="delete-icon.svg"

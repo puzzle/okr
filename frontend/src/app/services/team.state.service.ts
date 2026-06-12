@@ -28,7 +28,7 @@ export class TeamStateService {
   }
 
   reload(): void {
-    this.teamService.fetchTeams(this.activeFilters)
+    this.teamService.getAllTeams(this.activeFilters)
       .subscribe({
         next: (teams) => this.teams$.next(teams)
       });

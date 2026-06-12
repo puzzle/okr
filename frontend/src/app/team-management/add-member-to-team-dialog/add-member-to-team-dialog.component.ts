@@ -6,8 +6,8 @@ import { User } from '../../shared/types/model/user';
 import { UserService } from '../../services/user.service';
 import { FormControl } from '@angular/forms';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { TeamService } from '../../services/team.service';
 import { UserTableEntry } from '../../shared/types/model/user-table-entry';
+import { TeamStateService } from '../../services/team.state.service';
 
 export interface AddMemberToTeamDialogComponentData {
   team: Team;
@@ -23,7 +23,7 @@ export interface AddMemberToTeamDialogComponentData {
 export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   private readonly userService = inject(UserService);
 
-  private readonly teamService = inject(TeamService);
+  private teamStateService = inject(TeamStateService);
 
   dialogRef = inject<MatDialogRef<AddMemberToTeamDialogComponent>>(MatDialogRef);
 
@@ -70,7 +70,7 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   }
 
   addUsersToTeam(): void {
-    this.teamService.addUsersToTeam(this.data.team, this.selectedUsers$.getValue())
+    this.teamStateService.addUsersToTeam(this.data.team, this.selectedUsers$.getValue())
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()

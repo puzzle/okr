@@ -30,8 +30,7 @@ export class TeamStateService {
   reload(): void {
     this.teamService.fetchTeams(this.activeFilters)
       .subscribe({
-        next: (teams) => this.teams$.next(teams),
-        error: (err) => console.error('Failed to load teams', err)
+        next: (teams) => this.teams$.next(teams)
       });
   }
 

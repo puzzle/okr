@@ -11,7 +11,8 @@
             <select
               class="custom-select bg-white"
               id="archive-quarter"
-              [(ngModel)]="selectedQuarter"
+              [ngModel]="selectedQuarter()"
+              (ngModelChange)="selectedQuarter.set($event)"
               [compareWith]="compareById"
               [attr.data-testId]="'archiveQuarterSelect'"
             >
@@ -40,7 +41,7 @@
         (click)="onSave()"
         color="primary"
         mat-flat-button
-        [disabled]="!selectedQuarter"
+        [disabled]="!selectedQuarter()"
       >
         Speichern
       </button>

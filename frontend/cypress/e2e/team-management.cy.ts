@@ -570,7 +570,7 @@ describe('okr team-management', () => {
         .click();
     });
 
-    it.only('should change role of "Findus Peterson" to team "Admin"', () => {
+    it('should change role of "Findus Peterson" to team "Admin"', () => {
       cy.get('app-team-management')
         .contains('/BBT')
         .click();

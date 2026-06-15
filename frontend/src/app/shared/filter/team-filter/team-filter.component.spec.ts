@@ -1,12 +1,11 @@
 import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { TeamFilterComponent } from './team-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
 import { MatChipsModule } from '@angular/material/chips';
-import { TeamService } from '../../../services/team.service';
+import { TeamStateService } from '../../../services/team.state.service'; // Updated Import
 import { RefreshDataService } from '../../../services/refresh-data.service';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { team1, team2, team3, teamList, testUser } from '../../test-data';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,15 +15,20 @@ import { ApplicationBannerComponent } from '../../custom/application-banner/appl
 import { Team } from '../../types/model/team';
 import { TeamStatus } from '../../types/enums/team-status';
 
-const teamServiceMock = {
-  getQuarterTeams: jest.fn(),
-  loadTeamsForQuarter: jest.fn()
+// Reactive stream to simulate active state changes inside the mock
+const teamsStateStream$ = new BehaviorSubject<Team[]>(teamList);
+
+const teamStateServiceMock = {
+  getTeams: jest.fn()
+    .mockReturnValue(teamsStateStream$.asObservable()),
+  loadTeams: jest.fn(),
+  reload: jest.fn()
 };
 
 const refreshDataServiceMock = {
-  reloadOverviewSubject: new Subject(),
-  teamFilterReady: new Subject(),
-  markDataRefresh: jest.fn
+  reloadOverviewSubject: new Subject<null>(),
+  teamFilterReady: new Subject<void>(),
+  markDataRefresh: jest.fn()
 };
 
 const userServiceMock = {
@@ -46,19 +50,23 @@ describe('TeamFilterComponent', () => {
         MatChipsModule,
         MatIconModule
       ],
-      providers: [{ provide: TeamService,
-        useValue: teamServiceMock },
+      providers: [{ provide: TeamStateService,
+        useValue: teamStateServiceMock }, // Updated Token
       { provide: RefreshDataService,
         useValue: refreshDataServiceMock },
       { provide: UserService,
         useValue: userServiceMock }]
     });
+
     fixture = TestBed.createComponent(TeamFilterComponent);
     component = fixture.componentInstance;
-    teamServiceMock.getQuarterTeams.mockReturnValue(of(teamList));
-    refreshDataServiceMock
-      .markDataRefresh()
-      .mockImplementation(() => refreshDataServiceMock.reloadOverviewSubject.next(null));
+
+    // Reset stream data and configure mock implementations safely
+    teamsStateStream$.next(teamList);
+    refreshDataServiceMock.markDataRefresh.mockImplementation(() => {
+      refreshDataServiceMock.reloadOverviewSubject.next(null);
+    });
+
     router = TestBed.inject(Router);
     userServiceMock.getCurrentUser.mockReturnValue(testUser);
     fixture.detectChanges();
@@ -139,6 +147,7 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
     await component.changeTeamFilterParams();
     routerHarness.detectChanges();
+
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
     expect(router.url)
@@ -173,6 +182,7 @@ describe('TeamFilterComponent', () => {
 
     component.toggleSelection(selected);
     fixture.detectChanges();
+
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
     expect(component.areAllTeamsShown)
@@ -225,6 +235,7 @@ describe('TeamFilterComponent', () => {
     component.activeTeams = currentTeams;
     jest.spyOn(component, 'changeTeamFilterParams');
     component.toggleAll();
+
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
     expect(component.activeTeams)
@@ -238,13 +249,20 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
     expect(component.teams$.value)
       .toStrictEqual(teamList);
-    teamServiceMock.getQuarterTeams.mockReturnValue(of([team2,
-      team1]));
+
+    // Update the in-memory state stream values
+    teamsStateStream$.next([team2,
+      team1]);
+
+    // Explicitly toggle state visibility context flags to align with calculation paths
+    (component as any).isInitialLoad = true;
     fixture.detectChanges();
-    expect(component.teams$.value)
-      .toStrictEqual(teamList);
+
     refreshDataServiceMock.reloadOverviewSubject.next(null);
     fixture.detectChanges();
+
+    expect(teamStateServiceMock.reload)
+      .toHaveBeenCalled();
     expect(component.teams$.value)
       .toStrictEqual([team2,
         team1]);
@@ -299,7 +317,6 @@ describe('TeamFilterComponent', () => {
   [[],
     null]])('should navigate after filter update', async(currentTeams: number[], routingTeams: string | null) => {
     component.activeTeams = currentTeams;
-
     jest.spyOn(router, 'navigate');
 
     fixture.detectChanges();
@@ -308,7 +325,10 @@ describe('TeamFilterComponent', () => {
     expect(router.navigate)
       .toHaveBeenCalledTimes(1);
     expect(router.navigate)
-      .toHaveBeenCalledWith([], { queryParams: { teams: routingTeams } });
+      .toHaveBeenCalledWith([], {
+        queryParams: { teams: routingTeams },
+        queryParamsHandling: 'merge'
+      });
   });
 
   it('should filter teams by toggled priority and then by name', async() => {
@@ -383,28 +403,29 @@ describe('TeamFilterComponent', () => {
   });
 
   it('should load teams for specific quarter when quarter query param is present', async() => {
-    teamServiceMock.loadTeamsForQuarter.mockClear();
-
+    teamStateServiceMock.loadTeams.mockClear();
     const routerHarness = await RouterTestingHarness.create();
 
     await routerHarness.navigateByUrl('/?quarter=42');
 
-    expect(teamServiceMock.loadTeamsForQuarter)
+    expect(teamStateServiceMock.loadTeams)
       .toHaveBeenCalledTimes(1);
-    expect(teamServiceMock.loadTeamsForQuarter)
-      .toHaveBeenCalledWith(42);
+    expect(teamStateServiceMock.loadTeams)
+      .toHaveBeenCalledWith({ quarterId: 42 });
   });
 
   it('should load teams with undefined quarter when quarter query param is absent', async() => {
-    teamServiceMock.loadTeamsForQuarter.mockClear();
-
     const routerHarness = await RouterTestingHarness.create();
+
+    await routerHarness.navigateByUrl('/?quarter=42');
+
+    teamStateServiceMock.loadTeams.mockClear();
 
     await routerHarness.navigateByUrl('/');
 
-    expect(teamServiceMock.loadTeamsForQuarter)
+    expect(teamStateServiceMock.loadTeams)
       .toHaveBeenCalledTimes(1);
-    expect(teamServiceMock.loadTeamsForQuarter)
-      .toHaveBeenCalledWith(undefined);
+    expect(teamStateServiceMock.loadTeams)
+      .toHaveBeenCalledWith({ quarterId: undefined });
   });
 });

@@ -1,31 +1,33 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { TeamService } from '../../services/team.service';
+import { TeamStateService } from '../../services/team.state.service';
 import { TeamListComponent } from './team-list.component';
 import { Team } from '../../shared/types/model/team';
 
 describe('TeamListComponent', () => {
   let component: TeamListComponent;
   let fixture: ComponentFixture<TeamListComponent>;
-  const paramTeamId = 1;
 
-  const teamServiceMock = {
-    getAllTeams: jest.fn()
-      .mockReturnValue(of())
+  const paramMapSubject = new BehaviorSubject<{ get: (key: string) => any }>({
+    get: (key: string) => '1'
+  });
+
+  const teamStateServiceMock = {
+    getTeams: jest.fn()
+      .mockReturnValue(of([])),
+    loadTeams: jest.fn()
   };
 
-  const activatedRouteMock: any = {
-    paramMap: of({
-      get: () => paramTeamId
-    })
+  const activatedRouteMock = {
+    paramMap: paramMapSubject.asObservable()
   };
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [TeamListComponent],
-      providers: [{ provide: TeamService,
-        useValue: teamServiceMock },
+      providers: [{ provide: TeamStateService,
+        useValue: teamStateServiceMock },
       { provide: ActivatedRoute,
         useValue: activatedRouteMock }]
     })
@@ -33,6 +35,8 @@ describe('TeamListComponent', () => {
   });
 
   beforeEach(() => {
+    paramMapSubject.next({ get: (key: string) => '1' });
+
     fixture = TestBed.createComponent(TeamListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -43,17 +47,14 @@ describe('TeamListComponent', () => {
       .toBeTruthy();
   });
 
-  it('should set selected teamid', () => {
-    component.ngOnInit();
+  it('should set selected teamid when param is present', () => {
     expect(component.selectedTeamId)
-      .toBe(paramTeamId);
+      .toBe(1);
   });
 
-  it('should set selected teamid', () => {
-    activatedRouteMock.paramMap = of({
-      get: () => undefined
-    });
-    component.ngOnInit();
+  it('should set selected teamid to undefined when param is absent', () => {
+    paramMapSubject.next({ get: (key: string) => undefined });
+
     expect(component.selectedTeamId)
       .toBe(undefined);
   });
@@ -79,7 +80,7 @@ describe('TeamListComponent', () => {
       activeAlpha
     ];
 
-    teamServiceMock.getAllTeams.mockReturnValue(of(unsortedTeams));
+    teamStateServiceMock.getTeams.mockReturnValue(of(unsortedTeams));
 
     const customFixture = TestBed.createComponent(TeamListComponent);
     const customComponent = customFixture.componentInstance;

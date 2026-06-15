@@ -1,11 +1,10 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-
 import { MemberListTableComponent } from './member-list-table.component';
 import { team1, testUser } from '../../../shared/test-data';
 import { of } from 'rxjs';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { UserService } from '../../../services/user.service';
-import { TeamService } from '../../../services/team.service';
+import { TeamStateService } from '../../../services/team.state.service'; // Updated Import
 import { MatTableModule } from '@angular/material/table';
 import { DialogService } from '../../../services/dialog.service';
 
@@ -19,9 +18,7 @@ describe('MemberListTableComponent', () => {
     reloadCurrentUser: jest.fn()
   };
 
-  const teamServiceMock = {
-    getAllTeams: jest.fn(),
-    deleteTeam: jest.fn(),
+  const teamStateServiceMock = {
     removeUserFromTeam: jest.fn(),
     updateOrAddTeamMembership: jest.fn()
   };
@@ -37,18 +34,18 @@ describe('MemberListTableComponent', () => {
       declarations: [MemberListTableComponent],
       providers: [{ provide: UserService,
         useValue: userServiceMock },
-      { provide: TeamService,
-        useValue: teamServiceMock },
+      { provide: TeamStateService,
+        useValue: teamStateServiceMock }, // Updated Token
       { provide: DialogService,
         useValue: dialogService }]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(MemberListTableComponent);
-
     component = fixture.componentInstance;
 
-    teamServiceMock.removeUserFromTeam.mockReset();
+    teamStateServiceMock.removeUserFromTeam.mockReset();
+    teamStateServiceMock.updateOrAddTeamMembership.mockReset();
     userServiceMock.reloadUsers.mockReset();
     userServiceMock.reloadCurrentUser.mockReset();
 
@@ -56,7 +53,8 @@ describe('MemberListTableComponent', () => {
   });
 
   afterEach(() => {
-    teamServiceMock.removeUserFromTeam.mockReset();
+    teamStateServiceMock.removeUserFromTeam.mockReset();
+    teamStateServiceMock.updateOrAddTeamMembership.mockReset();
   });
 
   it('should create', () => {
@@ -65,7 +63,7 @@ describe('MemberListTableComponent', () => {
   });
 
   it('should set displayedColumns for all teams correctly', fakeAsync(() => {
-    fixture.componentRef.setInput('selectedTeam', undefined);
+    fixture.componentRef.setInput('currentTeam', undefined); // Fixed Input Name
     tick();
     expect(component.displayedColumns())
       .toStrictEqual([
@@ -78,7 +76,7 @@ describe('MemberListTableComponent', () => {
   }));
 
   it('should set displayedColumns for admin team correctly', fakeAsync(() => {
-    fixture.componentRef.setInput('selectedTeam', team1);
+    fixture.componentRef.setInput('currentTeam', team1); // Fixed Input Name
     tick();
     expect(component.displayedColumns())
       .toStrictEqual(['icon',
@@ -86,10 +84,10 @@ describe('MemberListTableComponent', () => {
         'role']);
   }));
 
-  it('should set displayedColumns for admin team correctly', fakeAsync(() => {
-    const team = { ...team1 };
-    team.isWriteable = true;
-    fixture.componentRef.setInput('selectedTeam', team);
+  it('should set displayedColumns for admin team correctly if writeable', fakeAsync(() => {
+    const team = { ...team1,
+      isWriteable: true };
+    fixture.componentRef.setInput('currentTeam', team); // Fixed Input Name
     tick();
     expect(component.displayedColumns())
       .toStrictEqual([
@@ -106,23 +104,19 @@ describe('MemberListTableComponent', () => {
   });
 
   it('removeMemberFromTeam should call removeUserFromTeam and reloadUsers if confirmed', fakeAsync(() => {
-    const entry = {
-      id: 1
-    };
-    fixture.componentRef.setInput('selectedTeam', team1);
-    teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
+    const entry = { id: 1 };
+    fixture.componentRef.setInput('currentTeam', team1); // Fixed Input Name
+    teamStateServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
-    dialogService.openConfirmDialog.mockReturnValue({
-      afterClosed: () => of(true)
-    });
+    dialogService.openConfirmDialog.mockReturnValue({ afterClosed: () => of(true) });
 
     component.removeMemberFromTeam(entry as UserTableEntry, new MouseEvent('click'));
     tick();
 
-    expect(teamServiceMock.removeUserFromTeam)
+    expect(teamStateServiceMock.removeUserFromTeam)
       .toHaveBeenCalledTimes(1);
-    expect(teamServiceMock.removeUserFromTeam)
+    expect(teamStateServiceMock.removeUserFromTeam)
       .toHaveBeenCalledWith(entry.id, component.currentTeam());
     expect(userServiceMock.reloadUsers)
       .toHaveBeenCalledTimes(1);
@@ -131,21 +125,17 @@ describe('MemberListTableComponent', () => {
   }));
 
   it('removeMemberFromTeam should not call removeUserFromTeam and reloadUsers if not confirmed', fakeAsync(() => {
-    const entry = {
-      id: 1
-    };
-    fixture.componentRef.setInput('selectedTeam', team1);
-    teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
+    const entry = { id: 1 };
+    fixture.componentRef.setInput('currentTeam', team1); // Fixed Input Name
+    teamStateServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
-    dialogService.openConfirmDialog.mockReturnValue({
-      afterClosed: () => of(false)
-    });
+    dialogService.openConfirmDialog.mockReturnValue({ afterClosed: () => of(false) });
 
     component.removeMemberFromTeam(entry as UserTableEntry, new MouseEvent('click'));
     tick();
 
-    expect(teamServiceMock.removeUserFromTeam)
+    expect(teamStateServiceMock.removeUserFromTeam)
       .toHaveBeenCalledTimes(0);
     expect(userServiceMock.reloadUsers)
       .toHaveBeenCalledTimes(0);
@@ -154,15 +144,15 @@ describe('MemberListTableComponent', () => {
   }));
 
   it('saveUserTeamRole should call updateOrAddTeamMembership and reload users', fakeAsync(() => {
-    teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null));
+    teamStateServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null));
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
-    const entry = {
-      id: 1
-    } as any;
+    const entry = { id: 1 } as any;
     const ut = testUser.userTeamList[0];
+
     component.saveUserTeamMembership(true, entry, ut);
     tick();
-    expect(teamServiceMock.updateOrAddTeamMembership)
+
+    expect(teamStateServiceMock.updateOrAddTeamMembership)
       .toHaveBeenCalledWith(entry.id, ut);
     expect(userServiceMock.reloadUsers)
       .toHaveBeenCalledTimes(1);
@@ -170,19 +160,15 @@ describe('MemberListTableComponent', () => {
       .toHaveBeenCalledTimes(1);
   }));
 
-  it('getSingleUserTeam should return first userTeam uf userTableEntry', () => {
-    const ut = {
-      userTeamList: [testUser.userTeamList[0]]
-    } as any;
+  it('getSingleUserTeam should return first userTeam of userTableEntry', () => {
+    const ut = { userTeamList: [testUser.userTeamList[0]] } as any;
     expect(component.getSingleUserTeam(ut))
       .toStrictEqual(testUser.userTeamList[0]);
   });
 
   it('getSingleUserTeam should throw error if userTeamList.length is not 1', () => {
-    const ut = {
-      userTeamList: [testUser.userTeamList[0],
-        testUser.userTeamList[0]]
-    } as any;
+    const ut = { userTeamList: [testUser.userTeamList[0],
+      testUser.userTeamList[0]] } as any;
     expect(() => component.getSingleUserTeam(ut))
       .toThrow('it should have exactly one UserTeam at this point');
     ut.userTeamList = [];
@@ -192,8 +178,7 @@ describe('MemberListTableComponent', () => {
 
   describe('isTeamWriteable', () => {
     it('should return false if selectedTeam is undefined', () => {
-      fixture.componentRef.setInput('selectedTeam', undefined);
-
+      fixture.componentRef.setInput('currentTeam', undefined); // Fixed Input Name
       expect(component.isTeamWriteable())
         .toBe(false);
     });
@@ -201,8 +186,7 @@ describe('MemberListTableComponent', () => {
     it('should return false if selectedTeam is not writeable', () => {
       const team = { ...team1,
         isWriteable: false };
-      fixture.componentRef.setInput('selectedTeam', team);
-
+      fixture.componentRef.setInput('currentTeam', team); // Fixed Input Name
       expect(component.isTeamWriteable())
         .toBe(false);
     });
@@ -210,8 +194,7 @@ describe('MemberListTableComponent', () => {
     it('should return true if selectedTeam is writeable', () => {
       const team = { ...team1,
         isWriteable: true };
-      fixture.componentRef.setInput('selectedTeam', team);
-
+      fixture.componentRef.setInput('currentTeam', team); // Fixed Input Name
       expect(component.isTeamWriteable())
         .toBe(true);
     });
@@ -219,8 +202,7 @@ describe('MemberListTableComponent', () => {
 
   describe('isTeamArchived', () => {
     it('should return false if selectedTeam is undefined', () => {
-      fixture.componentRef.setInput('selectedTeam', undefined);
-
+      fixture.componentRef.setInput('currentTeam', undefined); // Fixed Input Name
       expect(component.isTeamArchived())
         .toBe(false);
     });
@@ -228,8 +210,7 @@ describe('MemberListTableComponent', () => {
     it('should return false if team markedAsArchivedAt is null', () => {
       const team = { ...team1,
         markedAsArchivedAt: null };
-      fixture.componentRef.setInput('selectedTeam', team);
-
+      fixture.componentRef.setInput('currentTeam', team); // Fixed Input Name
       expect(component.isTeamArchived())
         .toBe(false);
     });
@@ -237,8 +218,7 @@ describe('MemberListTableComponent', () => {
     it('should return true if team has a markedAsArchivedAt date', () => {
       const team = { ...team1,
         markedAsArchivedAt: new Date('2026-06-01') };
-      fixture.componentRef.setInput('selectedTeam', team);
-
+      fixture.componentRef.setInput('currentTeam', team); // Fixed Input Name
       expect(component.isTeamArchived())
         .toBe(true);
     });

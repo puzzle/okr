@@ -48,12 +48,10 @@ describe('ArchiveTeamDialogComponent', () => {
     it('should load available quarters and set the current quarter as selected', () => {
       fixture.detectChanges();
 
-      component.availableQuarters$.subscribe((quarters) => {
-        expect(quarters)
-          .toEqual(quarterList);
-      });
+      expect(component.availableQuarters())
+        .toEqual(quarterList);
 
-      expect(component.selectedQuarter)
+      expect(component.selectedQuarter())
         .toEqual(quarter1);
       expect(mockQuarterService.getAllQuarters)
         .toHaveBeenCalledTimes(1);

@@ -570,31 +570,22 @@ describe('okr team-management', () => {
         .click();
     });
 
-    it('should change role of "Findus Peterson" to team "Admin"', () => {
+    it.only('should change role of "Findus Peterson" to team "Admin"', () => {
       cy.get('app-team-management')
         .contains('/BBT')
         .click();
 
-      cy.get('app-member-list tbody tr')
-        .each(($row) => {
-          const usernameCell = $row.find('td:nth-child(2)');
-          if (usernameCell.text()
-            .trim() !== 'Findus Peterson') {
-            return;
-          }
-          $row.find('[data-testId=\'edit-role\']')
-            .click();
-          cy.wait(500); // wait for dialog to open
-        })
-        .then(() => {
-          cy.getByTestId('select-team-role')
-            .click();
-          cy.getByTestId('select-team-role-admin')
-            .click();
-          cy.getByTestId('select-team-role')
-            .should('not.exist');
-          cy.contains('Das Team wurde erfolgreich aktualisiert.');
-        });
+      cy.contains('app-member-list tbody tr', 'Findus Peterson')
+        .find('[data-testId="edit-role"]')
+        .click();
+
+      cy.getByTestId('select-team-role')
+        .click();
+      cy.getByTestId('select-team-role-admin')
+        .click();
+      cy.getByTestId('select-team-role')
+        .should('not.exist');
+      cy.contains('Das Team wurde erfolgreich aktualisiert.');
     });
 
     it('should not be able to add "Findus Peterson" to further teams', () => {

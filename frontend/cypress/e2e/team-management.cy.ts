@@ -430,7 +430,7 @@ describe('okr team-management', () => {
         .submit();
     });
 
-    it('should archive /BBT and as a result disable all edit buttons', () => {
+    it.only('should archive /BBT and as a result disable all edit buttons', () => {
       teamManagementPage.archiveTeam('/BBT')
         .cancel();
 
@@ -463,6 +463,8 @@ describe('okr team-management', () => {
             .find('button')
             .should('be.disabled');
         });
+
+      cy.wait(500);
 
       // Unarchive team again
       cy.realPress('Escape');

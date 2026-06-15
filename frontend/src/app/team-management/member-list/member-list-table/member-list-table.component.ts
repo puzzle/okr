@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { User } from '../../../shared/types/model/user';
 import { Team } from '../../../shared/types/model/team';
-import { TeamService } from '../../../services/team.service';
+import { TeamStateService } from '../../../services/team.state.service';
 import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/route-utils';
 import { filter, mergeMap } from 'rxjs';
@@ -16,8 +16,9 @@ import { DialogService } from '../../../services/dialog.service';
   styleUrl: './member-list-table.component.scss',
   standalone: false
 })
+
 export class MemberListTableComponent {
-  private readonly teamService = inject(TeamService);
+  private readonly teamStateService = inject(TeamStateService);
 
   private readonly userService = inject(UserService);
 
@@ -72,7 +73,7 @@ export class MemberListTableComponent {
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(entry.id, team)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamStateService.removeUserFromTeam(entry.id, team)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -83,7 +84,8 @@ export class MemberListTableComponent {
   saveUserTeamMembership(isAdmin: boolean, userTableEntry: UserTableEntry, userTeam: UserTeam): void {
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;
-    this.teamService.updateOrAddTeamMembership(userTableEntry.id, newUserTeam)
+
+    this.teamStateService.updateOrAddTeamMembership(userTableEntry.id, newUserTeam)
       .subscribe(() => {
         userTeam.isTeamAdmin = isAdmin;
         this.userService.reloadUsers();
@@ -96,10 +98,6 @@ export class MemberListTableComponent {
     return getRouteToUserDetails(user.id, team?.id);
   }
 
-  /*
-   * this method is only used in Team context. Therefore, it should only have one userTeam.
-   * otherwise the method will throw an exception
-   */
   getSingleUserTeam(userTableEntry: UserTableEntry): UserTeam {
     if (userTableEntry.userTeamList.length !== 1) {
       throw Error('it should have exactly one UserTeam at this point');

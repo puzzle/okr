@@ -5,6 +5,7 @@ on:
       ENVIRONMENT_NAME:
         type: string
         required: true
+  workflow_dispatch:
 
 jobs:
   generate-and-push-sbom:

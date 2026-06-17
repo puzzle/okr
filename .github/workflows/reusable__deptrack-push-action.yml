@@ -6,6 +6,11 @@ on:
         type: string
         required: true
   workflow_dispatch:
+    inputs:
+      ENVIRONMENT_NAME:
+        description: 'Environment Name'
+        required: true
+        type: string
 
 jobs:
   generate-and-push-sbom:
@@ -52,8 +57,8 @@ jobs:
         env:
           PROJECT_NAME: ${{ vars.DEPENDENCY_TRACK_PROJECT_NAME }}
         run: |
-          if [ -z "${PROJECT_NAME}" ] && [ -z "$GITHUB_REPOSITORY" ]; then
-            echo "::error::Project name is empty and GITHUB_REPOSITORY is unavailable. Cannot proceed."
+          if [ -z "${{ vars.DEPENDENCY_TRACK_PROJECT_NAME }}" ]; then
+            echo "::error::DEPENDENCY_TRACK_PROJECT_NAME variable is not set."
             exit 1
           fi
           

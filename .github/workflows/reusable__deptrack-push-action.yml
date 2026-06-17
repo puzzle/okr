@@ -52,6 +52,11 @@ jobs:
         env:
           PROJECT_NAME: ${{ vars.DEPENDENCY_TRACK_PROJECT_NAME }}
         run: |
+          if [ -z "${PROJECT_NAME}" ] && [ -z "$GITHUB_REPOSITORY" ]; then
+            echo "::error::Project name is empty and GITHUB_REPOSITORY is unavailable. Cannot proceed."
+            exit 1
+          fi
+          
           curl --verbose -s --location --fail --request POST ${{ secrets.DEPENDENCY_TRACK_URL }} \
           --header "X-Api-Key: ${{ secrets.SECRET_OWASP_DT_KEY }}" \
           --header "Content-Type: multipart/form-data" \

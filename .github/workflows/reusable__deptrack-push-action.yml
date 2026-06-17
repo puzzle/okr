@@ -5,12 +5,6 @@ on:
       ENVIRONMENT_NAME:
         type: string
         required: true
-  workflow_dispatch:
-    inputs:
-      ENVIRONMENT_NAME:
-        description: 'Environment Name'
-        required: true
-        type: string
 
 jobs:
   generate-and-push-sbom:

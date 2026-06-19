@@ -33,25 +33,19 @@ jobs:
         run: |
           docker run \
             --rm \
-            -v $(pwd):/data \
-            cyclonedx/cyclonedx-cli \
-            merge \
+            -v $(pwd):/data cyclonedx/cyclonedx-cli merge \
             --hierarchical \
             --name OKR \
             --version ${{ env.VERSION }} \
             --output-version v1_6 \
-            --input-files \
-            data/backend/target/bom.xml \
-            data/sbom-npm.json \
+            --input-files data/backend/target/bom.xml data/sbom-npm.json \
             --output-file data/sbom.xml
 
       - name: 'Validate SBOM'
         run: |
           docker run \
             --rm \
-            -v $(pwd):/data \
-            cyclonedx/cyclonedx-cli \
-            validate \
+            -v $(pwd):/data cyclonedx/cyclonedx-cli validate \
             --input-format xml \
             --input-version v1_6 \
             --input-file data/sbom.xml \
@@ -66,8 +60,7 @@ jobs:
             -s \
             --location \
             --fail \
-            --request POST \
-            ${{ secrets.DEPENDENCY_TRACK_URL }} \
+            --request POST ${{ secrets.DEPENDENCY_TRACK_URL }} \
             --header "X-Api-Key: ${{ secrets.SECRET_OWASP_DT_KEY }}" \
             --header "Content-Type: multipart/form-data" \
             --form "autoCreate=true" \

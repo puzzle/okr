@@ -7,7 +7,7 @@ import { UserService } from '../../services/user.service';
 import { FormControl } from '@angular/forms';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { UserTableEntry } from '../../shared/types/model/user-table-entry';
-import { TeamStateService } from '../../services/team.state.service';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 export interface AddMemberToTeamDialogComponentData {
   team: Team;
@@ -23,7 +23,7 @@ export interface AddMemberToTeamDialogComponentData {
 export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   private readonly userService = inject(UserService);
 
-  private teamStateService = inject(TeamStateService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   dialogRef = inject<MatDialogRef<AddMemberToTeamDialogComponent>>(MatDialogRef);
 

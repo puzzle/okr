@@ -12,6 +12,7 @@ export interface TeamFilters {
 @Injectable({
   providedIn: 'root'
 })
+
 export class TeamService {
   private http = inject(HttpClient);
 
@@ -19,7 +20,7 @@ export class TeamService {
 
   getAllTeams(filters: TeamFilters = {}): Observable<Team[]> {
     let params = new HttpParams();
-    if (filters.quarterId !== undefined && filters.quarterId !== null) {
+    if (filters.quarterId != null && !Number.isNaN(Number(filters.quarterId))) {
       params = params.set('quarterId', filters.quarterId.toString());
     }
     return this.http.get<Team[]>(this.API_URL, { params });
@@ -42,7 +43,7 @@ export class TeamService {
   }
 
   removeUserFromTeam(userId: number, team: Team): Observable<void> {
-    return this.http.put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`, null);
+    return this.http.put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`, {});
   }
 
   updateOrAddTeamMembership(userId: number, userTeam: UserTeam): Observable<void> {
@@ -55,6 +56,6 @@ export class TeamService {
   }
 
   unarchiveTeam(id: number): Observable<void> {
-    return this.http.put<void>(`${this.API_URL}/${id}/unarchive`, null);
+    return this.http.put<void>(`${this.API_URL}/${id}/unarchive`, {});
   }
 }

@@ -1,9 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Team } from '../../shared/types/model/team';
 import { ActivatedRoute } from '@angular/router';
-import { TeamStateService } from '../../services/team.state.service';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-team-list',
@@ -11,10 +11,10 @@ import { TeamStateService } from '../../services/team.state.service';
   styleUrl: './team-list.component.scss',
   standalone: false
 })
-export class TeamListComponent implements OnInit {
+export class TeamListComponent {
   private readonly route = inject(ActivatedRoute);
 
-  private readonly teamStateService = inject(TeamStateService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   public teams$: Observable<Team[]>;
 
@@ -40,9 +40,5 @@ export class TeamListComponent implements OnInit {
         const teamId = params.get('teamId');
         this.selectedTeamId = teamId ? parseInt(teamId) : undefined;
       });
-  }
-
-  public ngOnInit(): void {
-    this.teamStateService.loadTeams();
   }
 }

@@ -3,12 +3,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { User } from '../../../shared/types/model/user';
 import { Team } from '../../../shared/types/model/team';
-import { TeamStateService } from '../../../services/team.state.service';
 import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/route-utils';
 import { filter, mergeMap } from 'rxjs';
 import { UserTeam } from '../../../shared/types/model/user-team';
 import { DialogService } from '../../../services/dialog.service';
+import { ALL_TEAMS_STATE } from '../../../services/team-state.tokens';
 
 @Component({
   selector: 'app-member-list-table',
@@ -18,7 +18,7 @@ import { DialogService } from '../../../services/dialog.service';
 })
 
 export class MemberListTableComponent {
-  private readonly teamStateService = inject(TeamStateService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private readonly userService = inject(UserService);
 

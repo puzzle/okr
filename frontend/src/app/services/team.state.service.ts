@@ -6,9 +6,7 @@ import { UserTeam } from '../shared/types/model/user-team';
 import { TeamService, TeamFilters } from './team.service';
 import { UserService } from './user.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TeamStateService {
   private teamService = inject(TeamService);
 

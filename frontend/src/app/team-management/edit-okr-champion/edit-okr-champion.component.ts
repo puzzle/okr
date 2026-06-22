@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
 import { User } from '../../shared/types/model/user';
 import { UserService } from '../../services/user.service';
-import { TeamService } from '../../services/team.service';
 
 @Component({
   selector: 'app-edit-okr-champion',
@@ -11,8 +10,6 @@ import { TeamService } from '../../services/team.service';
 })
 export class EditOkrChampionComponent {
   private readonly userService = inject(UserService);
-
-  private readonly teamService = inject(TeamService);
 
   private readonly cd = inject(ChangeDetectorRef);
 

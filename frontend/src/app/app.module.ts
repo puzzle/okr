@@ -1,4 +1,5 @@
-import { CUSTOM_ELEMENTS_SCHEMA, inject, NgModule, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, inject, NgModule, provideAppInitializer,
+  provideEnvironmentInitializer, provideZoneChangeDetection } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -61,6 +62,7 @@ import { CustomizationService } from './services/customization.service';
 import { ManageUnitsDialogComponent } from './components/manage-units-dialog/manage-units-dialog.component';
 import { UnitTransformationPipe } from './shared/pipes/unit-transformation/unit-transformation.pipe';
 import { OverviewBannerComponent } from './components/overview-banner/overview-banner.component';
+import { ALL_TEAMS_STATE, FILTERED_TEAMS_STATE } from './services/team-state.tokens';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async() => {
@@ -192,7 +194,14 @@ export const MY_FORMATS = {
     TranslateService,
     UnitTransformationPipe,
     provideHttpClient(withInterceptorsFromDi()),
-    provideZoneChangeDetection()
+    provideZoneChangeDetection(),
+    provideEnvironmentInitializer(() => {
+      const allTeamsState = inject(ALL_TEAMS_STATE);
+      const filteredTeamsState = inject(FILTERED_TEAMS_STATE);
+
+      allTeamsState.loadTeams();
+      filteredTeamsState.loadTeams();
+    })
   ]
 })
 export class AppModule {

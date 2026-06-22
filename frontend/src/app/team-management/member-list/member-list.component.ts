@@ -13,7 +13,7 @@ import { DialogService } from '../../services/dialog.service';
 import { Quarter } from '../../shared/types/model/quarter';
 import { MatDialog } from '@angular/material/dialog';
 import { ArchiveTeamDialogComponent } from '../../shared/dialog/archive-dialog/archive-dialog.component';
-import { TeamStateService } from '../../services/team.state.service';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-member-list',
@@ -28,7 +28,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
 
   private readonly cd = inject(ChangeDetectorRef);
 
-  private readonly teamStateService = inject(TeamStateService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private readonly router = inject(Router);
 
@@ -45,8 +45,6 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
   private unsubscribe$ = new Subject<void>();
 
   public ngAfterViewInit() {
-    this.teamStateService.loadTeams();
-
     this.userService
       .getUsers()
       .pipe(takeUntil(this.unsubscribe$))

@@ -6,7 +6,7 @@ import { Team } from '../../shared/types/model/team';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { TeamStateService } from '../../services/team.state.service';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-add-edit-team-dialog',
@@ -17,7 +17,7 @@ import { TeamStateService } from '../../services/team.state.service';
 export class AddEditTeamDialogComponent implements OnInit {
   dialogRef = inject<MatDialogRef<AddEditTeamDialogComponent>>(MatDialogRef);
 
-  private teamStateService = inject(TeamStateService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private userService = inject(UserService);
 

@@ -4,7 +4,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { getRouteToAllTeams, getRouteToTeam } from '../../shared/route-utils';
 import { combineLatest } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TeamStateService } from '../../services/team.state.service';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-team-management-mobile-filter',
@@ -12,7 +12,7 @@ import { TeamStateService } from '../../services/team.state.service';
   standalone: false
 })
 export class TeamManagementMobileFilterComponent {
-  private readonly teamStateService = inject(TeamStateService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private readonly router = inject(Router);
 
@@ -25,8 +25,6 @@ export class TeamManagementMobileFilterComponent {
   selectedTeam: Team | undefined | 'alle';
 
   constructor() {
-    this.teamStateService.loadTeams();
-
     combineLatest([this.teamStateService.getTeams(),
       this.route.paramMap])
       .pipe(takeUntilDestroyed())

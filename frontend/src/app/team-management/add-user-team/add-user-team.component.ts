@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } fro
 import { Team } from '../../shared/types/model/team';
 import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
 import { UserTeam } from '../../shared/types/model/user-team';
-import { TeamStateService } from '../../services/team.state.service';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-add-user-team',
@@ -11,7 +11,7 @@ import { TeamStateService } from '../../services/team.state.service';
   standalone: false
 })
 export class AddUserTeamComponent implements OnInit, OnDestroy {
-  private readonly teamStateService = inject(TeamStateService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   @Output()
   addUserTeam = new EventEmitter<UserTeam>();
@@ -29,8 +29,6 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
-    this.teamStateService.loadTeams();
-
     this.allAdminTeams$ = this.teamStateService.getTeams()
       .pipe(takeUntil(this.unsubscribe$), map((teams) => teams.filter((t) => t.isWriteable)));
 

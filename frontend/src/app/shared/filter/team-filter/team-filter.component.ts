@@ -7,7 +7,7 @@ import { RefreshDataService } from '../../../services/refresh-data.service';
 import { UserService } from '../../../services/user.service';
 import { extractTeamsFromUser } from '../../types/model/user';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { TeamStateService } from '../../../services/team.state.service';
+import { FILTERED_TEAMS_STATE } from '../../../services/team-state.tokens';
 
 @Component({
   selector: 'app-team-filter',
@@ -17,7 +17,7 @@ import { TeamStateService } from '../../../services/team.state.service';
   standalone: false
 })
 export class TeamFilterComponent implements OnInit, OnDestroy {
-  private teamStateService = inject(TeamStateService);
+  private teamStateService = inject(FILTERED_TEAMS_STATE);
 
   private route = inject(ActivatedRoute);
 

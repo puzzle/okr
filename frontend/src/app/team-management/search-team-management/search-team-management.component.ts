@@ -7,7 +7,7 @@ import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { getRouteToTeam, getRouteToUserDetails } from '../../shared/route-utils';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TeamStateService } from '../../services/team.state.service';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 export interface FilteredUser extends User {
   displayValue: string;
@@ -28,7 +28,7 @@ export interface FilteredTeam extends Team {
 export class SearchTeamManagementComponent {
   private readonly userService = inject(UserService);
 
-  private readonly teamStateService = inject(TeamStateService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private readonly router = inject(Router);
 
@@ -49,8 +49,6 @@ export class SearchTeamManagementComponent {
   private users: User[] = [];
 
   constructor() {
-    this.teamStateService.loadTeams();
-
     combineLatest([this.teamStateService.getTeams(),
       this.userService.getUsers()])
       .pipe(takeUntilDestroyed())

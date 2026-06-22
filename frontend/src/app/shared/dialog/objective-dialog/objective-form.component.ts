@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
 import { KeyResultDto } from '../../types/DTOs/key-result-dto';
-import { TeamStateService } from '../../../services/team.state.service';
+import { ALL_TEAMS_STATE } from '../../../services/team-state.tokens';
 
 @Component({
   selector: 'app-objective-form',
@@ -25,7 +25,7 @@ import { TeamStateService } from '../../../services/team.state.service';
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
 
-  private teamStateService = inject(TeamStateService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private quarterService = inject(QuarterService);
 
@@ -107,8 +107,6 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.teamStateService.loadTeams();
-
     this.teams$ = this.teamStateService.getTeams()
       .pipe(takeUntil(this.unsubscribe$));
 

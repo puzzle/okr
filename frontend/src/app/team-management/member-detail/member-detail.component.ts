@@ -5,10 +5,9 @@ import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Team } from '../../shared/types/model/team';
 import { UserTeam } from '../../shared/types/model/user-team';
-import { TranslateService } from '@ngx-translate/core';
 import { MatTable } from '@angular/material/table';
 import { DialogService } from '../../services/dialog.service';
-import { TeamStateService } from '../../services/team.state.service';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-member-detail',
@@ -21,9 +20,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   private readonly route = inject(ActivatedRoute);
 
-  private readonly translateService = inject(TranslateService);
-
-  private readonly teamStateService = inject(TeamStateService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private readonly cd = inject(ChangeDetectorRef);
 

@@ -9,7 +9,7 @@
     class="d-inline-block"
   >
     <app-puzzle-icon-button
-      (click)="isArchived() ? $event.stopPropagation() : setEditAsync($event, true)"
+      (click)="setEditAsync($event, true)"
       [disabled]="isArchived()"
       [attr.data-testId]="'edit-role'"
       icon="edit.svg"

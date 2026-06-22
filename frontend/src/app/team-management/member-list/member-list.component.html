@@ -11,7 +11,7 @@
           [matTooltipDisabled]="!isTeamArchived()"
         >
           <app-puzzle-icon-button
-            (click)="!isTeamArchived() && editTeam()"
+            (click)="editTeam()"
             [disabled]="isTeamArchived()"
             [attr.data-testId]="'edit-team-button'"
             icon="edit.svg"
@@ -35,7 +35,7 @@
         [matTooltipDisabled]="!isTeamArchived()"
       >
         <button
-          (click)="!isTeamArchived() && addMemberToTeam()"
+          (click)="addMemberToTeam()"
           [disabled]="isTeamArchived()"
           [attr.data-testId]="'add-team-member'"
           class="align-new-icon mdc-button px-0 pe-2"

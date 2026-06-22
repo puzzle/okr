@@ -64,7 +64,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         this.teamStateService.loadTeams({ quarterId });
       });
     this.teamStateService.getTeams()
-      .pipe(filter((teams) => teams.length > 0), takeUntil(this.unsubscribe$))
+      .pipe(filter((teams) => teams.length > 0), map((teams) => teams.filter((team) => !team.markedAsArchivedAt)), takeUntil(this.unsubscribe$))
       .subscribe((teams: Team[]) => {
         this.processIncomingTeams(teams);
       });

@@ -1,5 +1,5 @@
-import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Injectable, inject, Signal, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 import { Team } from '../shared/types/model/team';
 import { User } from '../shared/types/model/user';
 import { UserTeam } from '../shared/types/model/user-team';
@@ -12,12 +12,12 @@ export class TeamStateService {
 
   private userService = inject(UserService);
 
-  private teams$ = new BehaviorSubject<Team[]>([]);
+  private teams = signal<Team[]>([]);
 
   private activeFilters: TeamFilters = {};
 
-  getTeams(): Observable<Team[]> {
-    return this.teams$.asObservable();
+  getTeams(): Signal<Team[]> {
+    return this.teams.asReadonly();
   }
 
   loadTeams(filters: TeamFilters = {}): void {
@@ -28,7 +28,7 @@ export class TeamStateService {
   reload(): void {
     this.teamService.getAllTeams(this.activeFilters)
       .subscribe({
-        next: (teams) => this.teams$.next(teams)
+        next: (teams) => this.teams.set(teams)
       });
   }
 

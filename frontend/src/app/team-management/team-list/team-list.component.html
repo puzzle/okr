@@ -1,21 +1,18 @@
 <div>
-  @if (teams$ | async; as teams) {
   <mat-nav-list>
     <a
       mat-list-item
       routerLink="/team-management"
       [attr.data-testId]="'all-teams-selector'"
       [ngClass]="{ selected: selectedTeamId === undefined }"
-    >Alle Teams ({{ teams.length }})</a
-        >
-    @for (team of teams; track team) {
+    >Alle Teams ({{ teams().length }})</a>
+
+    @for (team of teams(); track team.id) {
     <a
       mat-list-item
       [routerLink]="['/team-management', team.id]"
       [ngClass]="{ selected: selectedTeamId === team.id }"
-    >{{ team.name }}</a
-            >
+    >{{ team.name }}</a>
     }
   </mat-nav-list>
-  }
 </div>

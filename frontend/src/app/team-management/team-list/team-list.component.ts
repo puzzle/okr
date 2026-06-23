@@ -1,7 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Component, inject, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Team } from '../../shared/types/model/team';
 import { ActivatedRoute } from '@angular/router';
 import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
@@ -16,24 +14,23 @@ export class TeamListComponent {
 
   private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
-  public teams$: Observable<Team[]>;
+  public teams = computed(() => {
+    const allTeams = this.teamStateService.getTeams()();
+
+    return [...allTeams].sort((a, b) => {
+      const aIsArchived = !!a.markedAsArchivedAt;
+      const bIsArchived = !!b.markedAsArchivedAt;
+
+      if (aIsArchived !== bIsArchived) {
+        return aIsArchived ? 1 : -1;
+      }
+      return a.name.localeCompare(b.name);
+    });
+  });
 
   public selectedTeamId: number | undefined;
 
-
   constructor() {
-    this.teams$ = this.teamStateService.getTeams()
-      .pipe(map((teams) => {
-        return [...teams].sort((a, b) => {
-          const aIsArchived = !!a.markedAsArchivedAt;
-          const bIsArchived = !!b.markedAsArchivedAt;
-          if (aIsArchived !== bIsArchived) {
-            return aIsArchived ? 1 : -1;
-          }
-          return a.name.localeCompare(b.name);
-        });
-      }));
-
     this.route.paramMap
       .pipe(takeUntilDestroyed())
       .subscribe((params) => {

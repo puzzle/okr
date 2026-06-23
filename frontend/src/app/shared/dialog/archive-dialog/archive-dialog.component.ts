@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
@@ -28,21 +28,21 @@ export class ArchiveTeamDialogComponent {
 
   readonly currentQuarter = toSignal(this.quarterService.getCurrentQuarter(), { initialValue: undefined });
 
-  readonly selectedQuarter = signal<Quarter | undefined>(undefined);
+  readonly userSelectedQuarter = signal<Quarter | null>(null);
 
-  private readonly initializeSelection = effect(() => {
+  readonly selectedQuarter = computed(() => {
+    const userChoice = this.userSelectedQuarter();
+    if (userChoice) {
+      return userChoice;
+    }
+
     const current = this.currentQuarter();
     const quarters = this.availableQuarters();
 
-    if (!current || this.selectedQuarter()) {
-      return;
+    if (!current) {
+      return null;
     }
-
-    const matchingQuarter = quarters.find((q) => q.id === current.id);
-
-    if (matchingQuarter) {
-      this.selectedQuarter.set(matchingQuarter);
-    }
+    return quarters.find((q) => q.id === current.id) || null;
   });
 
   compareById(q1: Quarter | null, q2: Quarter | null): boolean {

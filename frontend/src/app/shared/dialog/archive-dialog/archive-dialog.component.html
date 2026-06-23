@@ -12,7 +12,7 @@
               class="custom-select bg-white"
               id="archive-quarter"
               [ngModel]="selectedQuarter()"
-              (ngModelChange)="selectedQuarter.set($event)"
+              (ngModelChange)="userSelectedQuarter.set($event)"
               [compareWith]="compareById"
               [attr.data-testId]="'archiveQuarterSelect'"
             >

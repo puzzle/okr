@@ -60,31 +60,25 @@ describe('TeamStateService', () => {
     service = TestBed.inject(TeamStateService);
   });
 
-  it('should be created and start with an empty state', (done) => {
+  it('should be created and start with an empty state', () => {
     expect(service)
       .toBeTruthy();
-    service.getTeams()
-      .subscribe((teams) => {
-        expect(teams)
-          .toEqual([]);
-        done();
-      });
+
+    expect(service.getTeams()())
+      .toEqual([]);
   });
 
   describe('State Queries & Filters', () => {
-    it('loadTeams should fetch teams via TeamService and update the global stream state', (done) => {
+    it('loadTeams should fetch teams via TeamService and update the global stream state', () => {
       const filters = { quarterId: 42 };
 
       service.loadTeams(filters);
 
       expect(teamServiceMock.getAllTeams)
         .toHaveBeenCalledWith(filters);
-      service.getTeams()
-        .subscribe((teams) => {
-          expect(teams)
-            .toEqual(mockTeams);
-          done();
-        });
+
+      expect(service.getTeams()())
+        .toEqual(mockTeams);
     });
 
     it('reload should re-fetch teams using current active filters', () => {

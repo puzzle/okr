@@ -10,7 +10,6 @@ import { FilteredTeam, FilteredUser, SearchTeamManagementComponent } from './sea
 import * as de from '../../../assets/i18n/de.json';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TeamService } from '../../services/team.service';
 import { UserService } from '../../services/user.service';
 import { of } from 'rxjs';
 import { Team } from '../../shared/types/model/team';
@@ -18,6 +17,8 @@ import { User } from '../../shared/types/model/user';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TeamStatus } from '../../shared/types/enums/team-status';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
+import { signal } from '@angular/core';
 
 const teams: Team[] = [
   {
@@ -87,20 +88,18 @@ describe('SearchTeamManagementComponent', () => {
   let component: SearchTeamManagementComponent;
   let fixture: ComponentFixture<SearchTeamManagementComponent>;
 
-  let teamServiceMock: Partial<TeamService>;
-  let userServiceMock: Partial<UserService>;
   let activatedRouteMock: Partial<ActivatedRoute>;
   let navigateSpy: jest.SpyInstance;
   beforeEach(async() => {
     jest.useFakeTimers();
 
-    teamServiceMock = {
-      getAllTeams: () => {
-        return of(teams);
+    const teamStateServiceMock = {
+      getTeams: () => {
+        return signal(teams);
       }
     };
 
-    userServiceMock = {
+    const userServiceMock = {
       getUsers: () => {
         return of(users);
       }
@@ -133,8 +132,8 @@ describe('SearchTeamManagementComponent', () => {
       ],
       declarations: [SearchTeamManagementComponent],
       providers: [{
-        provide: TeamService,
-        useValue: teamServiceMock
+        provide: ALL_TEAMS_STATE,
+        useValue: teamStateServiceMock
       },
       {
         provide: UserService,
@@ -146,6 +145,9 @@ describe('SearchTeamManagementComponent', () => {
       }]
     })
       .compileComponents();
+
+    fixture = TestBed.createComponent(SearchTeamManagementComponent);
+    component = fixture.componentInstance;
   });
   beforeEach(() => {
     navigateSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl')
@@ -164,12 +166,14 @@ describe('SearchTeamManagementComponent', () => {
   const getHTMLValues = (value: FilteredUser | FilteredTeam) => value.htmlValue;
 
   it('should filter out entries and order them according to the position in which the search value occurs', () => {
-    component.search.setValue('puz');
     fixture.detectChanges();
+    component.search.setValue('puz');
+
     jest.advanceTimersByTime(250);
 
-    const filteredUsers = component.filteredUsers$.getValue();
-    const filteredTeams = component.filteredTeams$.getValue();
+    const filteredUsers = component.filteredUsers();
+    const filteredTeams = component.filteredTeams();
+
     expect(filteredUsers.map(getDisplayValues))
       .toEqual(['Pete Parrot (parrot@puzzle.ch)',
         'Martin Käser (kaeser@puzzle.ch)']);
@@ -181,12 +185,14 @@ describe('SearchTeamManagementComponent', () => {
   });
 
   it('should generate html values correctly', () => {
-    component.search.setValue('Ruedi');
     fixture.detectChanges();
+
+    component.search.setValue('Ruedi');
+
     jest.advanceTimersByTime(250);
 
-    const filteredUsers = component.filteredUsers$.getValue();
-    const filteredTeams = component.filteredTeams$.getValue();
+    const filteredUsers = component.filteredUsers();
+    const filteredTeams = component.filteredTeams();
 
     expect(filteredUsers.map(getHTMLValues))
       .toEqual(['<strong>Ruedi</strong> Peters (rpeter@gmail.com)']);
@@ -196,18 +202,20 @@ describe('SearchTeamManagementComponent', () => {
   });
 
   it('should debounce inputs correctly', () => {
-    component.search.setValue('Ruedi');
     fixture.detectChanges();
+    component.search.setValue('Ruedi');
 
     jest.advanceTimersByTime(100); // After 100ms
-    expect(component.filteredUsers$.getValue())
+
+    expect(component.filteredUsers())
       .toHaveLength(0);
-    expect(component.filteredTeams$.getValue())
+    expect(component.filteredTeams())
       .toHaveLength(0);
 
-    jest.advanceTimersByTime(110); // After 210ms
-    expect(component.filteredUsers$.getValue()).not.toHaveLength(0);
-    expect(component.filteredTeams$.getValue()).not.toHaveLength(0);
+    jest.advanceTimersByTime(110); // After 210ms total
+
+    expect(component.filteredUsers()).not.toHaveLength(0);
+    expect(component.filteredTeams()).not.toHaveLength(0);
   });
 
   it('should stay on current team page when a user is selected', () => {

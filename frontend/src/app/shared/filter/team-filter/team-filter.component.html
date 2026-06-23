@@ -1,13 +1,12 @@
-@if (teams$ | async; as teams) {
 <mat-chip-listbox class="chip-list overflow-hidden w-100 d-grid">
 
   <button (click)="toggleAll()" class="icon-button focus-outline mt-1 me-1">
-    <mat-chip [highlighted]="activeTeams.length === teams.length" color="primary">
+    <mat-chip [highlighted]="activeTeams().length === teams().length" color="primary">
       <p>Alle</p>
     </mat-chip>
   </button>
 
-  @for (team of teams.slice(0, showMoreTeams || !isMobile ? teams.length : 6); track team.id) {
+  @for (team of teams().slice(0, showMoreTeams || !isMobile() ? teams().length : 6); track team.id) {
   <button
     (click)="toggleSelection(team.id)"
     [attr.data-testId]="'team-filter-chip'"
@@ -15,14 +14,14 @@
     matTooltipPosition="above"
     class="icon-button focus-outline mt-1 me-1"
   >
-    <mat-chip [highlighted]="activeTeams.includes(team.id)" color="primary">
+    <mat-chip [highlighted]="activeTeams().includes(team.id)" color="primary">
       <p class="d-sm-none d-block text-truncate chip-team-name">{{ getTeamName(team.id) }}</p>
       <p class="d-none d-sm-block">{{ team.name }}</p>
     </mat-chip>
   </button>
   }
 
-  @if (teams.length > 6) {
+  @if (teams().length > 6) {
   <button
     (click)="showMoreTeams = !showMoreTeams"
     id="toggle-show-more-teams"
@@ -32,4 +31,3 @@
   </button>
   }
 </mat-chip-listbox>
-}

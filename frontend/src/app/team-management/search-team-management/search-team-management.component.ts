@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Team } from '../../shared/types/model/team';
 import { User } from '../../shared/types/model/user';
-import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { getRouteToTeam, getRouteToUserDetails } from '../../shared/route-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
@@ -38,39 +38,37 @@ export class SearchTeamManagementComponent {
 
   search = new FormControl('');
 
-  filteredUsers$ = new BehaviorSubject<FilteredUser[]>([]);
+  searchValue = toSignal(this.search.valueChanges.pipe(debounceTime(200), map((v) => (v ?? '').trim()), distinctUntilChanged()), { initialValue: '' });
 
-  filteredTeams$ = new BehaviorSubject<FilteredTeam[]>([]);
+  private users = toSignal(this.userService.getUsers(), { initialValue: [] });
 
-  searchValue$ = new BehaviorSubject<string>('');
+  private teams = this.teamStateService.getTeams();
 
-  private teams: Team[] = [];
+  filteredTeams = computed(() => {
+    const filterValue = this.searchValue();
+    if (!filterValue.length) {
+      return [];
+    }
 
-  private users: User[] = [];
+    const sortedTeams = [...this.teams()].sort((a, b) => a.name.localeCompare(b.name));
 
-  constructor() {
-    combineLatest([this.teamStateService.getTeams(),
-      this.userService.getUsers()])
-      .pipe(takeUntilDestroyed())
-      .subscribe(([teams,
-        users]) => {
-        this.updateTeamsAndUsers(teams, users);
-        this.applyFilter(this.searchValue$.getValue());
-      });
+    return this.filterTeams(sortedTeams, filterValue)
+      .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
+      .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS);
+  });
 
-    this.search.valueChanges
-      .pipe(
-        takeUntilDestroyed(), debounceTime(200), map((v) => (v ?? '').trim()), distinctUntilChanged()
-      )
-      .subscribe((searchValue) => {
-        this.searchValue$.next(searchValue);
-      });
+  filteredUsers = computed(() => {
+    const filterValue = this.searchValue();
+    if (!filterValue.length) {
+      return [];
+    }
 
-    this.searchValue$.pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.applyFilter(this.searchValue$.getValue());
-      });
-  }
+    const sortedUsers = [...this.users()].sort((a, b) => (a.firstName + a.lastName).localeCompare(b.firstName + b.lastName));
+
+    return this.filterUsers(sortedUsers, filterValue)
+      .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
+      .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS);
+  });
 
   selectUser(user: User) {
     this.search.setValue('');
@@ -83,21 +81,6 @@ export class SearchTeamManagementComponent {
     this.search.setValue('');
     this.router.navigateByUrl(getRouteToTeam(team.id))
       .then();
-  }
-
-  private applyFilter(filterValue: string): void {
-    if (!filterValue.length) {
-      this.filteredUsers$.next([]);
-      this.filteredTeams$.next([]);
-      return;
-    }
-
-    this.filteredTeams$.next(this.filterTeams(this.teams, filterValue)
-      .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
-      .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS));
-    this.filteredUsers$.next(this.filterUsers(this.users, filterValue)
-      .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
-      .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS));
   }
 
   private sortByStringPosition(a: string, b: string, value: string): number {
@@ -115,12 +98,6 @@ export class SearchTeamManagementComponent {
       return 1;
     }
     return indexA - indexB;
-  }
-
-  private updateTeamsAndUsers(teams: Team[], users: User[]) {
-    this.teams = [...teams].sort((a, b) => a.name.localeCompare(b.name));
-    this.users = [...users].sort((a, b) => (a.firstName + a.lastName).localeCompare(b.firstName + b.lastName));
-    this.applyFilter(this.searchValue$.getValue());
   }
 
   private filterTeams(teams: Team[], filterValue: string): FilteredTeam[] {

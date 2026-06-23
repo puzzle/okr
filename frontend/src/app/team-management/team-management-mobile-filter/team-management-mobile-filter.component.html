@@ -11,11 +11,12 @@
     >
       <mat-select
         [attr.data-testId]="'select-team-dropdown'"
-        [(ngModel)]="selectedTeam"
+        [ngModel]="selectedTeam()"
         (ngModelChange)="navigate($event)"
       >
-        <mat-option [value]="ALL_TEAMS">Alle Teams ({{ teams.length }})</mat-option>
-        @for (team of teams; track team.id) {
+        <mat-option [value]="ALL_TEAMS">Alle Teams ({{ teams().length }})</mat-option>
+
+        @for (team of teams(); track team.id) {
         <mat-option [attr.data-testId]="'select-team-dropdown-option'" [value]="team">
           {{ team.name }}
         </mat-option>

@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, computed } from '@angular/core';
 import { Team } from '../../shared/types/model/team';
-import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserTeam } from '../../shared/types/model/user-team';
 import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-add-user-team',
@@ -10,7 +11,7 @@ import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
   styleUrl: './add-user-team.component.scss',
   standalone: false
 })
-export class AddUserTeamComponent implements OnInit, OnDestroy {
+export class AddUserTeamComponent {
   private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   @Output()
@@ -26,25 +27,20 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
 
   allAdminTeams$: Observable<Team[]> | undefined;
 
-  private readonly unsubscribe$ = new Subject<void>();
+  private readonly currentTeams = toSignal(this.currentTeams$, { initialValue: [] });
 
-  ngOnInit() {
-    this.allAdminTeams$ = this.teamStateService.getTeams()
-      .pipe(takeUntil(this.unsubscribe$), map((teams) => teams.filter((t) => t.isWriteable)));
+  public allAdminTeams = computed(() => {
+    const teams = this.teamStateService.getTeams()();
+    return teams.filter((t) => t.isWriteable);
+  });
 
-    this.selectableAdminTeams$ = combineLatest([this.allAdminTeams$,
-      this.currentTeams$])
-      .pipe(takeUntil(this.unsubscribe$), map(([allTeams,
-        userTeams]) => {
-        const currentTeamIds = userTeams.map((ut) => ut.team.id);
-        return allTeams.filter((t) => !currentTeamIds.includes(t.id));
-      }));
-  }
+  public selectableAdminTeams = computed(() => {
+    const allTeams = this.allAdminTeams();
+    const userTeams = this.currentTeams();
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+    const currentTeamIds = userTeams.map((ut) => ut.team.id);
+    return allTeams.filter((t) => !currentTeamIds.includes(t.id));
+  });
 
   createUserTeam(team: Team) {
     this.userTeam = {

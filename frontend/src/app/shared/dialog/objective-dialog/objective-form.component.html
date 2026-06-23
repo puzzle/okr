@@ -1,4 +1,4 @@
-<app-dialog-template-core [title]="getDialogTitle((currentTeam | async)?.name || '')">
+<app-dialog-template-core [title]="getDialogTitle(currentTeam()?.name || '')">
   <ng-container content>
     <form [formGroup]="objectiveForm">
       <div class="okr-form-row okr-form-label-input-container">
@@ -47,7 +47,7 @@
                 id="quarter"
                 [attr.data-testId]="'quarterSelect'"
               >
-                @for (quarter of quarters$ | async; track quarter; let i = $index) {
+                @for (quarter of quarters; track quarter.id; let i = $index) {
                 @if (allowedOption(quarter)) {
                 <option [value]="quarter.id">
                   {{ quarter.fullLabel() }}
@@ -72,14 +72,14 @@
             }
           </div>
         </div>
-        @if (data.action === 'duplicate' && (keyResults$ | async)?.length) {
+
+        @if (data.action === 'duplicate' && keyResults.length) {
         <div class="mt-2 col align-self-end w-100">
           <div class="okr-form-row okr-form-label-input-container">
             <label class="okr-form-label okr-form-col">Key Results:</label>
             <div class="d-flex flex-column okr-form-input ps-0">
-              @if (keyResults$ | async; as keyResults) {
               <ng-container formArrayName="keyResults">
-                @for (keyResult of keyResults; track keyResult; let i = $index) {
+                @for (keyResult of keyResults; track keyResult.id; let i = $index) {
                 <mat-checkbox
                   [formControlName]="i"
                   [checked]="true"
@@ -93,7 +93,6 @@
                 </mat-checkbox>
                 }
               </ng-container>
-              }
             </div>
           </div>
         </div>

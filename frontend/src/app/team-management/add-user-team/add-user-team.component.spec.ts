@@ -45,7 +45,6 @@ describe('AddUserTeamComponent', () => {
     team1Copy.isWriteable = true;
     team2Copy.isWriteable = true;
     team3Copy.isWriteable = false;
-    component.ngOnInit();
     component.selectableAdminTeams$!.subscribe((teams) => {
       expect(teams.length)
         .toBe(1);
@@ -59,7 +58,6 @@ describe('AddUserTeamComponent', () => {
     team1Copy.isWriteable = true;
     team2Copy.isWriteable = true;
     team3Copy.isWriteable = false;
-    component.ngOnInit();
     component.allAdminTeams$!.subscribe((teams) => {
       expect(teams.length)
         .toBe(2);

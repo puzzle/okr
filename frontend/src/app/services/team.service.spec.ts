@@ -55,7 +55,7 @@ describe('TeamService', () => {
       expect(req.request.method)
         .toBe('PUT');
       expect(req.request.body)
-        .toBeNull();
+        .toEqual({});
 
       req.flush(null);
     });

@@ -28,7 +28,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { Team } from '../../types/model/team';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const objectiveService = {
@@ -282,7 +281,6 @@ describe('ObjectiveDialogComponent', () => {
     it('should load default values into form onInit with undefined objectiveId', () => {
       matDataMock.objective.objectiveId = undefined;
       matDataMock.objective.teamId = 1;
-      component.ngOnInit();
       const rawFormValue = component.objectiveForm.getRawValue();
       const defaultComponent = component.getDefaultObjective();
       expect(rawFormValue.title)
@@ -304,7 +302,6 @@ describe('ObjectiveDialogComponent', () => {
       await routerHarness.navigateByUrl('/?quarter=2');
       objectiveService.getFullObjective.mockReturnValue(of(objective));
       objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(keyResult));
-      component.ngOnInit();
       const rawFormValue = component.objectiveForm.getRawValue();
       expect(rawFormValue.title)
         .toBe(objective.title);
@@ -316,33 +313,14 @@ describe('ObjectiveDialogComponent', () => {
         .toBe(objective.quarterId);
     });
 
-    it('should set teams$ observable correctly on ngOnInit', () => {
-      const mockTeams = [{ id: 1,
-        name: 'Team A' },
-      { id: 2,
-        name: 'Team B' }];
-      teamService.getAllTeams.mockReturnValue(of(mockTeams));
-
-      component.ngOnInit();
-
-      component.teams$.subscribe((teams: Team[]) => {
-        expect(teams)
-          .toEqual(mockTeams);
-      });
-    });
-
     it('should set keyResults$ observable correctly when objectiveId is defined', () => {
       const mockKeyResults = [{ id: 1,
         name: 'Key Result A' }];
       matDataMock.objective.objectiveId = 1;
       objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(mockKeyResults));
 
-      component.ngOnInit();
-
-      component.keyResults$.subscribe((keyResults) => {
-        expect(keyResults)
-          .toEqual(mockKeyResults);
-      });
+      expect(component.keyResults)
+        .toEqual(mockKeyResults);
     });
 
     it('should return correct value if allowed to save to backlog', async() => {
@@ -497,7 +475,6 @@ describe('ObjectiveDialogComponent', () => {
       await routerHarness.navigateByUrl('/?quarter=999');
       objectiveService.getFullObjective.mockReturnValue(of(objective));
       fixture.detectChanges();
-      component.ngOnInit();
 
       const rawFormValue = component.objectiveForm.getRawValue();
       expect(rawFormValue.title)

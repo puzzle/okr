@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { TeamStateService } from '../../services/team.state.service';
 import { TeamListComponent } from './team-list.component';
 import { Team } from '../../shared/types/model/team';
 import { signal } from '@angular/core';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 describe('TeamListComponent', () => {
   let component: TeamListComponent;
@@ -16,7 +16,7 @@ describe('TeamListComponent', () => {
 
   const teamStateServiceMock = {
     getTeams: jest.fn()
-      .mockReturnValue(of([])),
+      .mockReturnValue(signal([])),
     loadTeams: jest.fn()
   };
 
@@ -27,10 +27,14 @@ describe('TeamListComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [TeamListComponent],
-      providers: [{ provide: TeamStateService,
-        useValue: teamStateServiceMock },
-      { provide: ActivatedRoute,
-        useValue: activatedRouteMock }]
+      providers: [{
+        provide: ALL_TEAMS_STATE, // <-- Update this token
+        useValue: teamStateServiceMock
+      },
+      {
+        provide: ActivatedRoute,
+        useValue: activatedRouteMock
+      }]
     })
       .compileComponents();
   });
@@ -61,26 +65,18 @@ describe('TeamListComponent', () => {
   });
 
   it('should sort teams correctly: active first (alphabetically), then archived (alphabetically)', () => {
-    const activeZebra = {
-      id: 1,
+    const activeZebra = { id: 1,
       name: 'Zebra',
-      markedAsArchivedAt: null
-    } as Team;
-    const activeAlpha = {
-      id: 2,
+      markedAsArchivedAt: null } as Team;
+    const activeAlpha = { id: 2,
       name: 'Alpha',
-      markedAsArchivedAt: null
-    } as Team;
-    const archivedYellow = {
-      id: 3,
+      markedAsArchivedAt: null } as Team;
+    const archivedYellow = { id: 3,
       name: 'Yellow',
-      markedAsArchivedAt: new Date()
-    } as Team;
-    const archivedBeta = {
-      id: 4,
+      markedAsArchivedAt: new Date() } as Team;
+    const archivedBeta = { id: 4,
       name: 'Beta',
-      markedAsArchivedAt: new Date()
-    } as Team;
+      markedAsArchivedAt: new Date() } as Team;
 
     const unsortedTeams = [
       archivedYellow,
@@ -93,6 +89,8 @@ describe('TeamListComponent', () => {
 
     const fixture = TestBed.createComponent(TeamListComponent);
     const component = fixture.componentInstance;
+
+    fixture.detectChanges();
 
     expect(component.teams()
       .map((t) => t.name))

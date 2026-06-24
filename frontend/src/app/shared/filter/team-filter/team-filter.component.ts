@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, inject, signal, computed } from '@angular/core';
-import { distinctUntilChanged, map, filter } from 'rxjs';
+import { map, filter } from 'rxjs';
 import { takeUntilDestroyed, toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { Team } from '../../types/model/team';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { RefreshDataService } from '../../../services/refresh-data.service';
 import { UserService } from '../../../services/user.service';
 import { extractTeamsFromUser } from '../../types/model/user';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { FILTERED_TEAMS_STATE } from '../../../services/team-state.tokens';
+import { TeamStateService } from '../../../services/team.state.service';
 
 @Component({
   selector: 'app-team-filter',
@@ -18,7 +18,7 @@ import { FILTERED_TEAMS_STATE } from '../../../services/team-state.tokens';
   standalone: false
 })
 export class TeamFilterComponent {
-  private teamStateService = inject(FILTERED_TEAMS_STATE);
+  private readonly teamStateService = inject(TeamStateService);
 
   private route = inject(ActivatedRoute);
 
@@ -70,12 +70,6 @@ export class TeamFilterComponent {
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.teamStateService.reload();
-      });
-
-    this.route.queryParams
-      .pipe(map((params) => params['quarter'] ? Number(params['quarter']) : undefined), distinctUntilChanged(), takeUntilDestroyed())
-      .subscribe((quarterId) => {
-        this.teamStateService.loadTeams({ quarterId });
       });
 
     toObservable(this.rawTeams)

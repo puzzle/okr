@@ -60,7 +60,15 @@ const routes: Routes = [
     path: 'statistics',
     loadChildren: () => import('./statistics/statistics.module').then((m) => m.StatisticsModule),
     canActivate: [authGuard],
-    resolve: { user: currentUserResolver }
+
+    providers: [TeamStateService],
+
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+
+    resolve: {
+      user: currentUserResolver,
+      filters: teamFilterResolver
+    }
   },
   { path: '**',
     redirectTo: '',

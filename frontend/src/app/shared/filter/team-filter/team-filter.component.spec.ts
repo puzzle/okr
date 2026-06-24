@@ -3,7 +3,7 @@ import { TeamFilterComponent } from './team-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
 import { MatChipsModule } from '@angular/material/chips';
-import { TeamStateService } from '../../../services/team.state.service'; // Updated Import
+import { TeamStateService } from '../../../services/team.state.service';
 import { RefreshDataService } from '../../../services/refresh-data.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { team1, team2, team3, teamList, testUser } from '../../test-data';
@@ -15,7 +15,6 @@ import { ApplicationBannerComponent } from '../../custom/application-banner/appl
 import { Team } from '../../types/model/team';
 import { TeamStatus } from '../../types/enums/team-status';
 
-// Reactive stream to simulate active state changes inside the mock
 const teamsStateStream$ = new BehaviorSubject<Team[]>(teamList);
 
 const teamStateServiceMock = {
@@ -51,7 +50,7 @@ describe('TeamFilterComponent', () => {
         MatIconModule
       ],
       providers: [{ provide: TeamStateService,
-        useValue: teamStateServiceMock }, // Updated Token
+        useValue: teamStateServiceMock },
       { provide: RefreshDataService,
         useValue: refreshDataServiceMock },
       { provide: UserService,
@@ -61,7 +60,6 @@ describe('TeamFilterComponent', () => {
     fixture = TestBed.createComponent(TeamFilterComponent);
     component = fixture.componentInstance;
 
-    // Reset stream data and configure mock implementations safely
     teamsStateStream$.next(teamList);
     refreshDataServiceMock.markDataRefresh.mockImplementation(() => {
       refreshDataServiceMock.reloadOverviewSubject.next(null);

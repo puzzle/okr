@@ -4,7 +4,7 @@ import { team1, testUser } from '../../../shared/test-data';
 import { of } from 'rxjs';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { UserService } from '../../../services/user.service';
-import { TeamStateService } from '../../../services/team.state.service'; // Updated Import
+import { TeamStateService } from '../../../services/team.state.service';
 import { MatTableModule } from '@angular/material/table';
 import { DialogService } from '../../../services/dialog.service';
 

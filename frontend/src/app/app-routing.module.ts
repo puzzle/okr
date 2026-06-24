@@ -9,6 +9,8 @@ import { User } from './shared/types/model/user';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
 import { KeyResultDetailComponent } from './components/key-result-detail/key-result-detail.component';
+import { TeamStateService } from './services/team.state.service';
+import { teamFilterResolver } from './resolvers/team-filter.resolver';
 
 const currentUserResolver: ResolveFn<User | undefined> = () => {
   const oauthService = inject(OAuthService);
@@ -23,8 +25,13 @@ const routes: Routes = [
   {
     path: '',
     component: OverviewComponent,
+    canActivate: [authGuard],
+    providers: [TeamStateService],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+
     resolve: {
-      user: currentUserResolver
+      user: currentUserResolver,
+      filters: teamFilterResolver
     },
     children: [{
       path: 'details',
@@ -37,8 +44,7 @@ const routes: Routes = [
         path: 'keyresult/:id',
         component: KeyResultDetailComponent
       }]
-    }],
-    canActivate: [authGuard]
+    }]
   },
   {
     path: 'team-management',

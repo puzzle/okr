@@ -74,11 +74,12 @@ export class TeamFilterComponent {
       .subscribe((teams) => {
         if (!this.isInitialized) {
           const teamQuery = this.route.snapshot.queryParams['teams'];
+          const teamIds = getValueFromQuery(teamQuery);
 
-          if (teamQuery !== undefined) {
-            const teamIds = getValueFromQuery(teamQuery);
-            const knownTeams = teams.map((t) => t.id)
-              .filter((id) => teamIds?.includes(id));
+          const knownTeams = teams.map((t) => t.id)
+            .filter((id) => teamIds?.includes(id));
+
+          if (knownTeams.length > 0) {
             this.activeTeams.set(knownTeams);
           } else {
             const userTeams = extractTeamsFromUser(this.userService.getCurrentUser());

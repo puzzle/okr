@@ -167,7 +167,8 @@ describe('TeamFilterComponent', () => {
       .toHaveBeenCalledTimes(1);
     expect(router.navigate)
       .toHaveBeenCalledWith([], {
-        queryParams: { teams: '8,5,10' }
+        queryParams: { teams: '8,5,10' },
+        replaceUrl: true
       });
   }));
 
@@ -285,15 +286,20 @@ describe('TeamFilterComponent', () => {
 
   it('should use teams of user if no known teams are in url', fakeAsync(() => {
     activatedRouteMock.snapshot.queryParams = { teams: '654,478' };
+
+    const userTeams = extractTeamsFromUser(testUser);
+
+    teamStateServiceMock.getTeams.mockReturnValue(signal(userTeams));
+
     setupComponent();
     jest.spyOn(component, 'changeTeamFilterParams');
 
-    teamsSignal.set(teamList);
+    teamsSignal.set(userTeams);
+
     fixture.detectChanges();
     tick();
 
-    const userTeamIds = extractTeamsFromUser(testUser)
-      .map((team) => team.id);
+    const userTeamIds = userTeams.map((team) => team.id);
     expect(component.activeTeams())
       .toStrictEqual(userTeamIds);
     expect(component.changeTeamFilterParams)
@@ -317,7 +323,8 @@ describe('TeamFilterComponent', () => {
       .toHaveBeenCalledTimes(1);
     expect(router.navigate)
       .toHaveBeenCalledWith([], {
-        queryParams: { teams: routingTeams }
+        queryParams: { teams: routingTeams },
+        replaceUrl: true
       });
   }));
 
@@ -396,5 +403,33 @@ describe('TeamFilterComponent', () => {
           markedAsArchivedAt: null,
           status: TeamStatus.ACTIVE }
       ]);
+  }));
+
+  it('should exclude archived teams when falling back to user teams on initial load', fakeAsync(() => {
+    const mockUser = {
+      ...testUser,
+      userTeamList: [{ team: { id: 1,
+        name: 'Team 1' } },
+      { team: { id: 2,
+        name: 'Team 2' } }]
+    };
+    userServiceMock.getCurrentUser.mockReturnValue(mockUser);
+
+    const mockTeams = [{ id: 1,
+      name: 'Team 1' },
+    { id: 2,
+      name: 'Team 2',
+      markedAsArchivedAt: new Date() }];
+    teamStateServiceMock.getTeams.mockReturnValue(signal(mockTeams));
+
+    activatedRouteMock.snapshot.queryParams = {};
+
+    fixture = TestBed.createComponent(TeamFilterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    tick();
+
+    expect(component.activeTeams())
+      .toStrictEqual([1]);
   }));
 });

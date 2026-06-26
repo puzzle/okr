@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/quarter';
@@ -23,7 +23,7 @@ import { ALL_TEAMS_STATE } from '../../../services/team-state.tokens';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false
 })
-export class ObjectiveFormComponent {
+export class ObjectiveFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   private readonly teamStateService = inject(ALL_TEAMS_STATE);
@@ -35,6 +35,8 @@ export class ObjectiveFormComponent {
   dialogRef = inject<MatDialogRef<ObjectiveFormComponent>>(MatDialogRef);
 
   private dialogService = inject(DialogService);
+
+  private destroyRef = inject(DestroyRef);
 
   data = inject<{
     action: string;
@@ -72,7 +74,7 @@ export class ObjectiveFormComponent {
 
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
-  constructor() {
+  ngOnInit(): void {
     const objectiveId = this.data.objective.objectiveId;
 
     const objective$ = objectiveId
@@ -89,7 +91,7 @@ export class ObjectiveFormComponent {
       this.quarterService.getCurrentQuarter(),
       keyResults$
     ])
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([
         objective,
         quarters,

@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { BehaviorSubject, filter, mergeMap, Subject, takeUntil, tap } from 'rxjs';
+import { filter, mergeMap, Subject, takeUntil, tap } from 'rxjs';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Team } from '../../shared/types/model/team';
@@ -34,7 +34,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   teams: Team[] = [];
 
-  currentUserTeams$ = new BehaviorSubject<UserTeam[]>([]);
+  currentUserTeams = signal<UserTeam[]>([]);
 
   selectedUserIsLoggedInUser = false;
 
@@ -68,7 +68,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       .pipe(tap((user) => this.setSelectedUserIsLoggedInUser(user)))
       .subscribe((user) => {
         this.user = user;
-        this.currentUserTeams$.next(user.userTeamList);
+        this.currentUserTeams.set(user.userTeamList);
         this.cd.markForCheck();
       });
   }

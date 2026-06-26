@@ -112,17 +112,14 @@ describe('MemberDetailComponent', () => {
       .toBeTruthy();
   });
 
-  it('should set selectedUserIsLoggedInUser and currentUserTeams correctly', (done) => {
+  it('should set selectedUserIsLoggedInUser and currentUserTeams correctly', () => {
     component.ngOnInit();
-    component.currentUserTeams$.subscribe((userTeams) => {
-      expect(userTeams)
-        .toStrictEqual(testUser.userTeamList);
-      expect(component.user)
-        .toStrictEqual(testUser);
-      expect(component.selectedUserIsLoggedInUser)
-        .toBeTruthy();
-      done();
-    });
+    expect(component.currentUserTeams())
+      .toStrictEqual(testUser.userTeamList);
+    expect(component.user)
+      .toStrictEqual(testUser);
+    expect(component.selectedUserIsLoggedInUser)
+      .toBeTruthy();
   });
 
   it('removeUserFromTeam should call removeUserFromTeam and loadUser', fakeAsync(() => {

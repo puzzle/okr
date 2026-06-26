@@ -405,15 +405,8 @@ describe('okr team-management', () => {
 
       FilterHelper.do()
         .optionShouldNotBeSelected('Alle')
-        .toggleOption('Alle');
-
-      cy.get('.team-title')
-        .then((elements) => {
-          const texts: string[] = elements.map((_, el) => Cypress.$(el)
-            .text())
-            .get();
-          expect(texts).to.not.include('/BBT');
-        });
+        .toggleOption('Alle')
+        .optionShouldNotExist('/BBT');
 
       // Check that the team is visible in the old quarter
       CyOverviewPage.do()
@@ -430,7 +423,7 @@ describe('okr team-management', () => {
         .submit();
     });
 
-    it.only('should archive /BBT and as a result disable all edit buttons', () => {
+    it('should archive /BBT and as a result disable all edit buttons', () => {
       teamManagementPage.archiveTeam('/BBT')
         .cancel();
 
@@ -464,6 +457,7 @@ describe('okr team-management', () => {
             .should('be.disabled');
         });
 
+      // This removes basically every problem I ever had with flakiness for this test. Feel free to explore a better solution if you have more time
       cy.wait(500);
 
       // Unarchive team again

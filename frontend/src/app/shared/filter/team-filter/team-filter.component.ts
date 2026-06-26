@@ -60,6 +60,8 @@ export class TeamFilterComponent {
     });
   });
 
+  private isInitialized = false;
+
   constructor() {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntilDestroyed())
@@ -70,20 +72,35 @@ export class TeamFilterComponent {
     toObservable(this.rawTeams)
       .pipe(filter((teams) => teams.length > 0), takeUntilDestroyed())
       .subscribe((teams) => {
-        const teamQuery = this.route.snapshot.queryParams['teams'];
-        const teamIds = getValueFromQuery(teamQuery);
+        if (!this.isInitialized) {
+          const teamQuery = this.route.snapshot.queryParams['teams'];
 
-        const knownTeams = teams.map((t) => t.id)
-          .filter((teamId) => teamIds?.includes(teamId));
+          if (teamQuery !== undefined) {
+            const teamIds = getValueFromQuery(teamQuery);
+            const knownTeams = teams.map((t) => t.id)
+              .filter((id) => teamIds?.includes(id));
+            this.activeTeams.set(knownTeams);
+          } else {
+            const userTeams = extractTeamsFromUser(this.userService.getCurrentUser());
 
-        if (knownTeams.length === 0) {
-          const userTeams = extractTeamsFromUser(this.userService.getCurrentUser());
-          this.activeTeams.set(userTeams.map((team) => team.id));
+            const validUserTeamIds = userTeams
+              .map((team) => team.id)
+              .filter((id) => teams.some((validTeam) => validTeam.id === id));
+
+            this.activeTeams.set(validUserTeamIds);
+          }
+
+          this.isInitialized = true;
+          this.changeTeamFilterParams();
         } else {
-          this.activeTeams.set(knownTeams);
-        }
+          const currentActive = this.activeTeams();
+          const validActive = currentActive.filter((id) => teams.some((t) => t.id === id));
 
-        this.changeTeamFilterParams();
+          if (currentActive.length !== validActive.length) {
+            this.activeTeams.set(validActive);
+            this.changeTeamFilterParams();
+          }
+        }
       });
   }
 
@@ -92,9 +109,12 @@ export class TeamFilterComponent {
       .join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
 
-    this.router
-      .navigate([], { queryParams: optionalParams })
-      .then(() => this.refreshDataService.teamFilterReady.next());
+    setTimeout(() => {
+      this.router
+        .navigate([], { queryParams: optionalParams,
+          replaceUrl: true })
+        .then(() => this.refreshDataService.teamFilterReady.next());
+    });
   }
 
   toggleSelection(id: number): void {

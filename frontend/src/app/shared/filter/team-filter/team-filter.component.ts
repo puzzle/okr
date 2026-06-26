@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, inject, signal, computed } from '@angular/core';
 import { map, filter } from 'rxjs';
 import { takeUntilDestroyed, toSignal, toObservable } from '@angular/core/rxjs-interop';
-import { Team } from '../../types/model/team';
 import { ActivatedRoute, Router } from '@angular/router';
 import { areEqual, getValueFromQuery, optionalReplaceWithNulls } from '../../common';
 import { RefreshDataService } from '../../../services/refresh-data.service';
@@ -33,8 +32,6 @@ export class TeamFilterComponent {
   @Input() minTeams = 0;
 
   showMoreTeams = true;
-
-  private isInitialLoad = true;
 
   activeTeams = signal<number[]>([]);
 
@@ -73,28 +70,21 @@ export class TeamFilterComponent {
     toObservable(this.rawTeams)
       .pipe(filter((teams) => teams.length > 0), takeUntilDestroyed())
       .subscribe((teams) => {
-        this.processIncomingTeams(teams);
+        const teamQuery = this.route.snapshot.queryParams['teams'];
+        const teamIds = getValueFromQuery(teamQuery);
+
+        const knownTeams = teams.map((t) => t.id)
+          .filter((teamId) => teamIds?.includes(teamId));
+
+        if (knownTeams.length === 0) {
+          const userTeams = extractTeamsFromUser(this.userService.getCurrentUser());
+          this.activeTeams.set(userTeams.map((team) => team.id));
+        } else {
+          this.activeTeams.set(knownTeams);
+        }
+
+        this.changeTeamFilterParams();
       });
-  }
-
-  private processIncomingTeams(teams: Team[]): void {
-    const teamQuery = this.route.snapshot.queryParams['teams'];
-    const teamIds = getValueFromQuery(teamQuery);
-    const knownTeams = teams.map((t) => t.id)
-      .filter((id) => teamIds?.includes(id));
-
-    const isInitialLoadWithoutParam = this.isInitialLoad && teamQuery === undefined;
-    const hasQueryButNoKnownTeams = teamQuery !== undefined && knownTeams.length === 0;
-
-    if (isInitialLoadWithoutParam || hasQueryButNoKnownTeams) {
-      this.activeTeams.set(extractTeamsFromUser(this.userService.getCurrentUser())
-        .map((t) => t.id));
-    } else {
-      this.activeTeams.set(knownTeams);
-    }
-
-    this.isInitialLoad = false;
-    this.changeTeamFilterParams();
   }
 
   changeTeamFilterParams(): void {
@@ -103,8 +93,7 @@ export class TeamFilterComponent {
     const optionalParams = optionalReplaceWithNulls(params);
 
     this.router
-      .navigate([], { queryParams: optionalParams,
-        queryParamsHandling: 'merge' })
+      .navigate([], { queryParams: optionalParams })
       .then(() => this.refreshDataService.teamFilterReady.next());
   }
 
@@ -139,10 +128,5 @@ export class TeamFilterComponent {
   getAllTeamIds(): number[] {
     return this.rawTeams()
       .map((team) => team.id);
-  }
-
-  getTeamName(id: number): string {
-    return this.teams()
-      .find((team) => team.id === id)?.name ?? 'no team name';
   }
 }

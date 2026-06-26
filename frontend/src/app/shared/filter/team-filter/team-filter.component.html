@@ -15,8 +15,7 @@
     class="icon-button focus-outline mt-1 me-1"
   >
     <mat-chip [highlighted]="activeTeams().includes(team.id)" color="primary">
-      <p class="d-sm-none d-block text-truncate chip-team-name">{{ getTeamName(team.id) }}</p>
-      <p class="d-none d-sm-block">{{ team.name }}</p>
+      <p class="text-truncate chip-team-name m-0">{{ team.name }}</p>
     </mat-chip>
   </button>
   }

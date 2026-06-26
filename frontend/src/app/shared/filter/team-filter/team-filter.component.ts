@@ -110,12 +110,24 @@ export class TeamFilterComponent {
       .join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
 
-    setTimeout(() => {
-      this.router
-        .navigate([], { queryParams: optionalParams,
-          replaceUrl: true })
-        .then(() => this.refreshDataService.teamFilterReady.next());
-    });
+    const navExtras = {
+      relativeTo: this.route,
+      queryParams: optionalParams,
+      queryParamsHandling: 'merge' as const,
+      replaceUrl: true
+    };
+
+    this.router.navigate([], navExtras)
+      .then((navigationSucceeded) => {
+        if (!navigationSucceeded) {
+          setTimeout(() => {
+            this.router.navigate([], navExtras)
+              .then(() => this.refreshDataService.teamFilterReady.next());
+          });
+        } else {
+          this.refreshDataService.teamFilterReady.next();
+        }
+      });
   }
 
   toggleSelection(id: number): void {

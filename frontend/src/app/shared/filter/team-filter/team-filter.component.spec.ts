@@ -166,10 +166,10 @@ describe('TeamFilterComponent', () => {
     expect(router.navigate)
       .toHaveBeenCalledTimes(1);
     expect(router.navigate)
-      .toHaveBeenCalledWith([], {
+      .toHaveBeenCalledWith([], expect.objectContaining({
         queryParams: { teams: '8,5,10' },
         replaceUrl: true
-      });
+      }));
   }));
 
   it.each([
@@ -322,10 +322,10 @@ describe('TeamFilterComponent', () => {
     expect(router.navigate)
       .toHaveBeenCalledTimes(1);
     expect(router.navigate)
-      .toHaveBeenCalledWith([], {
+      .toHaveBeenCalledWith([], expect.objectContaining({
         queryParams: { teams: routingTeams },
         replaceUrl: true
-      });
+      }));
   }));
 
   it('should filter teams by toggled priority and then by name on mobile', fakeAsync(() => {

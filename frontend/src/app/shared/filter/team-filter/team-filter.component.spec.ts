@@ -167,8 +167,7 @@ describe('TeamFilterComponent', () => {
       .toHaveBeenCalledTimes(1);
     expect(router.navigate)
       .toHaveBeenCalledWith([], {
-        queryParams: { teams: '8,5,10' },
-        queryParamsHandling: 'merge'
+        queryParams: { teams: '8,5,10' }
       });
   }));
 
@@ -318,8 +317,7 @@ describe('TeamFilterComponent', () => {
       .toHaveBeenCalledTimes(1);
     expect(router.navigate)
       .toHaveBeenCalledWith([], {
-        queryParams: { teams: routingTeams },
-        queryParamsHandling: 'merge'
+        queryParams: { teams: routingTeams }
       });
   }));
 

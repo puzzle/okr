@@ -1,9 +1,7 @@
-import { Component, EventEmitter, Input, Output, inject, computed } from '@angular/core';
+import { Component, EventEmitter, Output, inject, computed, input } from '@angular/core';
 import { Team } from '../../shared/types/model/team';
-import { Observable } from 'rxjs';
 import { UserTeam } from '../../shared/types/model/user-team';
 import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-add-user-team',
@@ -17,17 +15,10 @@ export class AddUserTeamComponent {
   @Output()
   addUserTeam = new EventEmitter<UserTeam>();
 
-  @Input({ required: true })
-  currentTeams$!: Observable<UserTeam[]>;
+  public currentTeams = input.required<UserTeam[]>();
 
   userTeam: { team: Team;
     isTeamAdmin: boolean; } | undefined;
-
-  selectableAdminTeams$: Observable<Team[]> | undefined;
-
-  allAdminTeams$: Observable<Team[]> | undefined;
-
-  private readonly currentTeams = toSignal(this.currentTeams$, { initialValue: [] });
 
   public allAdminTeams = computed(() => {
     const teams = this.teamStateService.getTeams()();
@@ -36,6 +27,7 @@ export class AddUserTeamComponent {
 
   public selectableAdminTeams = computed(() => {
     const allTeams = this.allAdminTeams();
+
     const userTeams = this.currentTeams();
 
     const currentTeamIds = userTeams.map((ut) => ut.team.id);
@@ -53,7 +45,7 @@ export class AddUserTeamComponent {
     if (!this.userTeam) {
       throw new Error('UserTeam should be defined here');
     }
-    this.addUserTeam.next(this.userTeam);
+    this.addUserTeam.emit(this.userTeam);
     this.userTeam = undefined;
   }
 

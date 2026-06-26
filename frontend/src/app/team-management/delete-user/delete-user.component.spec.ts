@@ -17,7 +17,7 @@ describe('DeleteUserComponent', () => {
   const dialogRefMock: jest.Mocked<MatDialogRef<ConfirmDialogComponent>> = { afterClosed: jest.fn() } as any;
   const userServiceMock = {
     deleteUser: jest.fn(),
-    getOrInitCurrentUser: jest.fn(), // the okrUser
+    getOrInitCurrentUser: jest.fn(),
     reloadUsers: jest.fn(),
     getUserOkrData: jest.fn(),
     isUserMemberOfTeams: jest.fn()
@@ -41,18 +41,21 @@ describe('DeleteUserComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DeleteUserComponent);
     component = fixture.componentInstance;
-    component.user = {
+
+    fixture.componentRef.setInput('user', {
       id: 2,
       firstName: 'Hans',
       lastName: 'Muster',
       isOkrChampion: false,
       userTeamList: [],
       email: 'hans.muster@puzzle.ch'
-    };
-    component.currentTeams$ = new Subject();
+    });
+    fixture.componentRef.setInput('currentTeams', []);
+
     userServiceMock.getOrInitCurrentUser.mockReturnValue(of(testUser));
     userServiceMock.getUserOkrData.mockReturnValue(of({ keyResults: [] }));
     userServiceMock.isUserMemberOfTeams.mockReturnValue(of(true));
+
     fixture.detectChanges();
   });
 
@@ -68,17 +71,14 @@ describe('DeleteUserComponent', () => {
   });
 
   it('should delete and reload users after deleteUser is called', () => {
-    // arrange
     userServiceMock.deleteUser.mockReturnValue(of(userServiceMock.deleteUser));
     dialogRefMock.afterClosed.mockReturnValue(of('some data'));
     dialogServiceMock.openCustomizedConfirmDialog.mockReturnValue(dialogRefMock);
 
-    // act
     component.deleteUser();
 
-    // assert
     setTimeout(() => expect(userServiceMock.deleteUser)
-      .toHaveBeenCalledWith(component.user), 0);
+      .toHaveBeenCalledWith(component.user()), 0);
     expect(userServiceMock.reloadUsers)
       .toHaveBeenCalledTimes(1);
     expect(mockLocation.back)
@@ -86,7 +86,6 @@ describe('DeleteUserComponent', () => {
   });
 
   it('should not reload users when UserService throws an error after deleteUser() is called', () => {
-    // arrange
     function createErrorSubject() {
       const myError = new Subject<any>();
       myError.error('uups');
@@ -97,12 +96,10 @@ describe('DeleteUserComponent', () => {
     dialogRefMock.afterClosed.mockReturnValue(of('some data'));
     dialogServiceMock.openCustomizedConfirmDialog.mockReturnValue(dialogRefMock);
 
-    // act
     component.deleteUser();
 
-    // assert
     setTimeout(() => expect(userServiceMock.deleteUser)
-      .toHaveBeenCalledWith(component.user), 0);
+      .toHaveBeenCalledWith(component.user()), 0);
     expect(userServiceMock.reloadUsers)
       .toHaveBeenCalledTimes(0);
     expect(mockLocation.back)
@@ -110,26 +107,27 @@ describe('DeleteUserComponent', () => {
   });
 
   it('should check deleteUserWithChecks() should not delete user which is member of a Team', () => {
-    // arrange (user is member of team Lorem)
     component.userIsMemberOfTeams = true;
-    component.user.userTeamList = [{
-      id: 100,
-      team: {
-        id: 1,
-        version: 2,
-        name: 'Lorem',
-        description: 'Lorem ipsum',
-        isWriteable: true,
-        markedAsArchivedAt: null,
-        status: TeamStatus.ACTIVE
-      },
-      isTeamAdmin: false
-    }];
+    component.userOkrData = { keyResults: [] };
 
-    // act
+    const updatedUser = {
+      ...component.user(),
+      userTeamList: [{
+        id: 100,
+        team: { id: 1,
+          version: 2,
+          name: 'Lorem',
+          description: 'Lorem ipsum',
+          isWriteable: true,
+          markedAsArchivedAt: null,
+          status: TeamStatus.ACTIVE },
+        isTeamAdmin: false
+      }]
+    };
+    fixture.componentRef.setInput('user', updatedUser);
+
     component.deleteUserWithChecks();
 
-    // assert
     expect(dialogServiceMock.openCustomizedConfirmDialog)
       .toHaveBeenCalledTimes(1);
     expect(dialogServiceMock.openCustomizedConfirmDialog)
@@ -143,7 +141,6 @@ describe('DeleteUserComponent', () => {
   });
 
   it('should not delete user which has KeyResults when deleteUserWithChecks() is called ', () => {
-    // arrange (user has KeyResult one)
     component.userIsMemberOfTeams = false;
     component.userOkrData = {
       keyResults: [{
@@ -154,10 +151,8 @@ describe('DeleteUserComponent', () => {
       }]
     };
 
-    // act
     component.deleteUserWithChecks();
 
-    // assert
     expect(dialogServiceMock.openCustomizedConfirmDialog)
       .toHaveBeenCalledTimes(1);
     expect(dialogServiceMock.openCustomizedConfirmDialog)
@@ -171,7 +166,6 @@ describe('DeleteUserComponent', () => {
   });
 
   it('deleteUserWithChecks() should delete user which is not member of a Team and has no KeyResults', () => {
-    // arrange
     component.userIsMemberOfTeams = false;
     component.userOkrData = { keyResults: [] };
 
@@ -179,10 +173,8 @@ describe('DeleteUserComponent', () => {
     dialogRefMock.afterClosed.mockReturnValue(of('some data'));
     dialogServiceMock.openCustomizedConfirmDialog.mockReturnValue(dialogRefMock);
 
-    // act
     component.deleteUserWithChecks();
 
-    // assert
     expect(dialogServiceMock.openCustomizedConfirmDialog)
       .toHaveBeenCalledTimes(1);
     expect(dialogServiceMock.openCustomizedConfirmDialog)
@@ -195,47 +187,26 @@ describe('DeleteUserComponent', () => {
       });
   });
 
-  it('updateUserTeamsStatusWhenTeamOfUserChanges() does not update userIsMemberOfTeams property if currentTeams$ does not emit a value ', () => {
-    // arrange (currentTeams$ does not emit a value)
-    component.currentTeams$ = of();
+  it('should reload user member of teams status automatically when currentTeams input changes', () => {
+    userServiceMock.isUserMemberOfTeams.mockClear();
 
-    // pre-condition
-    expect(component.userIsMemberOfTeams)
-      .toBe(undefined);
-
-    // act
-    component.updateUserTeamsStatusWhenTeamOfUserChanges();
-
-    // assert
-    expect(component.userIsMemberOfTeams)
-      .toBe(undefined);
-  });
-
-  it('updateUserTeamsStatusWhenTeamOfUserChanges() does update userIsMemberOfTeams property if currentTeams$ does emit a value ', () => {
-    // arrange (currentTeams$ does emit a value)
-    component.currentTeams$ = of([{
+    fixture.componentRef.setInput('currentTeams', [{
       id: 100,
-      team: {
-        id: 1,
+      team: { id: 1,
         version: 2,
         name: 'Lorem',
         description: 'Lorem ipsum',
         isWriteable: true,
         markedAsArchivedAt: null,
-        status: TeamStatus.ACTIVE
-      },
+        status: TeamStatus.ACTIVE },
       isTeamAdmin: false
     }]);
 
-    // pre-condition
-    expect(component.userIsMemberOfTeams)
-      .toBe(undefined);
+    fixture.detectChanges();
 
-    // act
-    component.updateUserTeamsStatusWhenTeamOfUserChanges();
-
-    // assert
-    expect(component.userIsMemberOfTeams)
-      .toBe(true);
+    expect(userServiceMock.isUserMemberOfTeams)
+      .toHaveBeenCalledTimes(1);
+    expect(userServiceMock.isUserMemberOfTeams)
+      .toHaveBeenCalledWith(component.user());
   });
 });

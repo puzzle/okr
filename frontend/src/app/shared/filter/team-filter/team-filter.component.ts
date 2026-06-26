@@ -3,7 +3,7 @@ import { map, filter } from 'rxjs';
 import { takeUntilDestroyed, toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { Team } from '../../types/model/team';
 import { ActivatedRoute, Router } from '@angular/router';
-import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from '../../common';
+import { areEqual, getValueFromQuery, optionalReplaceWithNulls } from '../../common';
 import { RefreshDataService } from '../../../services/refresh-data.service';
 import { UserService } from '../../../services/user.service';
 import { extractTeamsFromUser } from '../../types/model/user';
@@ -33,8 +33,6 @@ export class TeamFilterComponent {
   @Input() minTeams = 0;
 
   showMoreTeams = true;
-
-  protected readonly trackByFn = trackByFn;
 
   private isInitialLoad = true;
 

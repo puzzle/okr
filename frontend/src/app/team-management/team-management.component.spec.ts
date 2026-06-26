@@ -3,7 +3,7 @@ import { TeamManagementComponent } from './team-management.component';
 import { TeamManagementBannerComponent } from './team-management-banner/team-management-banner.component';
 import { TeamListComponent } from './team-list/team-list.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, RouterModule } from '@angular/router';
 import { MemberListComponent } from './member-list/member-list.component';
 import { SearchTeamManagementComponent } from './search-team-management/search-team-management.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,7 +30,7 @@ describe('TeamManagementComponent', () => {
   let fixture: ComponentFixture<TeamManagementComponent>;
 
   const activatedRouteMock = {
-    paramMap: of({})
+    paramMap: of(convertToParamMap({ teamId: '123' }))
   };
 
   const userServiceMock = {

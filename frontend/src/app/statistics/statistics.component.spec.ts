@@ -14,9 +14,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { FilterPageChange } from '../shared/types/model/filter-page-change';
+import { TeamStateService } from '../services/team.state.service';
+import { signal } from '@angular/core';
 
 const evaluationServiceStub = {
   getStatistics: jest.fn()
+};
+
+const teamStateServiceMock = {
+  getTeams: jest.fn()
+    .mockReturnValue(signal([]))
 };
 
 describe('StatisticsComponent', () => {
@@ -73,7 +80,9 @@ describe('StatisticsComponent', () => {
           useValue: evaluationServiceStub },
         provideRouter([]),
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        { provide: TeamStateService,
+          useValue: teamStateServiceMock }
       ]
     })
       .compileComponents();

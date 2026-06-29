@@ -8,6 +8,7 @@ import { UserService } from '../../../services/user.service';
 import { extractTeamsFromUser } from '../../types/model/user';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { TeamStateService } from '../../../services/team.state.service';
+import { QuarterService } from '../../../services/quarter.service';
 
 @Component({
   selector: 'app-team-filter',
@@ -27,11 +28,15 @@ export class TeamFilterComponent {
 
   private userService = inject(UserService);
 
+  private quarterService = inject(QuarterService);
+
   private breakpointObserver = inject(BreakpointObserver);
 
   @Input() minTeams = 0;
 
   showMoreTeams = true;
+
+  readonly quarters = toSignal(this.quarterService.getAllQuarters(), { initialValue: [] });
 
   activeTeams = signal<number[]>([]);
 
@@ -39,8 +44,22 @@ export class TeamFilterComponent {
     .pipe(map((result) => result.matches)), { initialValue: false });
 
   rawTeams = computed(() => {
+    const quarterQuery = this.route.snapshot.queryParams['quarter'];
+    // Take the first array value because there is only one quarter selected at a time
+    const quarterId = getValueFromQuery(quarterQuery)[0];
+
+    const endDate = this.quarters()
+      .find((q) => q.id === quarterId)
+      ?.endDate;
+
     return this.teamStateService.getTeams()()
-      .filter((team) => !team.markedAsArchivedAt);
+      .filter((team) => {
+        if (!endDate || !team.markedAsArchivedAt) {
+          return true;
+        }
+
+        return endDate <= team.markedAsArchivedAt;
+      });
   });
 
   teams = computed(() => {

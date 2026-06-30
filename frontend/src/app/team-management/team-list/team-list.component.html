@@ -3,6 +3,7 @@
     <a
       mat-list-item
       routerLink="/team-management"
+      queryParamsHandling="preserve"
       [attr.data-testId]="'all-teams-selector'"
       [ngClass]="{ selected: selectedTeamId === undefined }"
     >Alle Teams ({{ teams().length }})</a>
@@ -11,6 +12,7 @@
     <a
       mat-list-item
       [routerLink]="['/team-management', team.id]"
+      queryParamsHandling="preserve"
       [ngClass]="{ selected: selectedTeamId === team.id }"
     >{{ team.name }}</a>
     }

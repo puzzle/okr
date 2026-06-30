@@ -43,24 +43,7 @@ export class TeamFilterComponent {
   isMobile = toSignal(this.breakpointObserver.observe(['(min-width: 1px) and (max-width: 767px)'])
     .pipe(map((result) => result.matches)), { initialValue: false });
 
-  rawTeams = computed(() => {
-    const quarterQuery = this.route.snapshot.queryParams['quarter'];
-    // Take the first array value because there is only one quarter selected at a time
-    const quarterId = getValueFromQuery(quarterQuery)[0];
-
-    const endDate = this.quarters()
-      .find((q) => q.id === quarterId)
-      ?.endDate;
-
-    return this.teamStateService.getTeams()()
-      .filter((team) => {
-        if (!endDate || !team.markedAsArchivedAt) {
-          return true;
-        }
-
-        return endDate <= team.markedAsArchivedAt;
-      });
-  });
+  rawTeams = this.teamStateService.getTeams();
 
   teams = computed(() => {
     const t = this.rawTeams();
@@ -129,24 +112,7 @@ export class TeamFilterComponent {
       .join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
 
-    const navExtras = {
-      relativeTo: this.route,
-      queryParams: optionalParams,
-      queryParamsHandling: 'merge' as const,
-      replaceUrl: true
-    };
-
-    this.router.navigate([], navExtras)
-      .then((navigationSucceeded) => {
-        if (!navigationSucceeded) {
-          setTimeout(() => {
-            this.router.navigate([], navExtras)
-              .then(() => this.refreshDataService.teamFilterReady.next());
-          });
-        } else {
-          this.refreshDataService.teamFilterReady.next();
-        }
-      });
+    setTimeout(() => this.router.navigate([], { queryParams: optionalParams }), 100);
   }
 
   toggleSelection(id: number): void {

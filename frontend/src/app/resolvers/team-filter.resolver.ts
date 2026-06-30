@@ -4,8 +4,14 @@ import { TeamStateService } from '../services/team.state.service';
 
 export const teamFilterResolver: ResolveFn<void> = (route) => {
   const teamStateService = inject(TeamStateService);
-  const quarterIdParam = route.queryParams['quarter'];
 
-  const filters = quarterIdParam ? { quarterId: parseInt(quarterIdParam, 10) } : {};
+  const quarterQuery = route.queryParams['quarter'];
+  const quarterIdStr = Array.isArray(quarterQuery) ? quarterQuery[0] : quarterQuery;
+
+  const filters = quarterIdStr && !isNaN(Number(quarterIdStr))
+    ? { quarterId: parseInt(quarterIdStr, 10) }
+    : {};
+
+  console.log('filters', filters);
   teamStateService.loadTeams(filters);
 };

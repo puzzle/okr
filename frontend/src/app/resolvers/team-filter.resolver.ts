@@ -12,6 +12,5 @@ export const teamFilterResolver: ResolveFn<void> = (route) => {
     ? { quarterId: parseInt(quarterIdStr, 10) }
     : {};
 
-  console.log('filters', filters);
   teamStateService.loadTeams(filters);
 };

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 import { DEFAULT_HEADER_HEIGHT_PX } from '../shared/constant-library';
 
 @Injectable({
@@ -10,9 +10,9 @@ export class RefreshDataService {
 
   public reloadKeyResultSubject = new Subject<void>();
 
-  public quarterFilterReady: Subject<void> = new Subject<void>();
+  public quarterFilterReady = new ReplaySubject<void>(1);
 
-  public teamFilterReady: Subject<void> = new Subject<void>();
+  public teamFilterReady = new ReplaySubject<void>(1);
 
   public okrBannerHeightSubject: BehaviorSubject<number> = new BehaviorSubject<number>(DEFAULT_HEADER_HEIGHT_PX);
 

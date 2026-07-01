@@ -1,14 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, inject, signal, computed } from '@angular/core';
-import { map, filter } from 'rxjs';
-import { takeUntilDestroyed, toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, Input, inject, computed, effect } from '@angular/core';
+import { map } from 'rxjs';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { areEqual, getValueFromQuery, optionalReplaceWithNulls } from '../../common';
+import { areEqual, optionalReplaceWithNulls } from '../../common';
 import { RefreshDataService } from '../../../services/refresh-data.service';
-import { UserService } from '../../../services/user.service';
-import { extractTeamsFromUser } from '../../types/model/user';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { TeamStateService } from '../../../services/team.state.service';
-import { QuarterService } from '../../../services/quarter.service';
 
 @Component({
   selector: 'app-team-filter',
@@ -26,19 +23,23 @@ export class TeamFilterComponent {
 
   private refreshDataService = inject(RefreshDataService);
 
-  private userService = inject(UserService);
-
-  private quarterService = inject(QuarterService);
-
   private breakpointObserver = inject(BreakpointObserver);
 
   @Input() minTeams = 0;
 
   showMoreTeams = true;
 
-  readonly quarters = toSignal(this.quarterService.getAllQuarters(), { initialValue: [] });
+  activeTeams = toSignal(this.route.queryParams.pipe(map((params) => {
+    const teamsParam = params['teams'];
 
-  activeTeams = signal<number[]>([]);
+    if (!teamsParam) {
+      return [];
+    }
+
+    const teamArray = Array.isArray(teamsParam) ? teamsParam : teamsParam.split(',');
+
+    return teamArray.map(Number);
+  })), { initialValue: [] as number[] });
 
   isMobile = toSignal(this.breakpointObserver.observe(['(min-width: 1px) and (max-width: 767px)'])
     .pipe(map((result) => result.matches)), { initialValue: false });
@@ -62,73 +63,46 @@ export class TeamFilterComponent {
     });
   });
 
-  private isInitialized = false;
-
   constructor() {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.teamStateService.reload();
-      });
+      .subscribe(() => this.teamStateService.reload());
 
-    toObservable(this.rawTeams)
-      .pipe(filter((teams) => teams.length > 0), takeUntilDestroyed())
-      .subscribe((teams) => {
-        if (!this.isInitialized) {
-          const teamQuery = this.route.snapshot.queryParams['teams'];
-          const teamIds = getValueFromQuery(teamQuery);
-
-          const knownTeams = teams.map((t) => t.id)
-            .filter((id) => teamIds?.includes(id));
-
-          if (knownTeams.length > 0) {
-            this.activeTeams.set(knownTeams);
-          } else {
-            const userTeams = extractTeamsFromUser(this.userService.getCurrentUser());
-
-            const validUserTeamIds = userTeams
-              .map((team) => team.id)
-              .filter((id) => teams.some((validTeam) => validTeam.id === id));
-
-            this.activeTeams.set(validUserTeamIds);
-          }
-
-          this.isInitialized = true;
-          this.changeTeamFilterParams();
-        } else {
-          const currentActive = this.activeTeams();
-          const validActive = currentActive.filter((id) => teams.some((t) => t.id === id));
-
-          if (currentActive.length !== validActive.length) {
-            this.activeTeams.set(validActive);
-            this.changeTeamFilterParams();
-          }
-        }
-      });
+    effect(() => {
+      if (this.activeTeams().length > 0) {
+        this.refreshDataService.teamFilterReady.next();
+      }
+    });
   }
 
-  changeTeamFilterParams(): void {
-    const params = { teams: this.activeTeams()
-      .join(',') };
+  changeTeamFilterParams(newActiveTeams: number[]): void {
+    const params = { teams: newActiveTeams.join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
 
-    setTimeout(() => this.router.navigate([], { queryParams: optionalParams }), 100);
+    this.router.navigate([], {
+      queryParams: optionalParams,
+      queryParamsHandling: 'merge'
+    })
+      .then(() => this.refreshDataService.teamFilterReady.next());
   }
 
   toggleSelection(id: number): void {
     const currentActive = this.activeTeams();
+    let nextActive: number[];
+
     if (this.areAllTeamsShown()) {
-      this.activeTeams.set([id]);
+      nextActive = [id];
     } else if (currentActive.includes(id)) {
       if (currentActive.length === this.minTeams) {
         return;
       }
-      this.activeTeams.set(currentActive.filter((teamId) => teamId !== id));
+      nextActive = currentActive.filter((teamId: number) => teamId !== id);
     } else {
-      this.activeTeams.set([...currentActive,
-        id]);
+      nextActive = [...currentActive,
+        id];
     }
-    this.changeTeamFilterParams();
+
+    this.changeTeamFilterParams(nextActive);
   }
 
   areAllTeamsShown(): boolean {
@@ -139,8 +113,8 @@ export class TeamFilterComponent {
     if (this.areAllTeamsShown() && this.minTeams > 0) {
       return;
     }
-    this.activeTeams.set(this.areAllTeamsShown() ? [] : this.getAllTeamIds());
-    this.changeTeamFilterParams();
+    const nextActive = this.areAllTeamsShown() ? [] : this.getAllTeamIds();
+    this.changeTeamFilterParams(nextActive);
   }
 
   getAllTeamIds(): number[] {

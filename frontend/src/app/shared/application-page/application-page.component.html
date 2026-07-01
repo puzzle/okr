@@ -4,9 +4,9 @@
   class="page-container px-sm-4"
   [ngStyle]="{ 'padding-top.px': overviewPadding | async }"
 >
-  <!--  <ng-content select="content"></ng-content>-->
   <ng-content></ng-content>
-  @if ((elements$ | async)?.length === 0 || getFilterPageChange().teamIds.length === 0) {
+
+  @if ((elements$ | async)?.length === 0 || !hasSelectedTeams) {
   <div class="d-flex align-items-center flex-column pt-5 gap-5">
     <p id="no-team-text">Kein Team ausgewählt</p>
     <img

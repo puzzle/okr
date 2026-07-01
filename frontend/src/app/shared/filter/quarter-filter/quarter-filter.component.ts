@@ -37,7 +37,6 @@ export class QuarterFilterComponent {
       if (id !== -1 && quartersList.length > 0) {
         const label = quartersList.find((e) => e.id === id)?.label || '';
         this.quarterLabel$.emit(label);
-        this.refreshDataService.quarterFilterReady.next();
       }
     });
   }

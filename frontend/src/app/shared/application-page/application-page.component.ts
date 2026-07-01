@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output, OnInit, OnDestroy, inject } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
+import { BehaviorSubject, debounceTime, Observable, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { ConfigService } from '../../services/config.service';
 import { getQueryString, getValueFromQuery, isMobileDevice } from '../common';
 import { FilterPageChange } from '../types/model/filter-page-change';
@@ -27,40 +27,42 @@ export class ApplicationPageComponent implements OnInit, OnDestroy {
 
   backgroundLogoSrc$ = new BehaviorSubject<string>('assets/images/empty.svg');
 
+  hasSelectedTeams = false;
+
   private destroyed$ = new ReplaySubject<boolean>(1);
 
   @Output() reloadPage = new EventEmitter<FilterPageChange>();
 
-
   constructor() {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => this.reloadPage.next(this.getFilterPageChange()));
+      .subscribe(() => this.reloadPage.next(this.getFilterPageChange(this.activatedRoute.snapshot.queryParams)));
 
-    combineLatest([this.refreshDataService.teamFilterReady.asObservable(),
-      this.refreshDataService.quarterFilterReady.asObservable()])
-      .pipe(take(1))
-      .subscribe(() => {
-        this.activatedRoute.queryParams.pipe(takeUntil(this.destroyed$))
-          .subscribe(() => {
-            this.reloadPage.next(this.getFilterPageChange());
-          });
+    this.activatedRoute.queryParams
+      .pipe(takeUntil(this.destroyed$), debounceTime(10))
+      .subscribe((params: Params) => {
+        const teamIds = getValueFromQuery(params['teams']);
+        this.hasSelectedTeams = teamIds && teamIds.length > 0;
+
+        if (params['quarter'] !== undefined) {
+          this.reloadPage.next(this.getFilterPageChange(params));
+        }
       });
   }
 
-  getFilterPageChange(): FilterPageChange {
-    const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
-    const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
-    const objectiveQuery = this.activatedRoute.snapshot.queryParams['objectiveQuery'];
+  getFilterPageChange(params: Params): FilterPageChange {
+    const quarterQuery = params['quarter'];
+    const teamQuery = params['teams'];
+    const objectiveQuery = params['objectiveQuery'];
 
     const teamIds = getValueFromQuery(teamQuery);
     const quarterId = getValueFromQuery(quarterQuery)[0];
     const objectiveQueryString = getQueryString(objectiveQuery);
+
     return { quarterId,
       teamIds,
       objectiveQueryString };
   }
-
 
   ngOnInit(): void {
     this.refreshDataService.okrBannerHeightSubject.subscribe((e) => {

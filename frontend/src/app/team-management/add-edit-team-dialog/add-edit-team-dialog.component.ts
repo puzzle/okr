@@ -2,11 +2,11 @@ import { Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/team';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-add-edit-team-dialog',
@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 export class AddEditTeamDialogComponent implements OnInit {
   dialogRef = inject<MatDialogRef<AddEditTeamDialogComponent>>(MatDialogRef);
 
-  private teamService = inject(TeamService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private userService = inject(UserService);
 
@@ -63,7 +63,7 @@ export class AddEditTeamDialogComponent implements OnInit {
       description: formValue.description?.trim() || null
     } as Team;
 
-    this.teamService.createTeam(newTeam)
+    this.teamStateService.createTeam(newTeam)
       .subscribe((result) => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -84,7 +84,7 @@ export class AddEditTeamDialogComponent implements OnInit {
         version: this.data.team.version
       } as Team;
 
-      this.teamService.updateTeam(updatedTeam)
+      this.teamStateService.updateTeam(updatedTeam)
         .subscribe((result) => {
           this.dialogRef.close(result);
         });

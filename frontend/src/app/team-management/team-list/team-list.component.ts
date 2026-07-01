@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { TeamService } from '../../services/team.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { Team } from '../../shared/types/model/team';
+import { Component, inject, computed } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-team-list',
@@ -10,30 +9,33 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './team-list.component.scss',
   standalone: false
 })
-export class TeamListComponent implements OnInit, OnDestroy {
+export class TeamListComponent {
   private readonly route = inject(ActivatedRoute);
 
-  public teams$: Observable<Team[]>;
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
+
+  public teams = computed(() => {
+    const allTeams = this.teamStateService.getTeams()();
+
+    return [...allTeams].sort((a, b) => {
+      const aIsArchived = !!a.markedAsArchivedAt;
+      const bIsArchived = !!b.markedAsArchivedAt;
+
+      if (aIsArchived !== bIsArchived) {
+        return aIsArchived ? 1 : -1;
+      }
+      return a.name.localeCompare(b.name);
+    });
+  });
 
   public selectedTeamId: number | undefined;
 
-  private unsubscribe$ = new Subject<void>();
-
   constructor() {
-    const teamService = inject(TeamService);
-    this.teams$ = teamService.getAllTeams();
-  }
-
-  public ngOnInit(): void {
-    this.route.paramMap.pipe(takeUntil(this.unsubscribe$))
+    this.route.paramMap
+      .pipe(takeUntilDestroyed())
       .subscribe((params) => {
         const teamId = params.get('teamId');
         this.selectedTeamId = teamId ? parseInt(teamId) : undefined;
       });
-  }
-
-  public ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 }

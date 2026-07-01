@@ -11,6 +11,8 @@ import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,6 +44,7 @@ class OverviewPersistenceServiceIT {
                 OverviewId.of(5L, -1L, -1L, -1L), // 18
                 OverviewId.of(6L, -1L, -1L, -1L), // 19
                 OverviewId.of(4L, -1L, -1L, -1L)); // 20
+
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
     @Autowired
@@ -63,7 +66,8 @@ class OverviewPersistenceServiceIT {
         List<Overview> overviews = overviewPersistenceService
                 .getFilteredOverview(2L, List.of(5L, 6L, 8L), "", authorizationUser);
 
-        assertThat(expectedOverviewIds.subList(5, 18)).hasSameElementsAs(getOverviewIds(overviews));
+        List<OverviewId> expected = filterOutArchivedTeam(expectedOverviewIds.subList(5, 18), 7L);
+        assertThat(expected).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     @DisplayName("Should return correct overview on getFilteredOverview() when team ids are not set")
@@ -71,7 +75,8 @@ class OverviewPersistenceServiceIT {
     void getFilteredOverviewShouldReturnOverviewsWhenTeamIdsEmpty() {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(), "", authorizationUser);
 
-        assertThat(expectedOverviewIds.subList(0, 18)).hasSameElementsAs(getOverviewIds(overviews));
+        List<OverviewId> expected = filterOutArchivedTeam(expectedOverviewIds.subList(0, 18), 7L);
+        assertThat(expected).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     @DisplayName("Should return correct overview on getFilteredOverview() when query is set")
@@ -80,7 +85,8 @@ class OverviewPersistenceServiceIT {
         List<Overview> overviews = overviewPersistenceService
                 .getFilteredOverview(2L, List.of(5L, 6L, 8L), "kundenzufriedenheit", authorizationUser);
 
-        assertThat(expectedOverviewIds.subList(5, 8)).hasSameElementsAs(getOverviewIds(overviews));
+        List<OverviewId> expected = filterOutArchivedTeam(expectedOverviewIds.subList(5, 8), 7L);
+        assertThat(expected).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     @DisplayName("Should return correct overview on getFilteredOverview() when quarter has no objectives")
@@ -89,7 +95,8 @@ class OverviewPersistenceServiceIT {
         List<Overview> overviews = overviewPersistenceService
                 .getFilteredOverview(3L, List.of(5L, 6L, 8L), null, authorizationUser);
 
-        assertThat(expectedOverviewIds.subList(17, 20)).hasSameElementsAs(getOverviewIds(overviews));
+        List<OverviewId> expected = filterOutArchivedTeam(expectedOverviewIds.subList(17, 20), 7L);
+        assertThat(expected).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     @DisplayName("Should return empty overview on getFilteredOverview() when query is set and no objectives are present")
@@ -101,7 +108,37 @@ class OverviewPersistenceServiceIT {
         assertTrue(overviews.isEmpty());
     }
 
+    @DisplayName("Should not return archived team if quarter starts AFTER team was archived")
+    @Test
+    void shouldExcludeArchivedTeamWhenQuarterStartsAfterArchiveDate() {
+        List<Overview> overviews = overviewPersistenceService
+                .getFilteredOverview(3L, List.of(7L), "", authorizationUser);
+
+        assertTrue(overviews.isEmpty(), "Team 7 should be filtered out because it is archived");
+    }
+
+    @DisplayName("Should return archived team if quarter starts BEFORE team was archived")
+    @Test
+    void shouldIncludeArchivedTeamWhenQuarterStartsBeforeArchiveDate() {
+        List<Overview> overviews = overviewPersistenceService
+                .getFilteredOverview(998L, List.of(7L), "", authorizationUser);
+
+        assertThat(overviews).isNotEmpty();
+        assertTrue(overviews.stream().allMatch(o -> Objects.equals(o.getOverviewId().getTeamId(), 7L)));
+    }
+
     private List<OverviewId> getOverviewIds(List<Overview> overviewList) {
         return overviewList.stream().map(Overview::getOverviewId).toList();
+    }
+
+    /**
+     * Helper to dynamically strip out an archived team's IDs from the expected data
+     * so we don't have to break the hardcoded subList indices.
+     */
+    private List<OverviewId> filterOutArchivedTeam(List<OverviewId> baseList, Long teamIdToExclude) {
+        return baseList
+                .stream()
+                .filter(id -> !Objects.equals(id.getTeamId(), teamIdToExclude))
+                .collect(Collectors.toList());
     }
 }

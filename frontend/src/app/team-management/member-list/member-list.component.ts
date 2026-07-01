@@ -1,16 +1,19 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, computed, effect } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { User } from '../../shared/types/model/user';
+import { filter, map, mergeMap } from 'rxjs';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/user-table-entry';
-import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/team';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { AddEditTeamDialogComponent } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { InviteUserDialogComponent } from '../invite-user-dialog/invite-user-dialog.component';
 import { DialogService } from '../../services/dialog.service';
+import { Quarter } from '../../shared/types/model/quarter';
+import { MatDialog } from '@angular/material/dialog';
+import { ArchiveTeamDialogComponent } from '../../shared/dialog/archive-dialog/archive-dialog.component';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-member-list',
@@ -18,77 +21,52 @@ import { DialogService } from '../../services/dialog.service';
   styleUrl: './member-list.component.scss',
   standalone: false
 })
-export class MemberListComponent implements OnDestroy, AfterViewInit {
+export class MemberListComponent {
   private readonly userService = inject(UserService);
 
   private readonly route = inject(ActivatedRoute);
 
   private readonly cd = inject(ChangeDetectorRef);
 
-  private readonly teamService = inject(TeamService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private readonly router = inject(Router);
 
   private readonly dialogService = inject(DialogService);
 
-  dataSource: MatTableDataSource<UserTableEntry> = new MatTableDataSource<UserTableEntry>([]);
+  private readonly dialog = inject(MatDialog);
 
-  selectedTeam$: BehaviorSubject<Team | undefined> = new BehaviorSubject<Team | undefined>(undefined);
+  private readonly teamIdParam = toSignal(this.route.paramMap.pipe(map((params) => params.get('teamId'))), { initialValue: null });
 
-  private allUsersSubj: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
+  private readonly users = toSignal(this.userService.getUsers(), { initialValue: [] });
 
-  private unsubscribe$ = new Subject<void>();
-
-  public ngAfterViewInit() {
-    this.userService
-      .getUsers()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((users) => this.allUsersSubj.next(users));
-    const teamId$ = this.route.paramMap.pipe(map((params) => params.get('teamId')));
-    combineLatest([this.allUsersSubj.asObservable(),
-      teamId$,
-      this.teamService.getAllTeams()])
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(([users,
-        teamIdParam,
-        teams]) => {
-        this.setSelectedTeam(teams, teamIdParam);
-        this.setDataSourceForTeamOrAll(users, teamIdParam);
-      });
-  }
-
-  public ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-  private setSelectedTeam(teams: Team[], teamIdParam: string | null) {
-    if (!teamIdParam) {
-      this.selectedTeam$.next(undefined);
-      return;
+  public readonly selectedTeam = computed(() => {
+    const teamId = this.teamIdParam();
+    if (!teamId) {
+      return undefined;
     }
-    const team = teams.find((t) => t.id === parseInt(teamIdParam));
-    this.selectedTeam$.next(team);
-    this.cd.markForCheck();
-  }
 
-  private setDataSourceForTeamOrAll(users: User[], teamIdParam: string | null) {
-    if (!teamIdParam) {
-      this.setDataSourceForAllTeams(users);
-      this.cd.markForCheck();
-      return;
-    }
-    this.setDataSourceForTeam(teamIdParam, users);
-    this.cd.markForCheck();
-  }
+    const teams = this.teamStateService.getTeams()();
+    return teams.find((t) => t.id === parseInt(teamId));
+  });
 
-  private setDataSourceForAllTeams(users: User[]) {
-    this.dataSource.data = convertFromUsers(users, null);
-  }
+  public readonly dataSource = new MatTableDataSource<UserTableEntry>([]);
 
-  private setDataSourceForTeam(teamIdParam: string, users: User[]) {
-    const teamId = parseInt(teamIdParam);
-    this.dataSource.data = convertFromUsers(users, teamId);
+  public readonly showInviteMember = computed(() => !this.selectedTeam() && this.userService.getCurrentUser().isOkrChampion);
+
+  public readonly isTeamWriteable = computed(() => !!this.selectedTeam()?.isWriteable);
+
+  public readonly isTeamArchived = computed(() => !!this.selectedTeam()?.markedAsArchivedAt);
+
+  constructor() {
+    effect(() => {
+      const currentUsers = this.users();
+      const teamId = this.teamIdParam();
+
+      this.dataSource.data = !teamId
+        ? convertFromUsers(currentUsers, null)
+        : convertFromUsers(currentUsers, parseInt(teamId));
+    });
   }
 
   deleteTeam(selectedTeam: Team) {
@@ -99,7 +77,7 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.TEAM', data)
       .afterClosed()
-      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamStateService.deleteTeam(selectedTeam.id)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -108,10 +86,34 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
       });
   }
 
+  archiveTeam(selectedTeam: Team) {
+    this.dialog
+      .open(ArchiveTeamDialogComponent, { panelClass: 'okr-dialog-panel-small' })
+      .afterClosed()
+      .pipe(filter((selectedQuarter: Quarter | undefined) => !!selectedQuarter), mergeMap((selectedQuarter: Quarter) => {
+        selectedTeam.markedAsArchivedAt = selectedQuarter.startDate;
+        return this.teamStateService.archiveTeam(selectedTeam);
+      }))
+      .subscribe();
+  }
+
+  unarchiveTeam(selectedTeam: Team) {
+    const data = { team: selectedTeam.name };
+
+    this.dialogService
+      .openConfirmDialog('CONFIRMATION.UNARCHIVE.TEAM', data)
+      .afterClosed()
+      .pipe(filter((confirm) => confirm), mergeMap(() => {
+        selectedTeam.markedAsArchivedAt = null;
+        return this.teamStateService.unarchiveTeam(selectedTeam.id);
+      }))
+      .subscribe();
+  }
+
   addMemberToTeam() {
     const dialogRef = this.dialogService.open(AddMemberToTeamDialogComponent, {
       data: {
-        team: this.selectedTeam$.value,
+        team: this.selectedTeam(),
         currentUsersOfTeam: this.dataSource.data
       }
     });
@@ -125,16 +127,10 @@ export class MemberListComponent implements OnDestroy, AfterViewInit {
       .subscribe();
   }
 
-  showInviteMember(): boolean {
-    return !this.selectedTeam$.value && this.userService.getCurrentUser().isOkrChampion;
-  }
-
-  showAddMemberToTeam() {
-    return this.selectedTeam$.value?.isWriteable;
-  }
-
   editTeam(): void {
-    const dialogRef = this.dialogService.open(AddEditTeamDialogComponent, { data: { team: this.selectedTeam$.value } });
+    const dialogRef = this.dialogService.open(AddEditTeamDialogComponent, {
+      data: { team: this.selectedTeam() }
+    });
     dialogRef.afterClosed()
       .subscribe(() => this.cd.markForCheck());
   }

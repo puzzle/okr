@@ -390,6 +390,81 @@ describe('okr team-management', () => {
         .click();
       cy.buttonShouldBePrimary('save');
     });
+
+    it('should exclude team from overview filter after being archived', () => {
+      teamManagementPage.archiveTeam('/BBT')
+        .changeLastActiveQuarter('Q4 2023')
+        .submit();
+
+      // Check that the team is NOT visible in the new quarter
+      TeamManagementPage.do()
+        .backToOverview();
+
+      cy.getByTestId('quarter-filter')
+        .contains('Aktuell');
+
+      FilterHelper.do()
+        .optionShouldNotBeSelected('Alle')
+        .toggleOption('Alle')
+        .optionShouldNotExist('/BBT');
+
+      // Check that the team is visible in the old quarter
+      CyOverviewPage.do()
+        .visitOldQuarter();
+
+      FilterHelper.do()
+        .getOption('/BBT')
+        .should('exist');
+
+      // Unarchive team again
+      TeamManagementPage.do()
+        .visitViaURL()
+        .unarchiveTeam('/BBT')
+        .submit();
+    });
+
+    it('should archive /BBT and as a result disable all edit buttons', () => {
+      teamManagementPage.archiveTeam('/BBT')
+        .cancel();
+
+      teamManagementPage.archiveTeam('/BBT')
+        .changeLastActiveQuarter('Q4 2023')
+        .submit();
+
+      cy.getByTestId('edit-role')
+        .find('button')
+        .should('be.disabled');
+      cy.getByTestId('edit-team-button')
+        .find('button')
+        .should('be.disabled');
+      cy.getByTestId('add-team-member')
+        .should('be.disabled');
+      cy.getByTestId('member-list-more')
+        .find('button')
+        .should('be.disabled');
+      cy.getByTestId('teamMoreButton')
+        .find('button')
+        .should('not.be.disabled');
+
+      navigateToUser('Paco Eggimann');
+      cy.contains('tr.mat-mdc-row', '/BBT')
+        .within(() => {
+          cy.getByTestId('edit-role')
+            .find('button')
+            .should('be.disabled');
+          cy.getByTestId('delete-team-member')
+            .find('button')
+            .should('be.disabled');
+        });
+
+      // This removes basically every problem I ever had with flakiness for this test. Feel free to explore a better solution if you have more time
+      cy.wait(500);
+
+      // Unarchive team again
+      cy.realPress('Escape');
+      teamManagementPage.unarchiveTeam('/BBT')
+        .submit();
+    });
   });
 
   describe('as "BL"', () => {
@@ -496,26 +571,17 @@ describe('okr team-management', () => {
         .contains('/BBT')
         .click();
 
-      cy.get('app-member-list tbody tr')
-        .each(($row) => {
-          const usernameCell = $row.find('td:nth-child(2)');
-          if (usernameCell.text()
-            .trim() !== 'Findus Peterson') {
-            return;
-          }
-          $row.find('[data-testId=\'edit-role\']')
-            .click();
-          cy.wait(500); // wait for dialog to open
-        })
-        .then(() => {
-          cy.getByTestId('select-team-role')
-            .click();
-          cy.getByTestId('select-team-role-admin')
-            .click();
-          cy.getByTestId('select-team-role')
-            .should('not.exist');
-          cy.contains('Das Team wurde erfolgreich aktualisiert.');
-        });
+      cy.contains('app-member-list tbody tr', 'Findus Peterson')
+        .find('[data-testId="edit-role"]')
+        .click();
+
+      cy.getByTestId('select-team-role')
+        .click();
+      cy.getByTestId('select-team-role-admin')
+        .click();
+      cy.getByTestId('select-team-role')
+        .should('not.exist');
+      cy.contains('Das Team wurde erfolgreich aktualisiert.');
     });
 
     it('should not be able to add "Findus Peterson" to further teams', () => {

@@ -15,6 +15,7 @@ import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.test.TestHelper;
 import java.time.LocalDateTime;

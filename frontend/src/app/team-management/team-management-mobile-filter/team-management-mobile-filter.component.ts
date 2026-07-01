@@ -1,10 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { TeamService } from '../../services/team.service';
+import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Team } from '../../shared/types/model/team';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { getRouteToAllTeams, getRouteToTeam } from '../../shared/route-utils';
-import { combineLatest } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-team-management-mobile-filter',
@@ -12,7 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: false
 })
 export class TeamManagementMobileFilterComponent {
-  private readonly teamService = inject(TeamService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private readonly router = inject(Router);
 
@@ -20,20 +19,23 @@ export class TeamManagementMobileFilterComponent {
 
   readonly ALL_TEAMS = 'alle';
 
-  teams: Team[] = [];
+  private readonly paramMap = toSignal(this.route.paramMap);
 
-  selectedTeam: Team | undefined | 'alle';
+  readonly teams = this.teamStateService.getTeams();
 
-  constructor() {
-    combineLatest([this.teamService.getAllTeams(),
-      this.route.paramMap])
-      .pipe(takeUntilDestroyed())
-      .subscribe(([teams,
-        params]) => this.setTeamsAndSelectedTeam(teams, params));
-  }
+  readonly selectedTeam = computed(() => {
+    const teamId = this.paramMap()
+      ?.get('teamId');
+    const teams = this.teams();
+
+    if (teamId) {
+      return teams.find((t) => t.id === parseInt(teamId));
+    }
+    return this.ALL_TEAMS;
+  });
 
   navigate(team: Team | 'alle') {
-    team == this.ALL_TEAMS ? this.navigateToAllTeams() : this.navigateToTeam(team);
+    team === this.ALL_TEAMS ? this.navigateToAllTeams() : this.navigateToTeam(team as Team);
   }
 
   private navigateToTeam(team: Team) {
@@ -42,15 +44,5 @@ export class TeamManagementMobileFilterComponent {
 
   private navigateToAllTeams() {
     this.router.navigateByUrl(getRouteToAllTeams());
-  }
-
-  private setTeamsAndSelectedTeam(teams: Team[], params: ParamMap) {
-    this.teams = teams;
-    const teamId = params.get('teamId');
-    if (teamId) {
-      this.selectedTeam = teams.find((t) => t.id === parseInt(teamId));
-      return;
-    }
-    this.selectedTeam = this.ALL_TEAMS;
   }
 }

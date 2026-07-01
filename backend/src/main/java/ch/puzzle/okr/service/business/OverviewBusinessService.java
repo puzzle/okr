@@ -5,6 +5,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.persistence.OverviewPersistenceService;
 import ch.puzzle.okr.service.validation.OverviewValidationService;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;

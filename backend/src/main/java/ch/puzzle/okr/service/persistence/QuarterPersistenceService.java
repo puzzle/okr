@@ -31,4 +31,10 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, Qu
     public Quarter getCurrentQuarter() {
         return getRepository().getActiveQuarter(LocalDate.now());
     }
+
+    public List<Quarter> getFirstAndLastQuarterDates() {
+        return List
+                .of(getRepository().findFirstByStartDateIsNotNullOrderByStartDateAsc(),
+                    getRepository().findFirstByStartDateIsNotNullOrderByStartDateDesc());
+    }
 }

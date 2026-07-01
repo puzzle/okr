@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, input, effect } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { Location } from '@angular/common';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { UserTeam } from '../../shared/types/model/user-team';
 import { ConfirmDialogData, DialogService } from '../../services/dialog.service';
 import { ButtonState } from '../../shared/types/enums/button-state';
@@ -20,9 +20,9 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
 
   private readonly location = inject(Location);
 
-  @Input({ required: true }) user!: User;
+  public user = input.required<User>();
 
-  @Input({ required: true }) currentTeams$!: Observable<UserTeam[]>;
+  public currentTeams = input.required<UserTeam[]>();
 
   okrUser: User | undefined;
 
@@ -32,10 +32,16 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
 
   unsubscribe$ = new Subject<void>();
 
+  constructor() {
+    effect(() => {
+      this.currentTeams();
+      this.loadUserMemberOfTeamsStatus();
+    });
+  }
+
   ngOnInit() {
     this.loadOkrUser();
     this.loadUserOkrData();
-    this.updateUserTeamsStatusWhenTeamOfUserChanges();
   }
 
   ngOnDestroy(): void {
@@ -52,20 +58,14 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
 
   loadUserOkrData() {
     this.userService
-      .getUserOkrData(this.user)
+      .getUserOkrData(this.user())
       .pipe(takeUntil(this.unsubscribe$), tap((okrData) => this.userOkrData = okrData))
       .subscribe();
   }
 
-  updateUserTeamsStatusWhenTeamOfUserChanges(): void {
-    this.currentTeams$.subscribe(() => {
-      this.loadUserMemberOfTeamsStatus();
-    });
-  }
-
   loadUserMemberOfTeamsStatus() {
     this.userService
-      .isUserMemberOfTeams(this.user)
+      .isUserMemberOfTeams(this.user())
       .pipe(takeUntil(this.unsubscribe$), tap((isMemberOfTeams) => this.userIsMemberOfTeams = isMemberOfTeams))
       .subscribe();
   }
@@ -80,12 +80,12 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
   deleteUserWithChecks() {
     if (this.isUserMemberOfTeams()) {
       const dialogTitle = 'User kann nicht gelöscht werden';
-      const dialogText = `${getFullNameOfUser(this.user)} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.getDialogDetailsUserTeams()}`;
+      const dialogText = `${getFullNameOfUser(this.user())} ist in folgenden Teams und kann daher nicht gelöscht werden: ${this.getDialogDetailsUserTeams()}`;
       this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
     } else if (this.isUserOwnerOfKeyResults()) {
       const dialogTitle = 'User kann nicht gelöscht werden';
-      const dialogText = `${getFullNameOfUser(this.user)} ist Owner folgender KeyResults und kann daher nicht gelöscht werden: \n\n${this.dialogDetailsUserKeyResults()}`;
+      const dialogText = `${getFullNameOfUser(this.user())} ist Owner folgender KeyResults und kann daher nicht gelöscht werden: \n\n${this.dialogDetailsUserKeyResults()}`;
       this.showUnableToDeleteUserDialog(dialogTitle, dialogText);
       return;
     }
@@ -102,7 +102,7 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
 
   getDialogDetailsUserTeams() {
     if (this.userOkrData) {
-      return this.user.userTeamList //
+      return this.user().userTeamList
         .map((userTeam) => userTeam.team.name)
         .join(', ');
     }
@@ -132,7 +132,7 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
   deleteUser() {
     const data: ConfirmDialogData = {
       title: 'User löschen',
-      text: `Möchtest du den User ${this.user.firstName} ${this.user.lastName} wirklich löschen?`,
+      text: `Möchtest du den User ${this.user().firstName} ${this.user().lastName} wirklich löschen?`,
       yesButtonState: ButtonState.VISIBLE_ENABLED,
       noButtonState: ButtonState.VISIBLE_ENABLED,
       closeButtonState: ButtonState.HIDDEN
@@ -143,14 +143,14 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
       .subscribe((result) => {
         if (result) {
           this.userService
-            .deleteUser(this.user)
+            .deleteUser(this.user())
             .pipe(takeUntil(this.unsubscribe$), tap({
               next: () => {
                 this.userService.reloadUsers();
                 this.location.back();
               },
               error: () => {
-                throw Error(`unable to delete user ${getFullNameOfUser(this.user)} (with id ${this.user.id})`);
+                throw Error(`unable to delete user ${getFullNameOfUser(this.user())} (with id ${this.user().id})`);
               }
             }))
             .subscribe();

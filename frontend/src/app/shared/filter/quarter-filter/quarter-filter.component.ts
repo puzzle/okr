@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject, effect } from '@angular/core';
 import { QuarterService } from '../../../services/quarter.service';
-import { Quarter } from '../../types/model/quarter';
-import { BehaviorSubject, forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../../../services/refresh-data.service';
 import { getValueFromQuery } from '../../common';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-quarter-filter',
@@ -12,7 +12,7 @@ import { getValueFromQuery } from '../../common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false
 })
-export class QuarterFilterComponent implements OnInit {
+export class QuarterFilterComponent {
   private quarterService = inject(QuarterService);
 
   private router = inject(Router);
@@ -21,49 +21,30 @@ export class QuarterFilterComponent implements OnInit {
 
   private refreshDataService = inject(RefreshDataService);
 
-  quarters: BehaviorSubject<Quarter[]> = new BehaviorSubject<Quarter[]>([]);
-
   @Input() showBacklog = true;
 
   @Output() quarterLabel$ = new EventEmitter<string>();
 
-  currentQuarterId = -1;
+  quarters = toSignal(this.quarterService.getAllQuarters(), { initialValue: [] });
 
-  ngOnInit() {
-    const allQuarters$ = this.quarterService.getAllQuarters();
-    const currentQuarter$ = this.quarterService.getCurrentQuarter();
-    forkJoin([allQuarters$,
-      currentQuarter$])
-      .subscribe(([quarters,
-        currentQuarter]) => {
-        this.quarters.next(quarters);
-        const quarterQuery = this.route.snapshot.queryParams['quarter'];
-        const quarterId: number = getValueFromQuery(quarterQuery)[0];
-        if (quarters.map((quarter) => quarter.id)
-          .includes(quarterId)) {
-          this.currentQuarterId = quarterId;
-          this.changeDisplayedQuarter();
-        } else {
-          this.currentQuarterId = currentQuarter.id;
-          this.changeDisplayedQuarter();
+  currentQuarterId = toSignal(this.route.queryParams.pipe(map((params) => Number(getValueFromQuery(params['quarter'])[0]))), { initialValue: -1 });
 
-          if (quarterQuery === undefined) {
-            this.refreshDataService.quarterFilterReady.next();
-          }
-        }
-        const quarterLabel = quarters.find((e) => e.id == this.currentQuarterId)?.label || '';
-        this.quarterLabel$.next(quarterLabel);
-      });
+  constructor() {
+    effect(() => {
+      const id = this.currentQuarterId();
+      const quartersList = this.quarters();
+
+      if (id !== -1 && quartersList.length > 0) {
+        const label = quartersList.find((e) => e.id === id)?.label || '';
+        this.quarterLabel$.emit(label);
+      }
+    });
   }
 
-  changeDisplayedQuarter() {
-    const id = this.currentQuarterId;
-    const quarterLabel = this.quarters.getValue()
-      .find((e) => e.id == id)?.label || '';
-    this.quarterLabel$.next(quarterLabel);
-
-    this.router
-      .navigate([], { queryParams: { quarter: id } })
-      .then(() => this.refreshDataService.quarterFilterReady.next());
+  changeDisplayedQuarter(newId: number) {
+    this.router.navigate([], {
+      queryParams: { quarter: newId },
+      queryParamsHandling: 'merge'
+    });
   }
 }

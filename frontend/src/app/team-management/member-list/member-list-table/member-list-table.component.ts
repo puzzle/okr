@@ -1,14 +1,14 @@
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Input, inject, input, computed } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { User } from '../../../shared/types/model/user';
 import { Team } from '../../../shared/types/model/team';
-import { TeamService } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/route-utils';
-import { BehaviorSubject, filter, mergeMap, Subject, takeUntil } from 'rxjs';
+import { filter, mergeMap } from 'rxjs';
 import { UserTeam } from '../../../shared/types/model/user-team';
 import { DialogService } from '../../../services/dialog.service';
+import { ALL_TEAMS_STATE } from '../../../services/team-state.tokens';
 
 @Component({
   selector: 'app-member-list-table',
@@ -16,8 +16,9 @@ import { DialogService } from '../../../services/dialog.service';
   styleUrl: './member-list-table.component.scss',
   standalone: false
 })
-export class MemberListTableComponent implements OnInit, OnDestroy {
-  private readonly teamService = inject(TeamService);
+
+export class MemberListTableComponent {
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private readonly userService = inject(UserService);
 
@@ -25,7 +26,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
 
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;
 
-  @Input({ required: true }) selectedTeam$!: BehaviorSubject<undefined | Team>;
+  currentTeam = input<Team>();
 
   private allColumns = [
     'icon',
@@ -39,44 +40,40 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
     'name',
     'role'];
 
-  private unsubscribe$ = new Subject<void>();
-
-  displayedColumns: string[] = this.allColumns;
-
-  ngOnInit() {
-    this.selectedTeam$.pipe(takeUntil(this.unsubscribe$))
-      .subscribe((team) => {
-        team ? this.setColumnForTeam(team) : this.setColumnsForAllTeams();
-      });
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-  private setColumnForTeam(team: Team) {
-    this.displayedColumns = [...this.teamColumns];
-    if (team.isWriteable) {
-      this.displayedColumns.push('menu');
+  displayedColumns = computed(() => {
+    const team = this.currentTeam();
+    if (team) {
+      const cols = [...this.teamColumns];
+      if (team.isWriteable) {
+        cols.push('menu');
+      }
+      return cols;
     }
-  }
+    return this.allColumns;
+  });
 
-  private setColumnsForAllTeams() {
-    this.displayedColumns = this.allColumns;
-  }
+  isTeamWriteable = computed(() => !!this.currentTeam()?.isWriteable);
+
+  isTeamArchived = computed(() => !!this.currentTeam()?.markedAsArchivedAt);
 
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
+
+    const team = this.currentTeam();
+    if (!team) {
+      return;
+    }
+
     const i18nData = {
       user: `${entry.firstName} ${entry.lastName}`,
-      team: this.selectedTeam$.value?.name
+      team: team.name
     };
+
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(entry.id, this.selectedTeam$.value as Team)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamStateService.removeUserFromTeam(entry.id, team)))
       .subscribe(() => {
         this.userService.reloadUsers();
         this.userService.reloadCurrentUser()
@@ -85,10 +82,10 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   }
 
   saveUserTeamMembership(isAdmin: boolean, userTableEntry: UserTableEntry, userTeam: UserTeam): void {
-    // make a copy and set value only after successful request
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;
-    this.teamService.updateOrAddTeamMembership(userTableEntry.id, newUserTeam)
+
+    this.teamStateService.updateOrAddTeamMembership(userTableEntry.id, newUserTeam)
       .subscribe(() => {
         userTeam.isTeamAdmin = isAdmin;
         this.userService.reloadUsers();
@@ -101,10 +98,6 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
     return getRouteToUserDetails(user.id, team?.id);
   }
 
-  /*
-   * this method is only used in Team context. Therefore, it should only have one userTeam.
-   * otherwise the method will throw an exception
-   */
   getSingleUserTeam(userTableEntry: UserTableEntry): UserTeam {
     if (userTableEntry.userTeamList.length !== 1) {
       throw Error('it should have exactly one UserTeam at this point');

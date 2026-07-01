@@ -1,14 +1,13 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { BehaviorSubject, filter, mergeMap, Subject, takeUntil, tap } from 'rxjs';
+import { filter, mergeMap, Subject, takeUntil, tap } from 'rxjs';
 import { getFullNameOfUser, User } from '../../shared/types/model/user';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Team } from '../../shared/types/model/team';
 import { UserTeam } from '../../shared/types/model/user-team';
-import { TranslateService } from '@ngx-translate/core';
 import { MatTable } from '@angular/material/table';
-import { TeamService } from '../../services/team.service';
 import { DialogService } from '../../services/dialog.service';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 @Component({
   selector: 'app-member-detail',
@@ -21,9 +20,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   private readonly route = inject(ActivatedRoute);
 
-  private readonly translateService = inject(TranslateService);
-
-  private readonly teamService = inject(TeamService);
+  private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
   private readonly cd = inject(ChangeDetectorRef);
 
@@ -37,7 +34,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   teams: Team[] = [];
 
-  currentUserTeams$ = new BehaviorSubject<UserTeam[]>([]);
+  currentUserTeams = signal<UserTeam[]>([]);
 
   selectedUserIsLoggedInUser = false;
 
@@ -71,7 +68,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       .pipe(tap((user) => this.setSelectedUserIsLoggedInUser(user)))
       .subscribe((user) => {
         this.user = user;
-        this.currentUserTeams$.next(user.userTeamList);
+        this.currentUserTeams.set(user.userTeamList);
         this.cd.markForCheck();
       });
   }
@@ -96,7 +93,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.dialogService
       .openConfirmDialog('CONFIRMATION.DELETE.USER_FROM_TEAM', i18nData)
       .afterClosed()
-      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)))
+      .pipe(filter((confirm) => confirm), mergeMap(() => this.teamStateService.removeUserFromTeam(user.id, userTeam.team)))
       .subscribe(() => {
         this.loadUser(user.id);
         this.userService.reloadUsers();
@@ -108,7 +105,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     // make a copy and set value of real object after successful request
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;
-    this.teamService.updateOrAddTeamMembership(user.id, newUserTeam)
+    this.teamStateService.updateOrAddTeamMembership(user.id, newUserTeam)
       .subscribe(() => {
         userTeam.isTeamAdmin = isAdmin;
         this.loadUser(user.id);
@@ -120,7 +117,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   addTeamMembership(userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
-    this.teamService.updateOrAddTeamMembership(user.id, userTeam)
+    this.teamStateService.updateOrAddTeamMembership(user.id, userTeam)
       .subscribe(() => {
         this.loadUser(user.id);
         this.userService.reloadUsers();
@@ -129,8 +126,12 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  isDeletable(userTeam: UserTeam): boolean {
+  hasPermission(userTeam: UserTeam): boolean {
     return userTeam.team.isWriteable || this.selectedUserIsLoggedInUser;
+  }
+
+  isTeamArchived(userTeam: UserTeam): boolean {
+    return !!userTeam.team.markedAsArchivedAt;
   }
 
   navigateBack() {
@@ -141,7 +142,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.userService.setIsOkrChampion(user, okrChampion)
       .subscribe(() => {
         this.loadUser(user.id);
-        this.teamService.reloadTeams();
+        this.teamStateService.reload();
       });
   }
 

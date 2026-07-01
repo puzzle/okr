@@ -1,146 +1,175 @@
-import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TeamFilterComponent } from './team-filter.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MatChipsModule } from '@angular/material/chips';
-import { TeamService } from '../../../services/team.service';
+import { TeamStateService } from '../../../services/team.state.service';
 import { RefreshDataService } from '../../../services/refresh-data.service';
-import { BehaviorSubject, of, Subject } from 'rxjs';
-import { team1, team2, team3, teamList, testUser } from '../../test-data';
-import { Router } from '@angular/router';
+import { Subject, of } from 'rxjs';
+import { teamList, testUser } from '../../test-data';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../../services/user.service';
 import { extractTeamsFromUser } from '../../types/model/user';
 import { ApplicationBannerComponent } from '../../custom/application-banner/application-banner.component';
 import { Team } from '../../types/model/team';
-
-const teamServiceMock = {
-  getAllTeams: jest.fn()
-};
-
-const refreshDataServiceMock = {
-  reloadOverviewSubject: new Subject(),
-  teamFilterReady: new Subject(),
-  markDataRefresh: jest.fn
-};
-
-const userServiceMock = {
-  getCurrentUser: jest.fn()
-};
+import { TeamStatus } from '../../types/enums/team-status';
+import { signal, WritableSignal } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 describe('TeamFilterComponent', () => {
   let component: TeamFilterComponent;
   let fixture: ComponentFixture<TeamFilterComponent>;
   let router: Router;
+  let teamsSignal: WritableSignal<Team[]>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  let activatedRouteMock: any;
+  let teamStateServiceMock: any;
+  let refreshDataServiceMock: any;
+  let userServiceMock: any;
+  let breakpointObserverMock: any;
+
+  beforeEach(async() => {
+    teamsSignal = signal<Team[]>([]);
+
+    activatedRouteMock = {
+      snapshot: {
+        queryParams: {}
+      }
+    };
+
+    teamStateServiceMock = {
+      getTeams: jest.fn()
+        .mockReturnValue(teamsSignal),
+      reload: jest.fn()
+    };
+
+    refreshDataServiceMock = {
+      reloadOverviewSubject: new Subject<null>(),
+      teamFilterReady: new Subject<void>(),
+      markDataRefresh: jest.fn()
+    };
+
+    userServiceMock = {
+      getCurrentUser: jest.fn()
+        .mockReturnValue(testUser)
+    };
+
+    breakpointObserverMock = {
+      observe: jest.fn()
+        .mockReturnValue(of({ matches: false }))
+    };
+
+    await TestBed.configureTestingModule({
       declarations: [TeamFilterComponent,
         ApplicationBannerComponent],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
+      imports: [RouterTestingModule,
         MatChipsModule,
-        MatIconModule
-      ],
-      providers: [{ provide: TeamService,
-        useValue: teamServiceMock },
-      { provide: RefreshDataService,
-        useValue: refreshDataServiceMock },
-      { provide: UserService,
-        useValue: userServiceMock }]
-    });
-    fixture = TestBed.createComponent(TeamFilterComponent);
-    component = fixture.componentInstance;
-    teamServiceMock.getAllTeams.mockReturnValue(of(teamList));
-    refreshDataServiceMock
-      .markDataRefresh()
-      .mockImplementation(() => refreshDataServiceMock.reloadOverviewSubject.next(null));
-    router = TestBed.inject(Router);
-    userServiceMock.getCurrentUser.mockReturnValue(testUser);
-    fixture.detectChanges();
+        MatIconModule],
+      providers: [
+        { provide: TeamStateService,
+          useValue: teamStateServiceMock },
+        { provide: RefreshDataService,
+          useValue: refreshDataServiceMock },
+        { provide: UserService,
+          useValue: userServiceMock },
+        { provide: ActivatedRoute,
+          useValue: activatedRouteMock },
+        { provide: BreakpointObserver,
+          useValue: breakpointObserverMock }
+      ]
+    })
+      .compileComponents();
   });
 
+  function setupComponent() {
+    fixture = TestBed.createComponent(TeamFilterComponent);
+    component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+    jest.spyOn(router, 'navigate')
+      .mockResolvedValue(true);
+  }
+
   it('should create', () => {
+    setupComponent();
+    fixture.detectChanges();
     expect(component)
       .toBeTruthy();
   });
 
-  it('should select all chips per default', waitForAsync(async() => {
-    jest.spyOn(component.teams$, 'next');
+  it('should select all teams per default if no param is given', fakeAsync(() => {
+    activatedRouteMock.snapshot.queryParams = {};
+    setupComponent();
     jest.spyOn(component, 'changeTeamFilterParams');
-    component.ngOnInit();
-    fixture.detectChanges();
 
-    expect(component.teams$.next)
-      .toHaveBeenCalledWith(teamList);
-    expect(component.teams$.next)
-      .toHaveBeenCalledTimes(1);
+    teamsSignal.set(teamList);
+    fixture.detectChanges();
+    tick();
+
+    const expectedUserTeams = extractTeamsFromUser(testUser)
+      .map((t) => t.id);
+    expect(component.activeTeams())
+      .toStrictEqual(expectedUserTeams);
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
   }));
 
-  it('should select the correct chips', waitForAsync(async() => {
+  it('should select the correct chips based on URL query parameters', fakeAsync(() => {
     const teamIds = teamList.map((e) => e.id)
-      .filter((e, i) => i < 2);
-    jest.spyOn(component.teams$, 'next');
+      .slice(0, 2);
+    activatedRouteMock.snapshot.queryParams = { teams: teamIds.join(',') };
+
+    setupComponent();
     jest.spyOn(component, 'changeTeamFilterParams');
-    const routerHarness = await RouterTestingHarness.create();
 
-    await routerHarness.navigateByUrl('/?teams=' + teamIds.join(','));
-
-    component.ngOnInit();
+    teamsSignal.set(teamList);
     fixture.detectChanges();
+    tick();
 
-    expect(component.teams$.next)
-      .toHaveBeenCalledWith(teamList);
-    expect(component.teams$.next)
-      .toHaveBeenCalledTimes(1);
-    expect(component.activeTeams)
+    expect(component.activeTeams())
       .toStrictEqual(teamIds);
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
   }));
 
-  it('should have all teams in activeTeams array when all teams are shown', waitForAsync(async() => {
+  it('should have all teams in activeTeams array when all teams are requested', fakeAsync(() => {
     const teamIds = teamList.map((e) => e.id);
-    jest.spyOn(component.teams$, 'next');
+    activatedRouteMock.snapshot.queryParams = { teams: teamIds.join(',') };
+
+    setupComponent();
     jest.spyOn(component, 'changeTeamFilterParams');
-    const routerHarness = await RouterTestingHarness.create();
 
-    await routerHarness.navigateByUrl('/?teams=' + teamIds.join(','));
-
-    component.ngOnInit();
+    teamsSignal.set(teamList);
     fixture.detectChanges();
+    tick();
 
-    expect(component.teams$.next)
-      .toHaveBeenCalledWith(teamList);
-    expect(component.teams$.next)
-      .toHaveBeenCalledTimes(1);
-    expect(component.activeTeams.length)
+    expect(component.activeTeams().length)
       .toBe(3);
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
   }));
 
-  it('should update route after updating filter', fakeAsync(async() => {
-    component.activeTeams = teamList.map((e) => e.id)
-      .filter((e, i) => i < 2);
-    const routerHarness = await RouterTestingHarness.create();
-    jest.spyOn(component, 'changeTeamFilterParams');
-    jest.spyOn(refreshDataServiceMock, 'markDataRefresh');
+  it('should update route after updating filter', fakeAsync(() => {
+    setupComponent();
+    teamsSignal.set(teamList);
 
-    component.activeTeams = [8,
-      5,
-      10];
     fixture.detectChanges();
-    await component.changeTeamFilterParams();
-    routerHarness.detectChanges();
-    expect(component.changeTeamFilterParams)
+    tick();
+
+    (router.navigate as jest.Mock).mockClear();
+
+    component.activeTeams.set([8,
+      5,
+      10]);
+    component.changeTeamFilterParams();
+    tick();
+
+    expect(router.navigate)
       .toHaveBeenCalledTimes(1);
-    expect(router.url)
-      .toBe('/?teams=8,5,10');
+    expect(router.navigate)
+      .toHaveBeenCalledWith([], expect.objectContaining({
+        queryParams: { teams: '8,5,10' },
+        replaceUrl: true
+      }));
   }));
 
   it.each([
@@ -165,17 +194,21 @@ describe('TeamFilterComponent', () => {
       3,
       []]
   ])('should toggle Selection', (activeTeams: number[], selected: number, expected: number[]) => {
-    component.activeTeams = activeTeams;
+    setupComponent();
+    teamsSignal.set(teamList);
+    fixture.detectChanges();
+
+    component.activeTeams.set(activeTeams);
     jest.spyOn(component, 'areAllTeamsShown');
     jest.spyOn(component, 'changeTeamFilterParams');
 
     component.toggleSelection(selected);
-    fixture.detectChanges();
+
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
     expect(component.areAllTeamsShown)
       .toHaveBeenCalledTimes(1);
-    expect(component.activeTeams)
+    expect(component.activeTeams())
       .toStrictEqual(expected);
   });
 
@@ -196,7 +229,11 @@ describe('TeamFilterComponent', () => {
       4],
     false]
   ])('should correctly determine if all teams are shown', (activeTeams: number[], expected: boolean) => {
-    component.activeTeams = activeTeams;
+    setupComponent();
+    teamsSignal.set(teamList);
+    fixture.detectChanges();
+
+    component.activeTeams.set(activeTeams);
     expect(component.areAllTeamsShown())
       .toBe(expected);
   });
@@ -220,147 +257,179 @@ describe('TeamFilterComponent', () => {
       3],
     []]
   ])('should correctly select all teams', (currentTeams: number[], expectedTeams: number[]) => {
-    component.activeTeams = currentTeams;
+    setupComponent();
+    teamsSignal.set(teamList);
+    fixture.detectChanges();
+
+    component.activeTeams.set(currentTeams);
     jest.spyOn(component, 'changeTeamFilterParams');
+
     component.toggleAll();
+
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
-    expect(component.activeTeams)
+    expect(component.activeTeams())
       .toStrictEqual(expectedTeams);
   });
 
-  it('should refresh teams on data refresh', () => {
-    component.ngOnInit();
-    component.activeTeams = [team2.id,
-      team3.id];
+  it('should refresh teams on data refresh', fakeAsync(() => {
+    setupComponent();
+    teamsSignal.set(teamList);
     fixture.detectChanges();
-    expect(component.teams$.value)
-      .toStrictEqual(teamList);
-    teamServiceMock.getAllTeams.mockReturnValue(of([team2,
-      team1]));
-    fixture.detectChanges();
-    expect(component.teams$.value)
-      .toStrictEqual(teamList);
+
     refreshDataServiceMock.reloadOverviewSubject.next(null);
-    fixture.detectChanges();
-    expect(component.teams$.value)
-      .toStrictEqual([team2,
-        team1]);
-    expect(component.activeTeams)
-      .toStrictEqual([team1.id]);
-  });
+    tick();
 
-  it('should use teams of user if no known teams are in url', async() => {
-    const teamIds = [654,
-      478];
-    jest.spyOn(component.teams$, 'next');
+    expect(teamStateServiceMock.reload)
+      .toHaveBeenCalledTimes(1);
+  }));
+
+  it('should use teams of user if no known teams are in url', fakeAsync(() => {
+    activatedRouteMock.snapshot.queryParams = { teams: '654,478' };
+
+    const userTeams = extractTeamsFromUser(testUser);
+
+    teamStateServiceMock.getTeams.mockReturnValue(signal(userTeams));
+
+    setupComponent();
     jest.spyOn(component, 'changeTeamFilterParams');
-    const routerHarness = await RouterTestingHarness.create();
 
-    await routerHarness.navigateByUrl('/?teams=' + teamIds.join(','));
+    teamsSignal.set(userTeams);
 
-    component.ngOnInit();
     fixture.detectChanges();
+    tick();
 
-    expect(component.activeTeams.length)
-      .toBe(1);
-    expect(component.activeTeams)
-      .toStrictEqual(extractTeamsFromUser(testUser)
-        .map((team) => team.id));
+    const userTeamIds = userTeams.map((team) => team.id);
+    expect(component.activeTeams())
+      .toStrictEqual(userTeamIds);
     expect(component.changeTeamFilterParams)
       .toHaveBeenCalledTimes(1);
-  });
-
-  it('should use teams of user if no teams are in url', async() => {
-    jest.spyOn(component.teams$, 'next');
-    jest.spyOn(component, 'changeTeamFilterParams');
-    const routerHarness = await RouterTestingHarness.create();
-
-    await routerHarness.navigateByUrl('');
-
-    component.ngOnInit();
-    fixture.detectChanges();
-
-    expect(component.activeTeams.length)
-      .toBe(1);
-    expect(component.activeTeams)
-      .toStrictEqual(extractTeamsFromUser(testUser)
-        .map((team) => team.id));
-    expect(component.changeTeamFilterParams)
-      .toHaveBeenCalledTimes(1);
-  });
+  }));
 
   it.each([[[1,
     2,
     3],
   '1,2,3'],
   [[],
-    null]])('should navigate after filter update', async(currentTeams: number[], routingTeams: string | null) => {
-    component.activeTeams = currentTeams;
-
-    jest.spyOn(router, 'navigate');
-
+    null]])('should navigate after filter update', fakeAsync((currentTeams: number[], routingTeams: string | null) => {
+    setupComponent();
     fixture.detectChanges();
-    await component.changeTeamFilterParams();
+
+    component.activeTeams.set(currentTeams);
+    component.changeTeamFilterParams();
+    tick();
 
     expect(router.navigate)
       .toHaveBeenCalledTimes(1);
     expect(router.navigate)
-      .toHaveBeenCalledWith([], { queryParams: { teams: routingTeams } });
-  });
+      .toHaveBeenCalledWith([], expect.objectContaining({
+        queryParams: { teams: routingTeams },
+        replaceUrl: true
+      }));
+  }));
 
-  it('should filter teams by toggled priority and then by name', async() => {
+  it('should filter teams by toggled priority and then by name on mobile', fakeAsync(() => {
+    breakpointObserverMock.observe.mockReturnValue(of({ matches: true }));
+    setupComponent();
+
     const teams: Team[] = [
       { id: 1,
         version: 0,
         name: 'Team D',
-        description: 'Team Delta',
-        isWriteable: true },
+        description: '',
+        isWriteable: true,
+        markedAsArchivedAt: null,
+        status: TeamStatus.ACTIVE },
       { id: 2,
         version: 0,
         name: 'Team C',
-        description: 'Team Charlie',
-        isWriteable: true },
+        description: '',
+        isWriteable: true,
+        markedAsArchivedAt: null,
+        status: TeamStatus.ACTIVE },
       { id: 3,
         version: 0,
         name: 'Team B',
-        description: 'Team Bravo',
-        isWriteable: true },
+        description: '',
+        isWriteable: true,
+        markedAsArchivedAt: null,
+        status: TeamStatus.ACTIVE },
       { id: 4,
         version: 0,
         name: 'Team A',
-        description: 'Team Alpha',
-        isWriteable: true }
+        description: '',
+        isWriteable: true,
+        markedAsArchivedAt: null,
+        status: TeamStatus.ACTIVE }
     ];
 
-    component.teams$ = new BehaviorSubject(teams);
-    component.activeTeams = [3,
-      4];
+    teamsSignal.set(teams);
+    fixture.detectChanges();
 
-    const sortedTeams = component.sortTeamsToggledPriority();
+    component.activeTeams.set([3,
+      4]);
+    fixture.detectChanges();
+
+    const sortedTeams = component.teams();
 
     expect(sortedTeams)
       .toEqual([
         { id: 4,
           version: 0,
           name: 'Team A',
-          description: 'Team Alpha',
-          isWriteable: true },
+          description: '',
+          isWriteable: true,
+          markedAsArchivedAt: null,
+          status: TeamStatus.ACTIVE },
         { id: 3,
           version: 0,
           name: 'Team B',
-          description: 'Team Bravo',
-          isWriteable: true },
+          description: '',
+          isWriteable: true,
+          markedAsArchivedAt: null,
+          status: TeamStatus.ACTIVE },
         { id: 2,
           version: 0,
           name: 'Team C',
-          description: 'Team Charlie',
-          isWriteable: true },
+          description: '',
+          isWriteable: true,
+          markedAsArchivedAt: null,
+          status: TeamStatus.ACTIVE },
         { id: 1,
           version: 0,
           name: 'Team D',
-          description: 'Team Delta',
-          isWriteable: true }
+          description: '',
+          isWriteable: true,
+          markedAsArchivedAt: null,
+          status: TeamStatus.ACTIVE }
       ]);
-  });
+  }));
+
+  it('should exclude archived teams when falling back to user teams on initial load', fakeAsync(() => {
+    const mockUser = {
+      ...testUser,
+      userTeamList: [{ team: { id: 1,
+        name: 'Team 1' } },
+      { team: { id: 2,
+        name: 'Team 2' } }]
+    };
+    userServiceMock.getCurrentUser.mockReturnValue(mockUser);
+
+    const mockTeams = [{ id: 1,
+      name: 'Team 1' },
+    { id: 2,
+      name: 'Team 2',
+      markedAsArchivedAt: new Date() }];
+    teamStateServiceMock.getTeams.mockReturnValue(signal(mockTeams));
+
+    activatedRouteMock.snapshot.queryParams = {};
+
+    fixture = TestBed.createComponent(TeamFilterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    tick();
+
+    expect(component.activeTeams())
+      .toStrictEqual([1]);
+  }));
 });

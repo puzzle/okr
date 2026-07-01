@@ -217,6 +217,9 @@ export default tsEslint.config(
       ],
       //Doesn't work with Angular 17+
       '@html-eslint/element-newline': 'off',
+
+      // Disallow inline styles (e.g., style="color: red;")
+      '@html-eslint/no-inline-styles': 'error',
     },
   },
   {

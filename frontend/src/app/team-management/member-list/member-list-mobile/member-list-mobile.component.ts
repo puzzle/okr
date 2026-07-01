@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { MatTableDataSource } from '@angular/material/table';
-import { BehaviorSubject } from 'rxjs';
 import { Team } from '../../../shared/types/model/team';
 import { getFullNameOfUser } from '../../../shared/types/model/user';
 import { getRouteToUserDetails } from '../../../shared/route-utils';
@@ -15,10 +14,10 @@ import { getRouteToUserDetails } from '../../../shared/route-utils';
 export class MemberListMobileComponent {
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;
 
-  @Input() selectedTeam$!: BehaviorSubject<Team | undefined>;
+  selectedTeam = input<Team>();
 
   getMemberDetailsLink(userTableEntry: UserTableEntry) {
-    return getRouteToUserDetails(userTableEntry.id, this.selectedTeam$.value?.id);
+    return getRouteToUserDetails(userTableEntry.id, this.selectedTeam()?.id);
   }
 
   protected readonly getFullNameFromUser = getFullNameOfUser;

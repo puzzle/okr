@@ -7,7 +7,7 @@ import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.State;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.business.QuarterBusinessService;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import java.time.LocalDateTime;

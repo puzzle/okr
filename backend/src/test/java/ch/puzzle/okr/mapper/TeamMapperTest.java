@@ -2,8 +2,11 @@ package ch.puzzle.okr.mapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ch.puzzle.okr.dto.ArchiveTeamDto;
 import ch.puzzle.okr.dto.TeamDto;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
+import ch.puzzle.okr.models.team.TeamStatus;
+import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +21,8 @@ public class TeamMapperTest {
     private static final String NAME = "my team name";
     private static final String DESCRIPTION = "my team description that is quite long";
     public static final boolean IS_WRITEABLE = true;
+    public static final LocalDate MARKED_AS_ARCHIVED_AT = null;
+    public static final TeamStatus STATUS = null;
 
     @InjectMocks
     private TeamMapper teamMapper;
@@ -49,13 +54,15 @@ public class TeamMapperTest {
         assertEquals(expected.getName(), actual.name());
         assertEquals(expected.getDescription(), actual.description());
         assertEquals(expected.isWriteable(), actual.isWriteable());
+        assertEquals(expected.getMarkedAsArchivedAt(), actual.markedAsArchivedAt());
+        assertEquals(expected.getStatus(), actual.status());
     }
 
     @DisplayName("Should map dto to team when calling toTeam()")
     @Test
     void shouldMapDtoToTeam() {
         // arrange
-        TeamDto teamDto = new TeamDto(ID, VERSION, NAME, DESCRIPTION, IS_WRITEABLE);
+        TeamDto teamDto = new TeamDto(ID, VERSION, NAME, DESCRIPTION, IS_WRITEABLE, MARKED_AS_ARCHIVED_AT, STATUS);
 
         // act
         Team team = teamMapper.toTeam(teamDto);
@@ -71,6 +78,18 @@ public class TeamMapperTest {
         assertEquals(expected.name(), actual.getName());
         assertEquals(expected.description(), actual.getDescription());
         assertFalse(actual.isWriteable());
+        assertEquals(expected.markedAsArchivedAt(), actual.getMarkedAsArchivedAt());
+        assertEquals(expected.status(), actual.getStatus());
+    }
+
+    @DisplayName("Should map archiveDto to markedAsArchivedAt local date")
+    @Test
+    void shouldMapArchiveDtoToLocalDate() {
+        ArchiveTeamDto archiveTeamDto = new ArchiveTeamDto(MARKED_AS_ARCHIVED_AT);
+
+        LocalDate markedAsArchivedAt = teamMapper.toMarkedAsArchivedAt(archiveTeamDto);
+
+        assertEquals(MARKED_AS_ARCHIVED_AT, markedAsArchivedAt);
     }
 
 }

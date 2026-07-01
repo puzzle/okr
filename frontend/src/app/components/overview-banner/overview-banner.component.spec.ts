@@ -14,6 +14,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { signal } from '@angular/core';
+import { TeamStateService } from '../../services/team.state.service';
 
 
 describe('OverviewBannerComponent', () => {
@@ -28,6 +30,11 @@ describe('OverviewBannerComponent', () => {
         unobserve: jest.fn()
       }));
 
+  const teamStateServiceMock = {
+    getTeams: jest.fn()
+      .mockReturnValue(signal([]))
+  };
+
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [
@@ -37,9 +44,13 @@ describe('OverviewBannerComponent', () => {
         TeamFilterComponent,
         ObjectiveFilterComponent
       ],
-      providers: [provideRouter([]),
+      providers: [
+        provideRouter([]),
         provideHttpClient(),
-        provideHttpClientTesting()],
+        provideHttpClientTesting(),
+        { provide: TeamStateService,
+          useValue: teamStateServiceMock }
+      ],
       imports: [
         MatExpansionModule,
         MatSelectModule,

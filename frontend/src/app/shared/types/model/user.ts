@@ -11,7 +11,13 @@ export interface User {
 }
 
 export const extractTeamsFromUser = (user: User) => {
-  return user.userTeamList.map((u) => u.team);
+  if (!user || !user.userTeamList) {
+    return [];
+  }
+
+  return user.userTeamList
+    .map((u) => u.team)
+    .filter((team) => !team.markedAsArchivedAt);
 };
 
 export const getFullNameOfUser = (user: User | UserTableEntry) => {

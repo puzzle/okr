@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Output, inject, input, Signal, computed } from '@angular/core';
 import { UserTeam } from '../../shared/types/model/user-team';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -15,12 +15,16 @@ export class ShowEditRoleComponent {
 
   private readonly cd = inject(ChangeDetectorRef);
 
-  @Input({ required: true }) userTeam!: UserTeam;
+  userTeam = input.required<UserTeam>();
 
   @Output()
   private readonly save = new EventEmitter<boolean>();
 
   edit = false;
+
+  isWriteable: Signal<boolean> = computed(() => this.userTeam().team.isWriteable);
+
+  isArchived: Signal<boolean> = computed(() => !!this.userTeam().team.markedAsArchivedAt);
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: MouseEvent) {
@@ -48,13 +52,9 @@ export class ShowEditRoleComponent {
   }
 
   getRole(): string {
-    if (this.userTeam.isTeamAdmin) {
+    if (this.userTeam().isTeamAdmin) {
       return this.translate.instant('USER_ROLE.TEAM_ADMIN');
     }
     return this.translate.instant('USER_ROLE.TEAM_MEMBER');
-  }
-
-  isEditable() {
-    return this.userTeam.team.isWriteable;
   }
 }

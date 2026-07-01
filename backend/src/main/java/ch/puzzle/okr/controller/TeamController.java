@@ -2,10 +2,11 @@ package ch.puzzle.okr.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 
+import ch.puzzle.okr.dto.ArchiveTeamDto;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.TeamMapper;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.authorization.TeamAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,11 +30,19 @@ public class TeamController {
         this.teamMapper = teamMapper;
     }
 
-    @Operation(summary = "Get Teams", description = "Get all Teams from db")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned all Teams", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }), })
+    @Operation(summary = "Get Teams", description = "Get all Teams from the db. Optionally filter by quarter to exclude teams archived before the quarter started.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all requested Teams", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Quarter not found (if provided)", content = @Content) })
     @GetMapping
-    public List<TeamDto> getAllTeams() {
+    public List<TeamDto> getAllTeams(@Parameter(description = "Optional Quarter ID to filter out historically archived teams")
+    @RequestParam(required = false, name = "quarterId") Long quarterId) {
+
+        if (quarterId != null) {
+            return teamAuthorizationService.getAllTeamsByQuarter(quarterId).stream().map(teamMapper::toDto).toList();
+        }
+
         return teamAuthorizationService.getAllTeams().stream().map(teamMapper::toDto).toList();
     }
 
@@ -62,6 +71,38 @@ public class TeamController {
     @PathVariable long id, @RequestBody TeamDto teamDto) {
         Team updatedTeam = teamAuthorizationService.updateEntity(teamMapper.toTeam(teamDto), id);
         return ResponseEntity.status(OK).body(teamMapper.toDto(updatedTeam));
+    }
+
+    @Operation(summary = "Archive Team", description = "Marks a team as archived effective from the provided date.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Team successfully archived", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Team is already archived", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Not authorized to archive the team", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID", content = @Content) })
+    @PutMapping("/{id}/archive")
+    public ResponseEntity<TeamDto> archiveTeam(@Parameter(description = "The ID of the team to archive.", required = true)
+    @PathVariable long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The archive details including the effective end date.", required = true) @RequestBody ArchiveTeamDto archiveDto) {
+
+        Team archivedTeam = teamAuthorizationService.archiveTeam(id, teamMapper.toMarkedAsArchivedAt(archiveDto));
+
+        return ResponseEntity.status(OK).body(teamMapper.toDto(archivedTeam));
+    }
+
+    @Operation(summary = "Un-archive a Team", description = "Removes the archived status and restores the team to active.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Team successfully un-archived", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Team is already active", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Not authorized to un-archived the team", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID", content = @Content) })
+    @PutMapping("/{id}/unarchive")
+    public ResponseEntity<TeamDto> unarchiveTeam(@Parameter(description = "The ID of the team to un-archived.", required = true)
+    @PathVariable long id) {
+
+        Team unarchivedTeam = teamAuthorizationService.unarchiveTeam(id);
+
+        return ResponseEntity.status(OK).body(teamMapper.toDto(unarchivedTeam));
     }
 
     @Operation(summary = "Delete Team by ID", description = "Delete Team by ID")

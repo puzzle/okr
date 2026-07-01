@@ -4,18 +4,17 @@
   subscriptSizing="dynamic"
 >
   <mat-select
-    [(ngModel)]="currentQuarterId"
-    (ngModelChange)="changeDisplayedQuarter()"
+    [ngModel]="currentQuarterId()"
+    (ngModelChange)="changeDisplayedQuarter($event)"
     [attr.data-testId]="'quarter-filter'"
     ngDefaultControl
   >
-    @for (quarter of quarters | async; track quarter) {
+    @for (quarter of quarters(); track quarter.id) {
     @if (quarter.isBacklogQuarter && showBacklog || !quarter.isBacklogQuarter) {
     <mat-option [value]="quarter.id">
       {{ quarter.fullLabel() }}
     </mat-option>
     }
     }
-
   </mat-select>
 </mat-form-field>

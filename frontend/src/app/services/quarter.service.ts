@@ -9,7 +9,6 @@ import { map, Observable } from 'rxjs';
 export class QuarterService {
   private http = inject(HttpClient);
 
-
   getAllQuarters(): Observable<Quarter[]> {
     return this.http
       .get<Quarter[]>('/api/v2/quarters')

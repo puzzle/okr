@@ -20,18 +20,19 @@
       [attr.data-testId]="'teamManagementSearchResult'"
       [autoActiveFirstOption]="true"
     >
-      @if ((filteredUsers$ | async)?.length) {
+      @if (filteredUsers().length) {
       <mat-optgroup [label]="'TEAM_MANAGEMENT.USERS' | translate">
-        @for (user of filteredUsers$ | async; track user) {
+        @for (user of filteredUsers(); track user.id) {
         <mat-option (onSelectionChange)="selectUser(user)">
           <span [innerHtml]="user.htmlValue"></span>
         </mat-option>
         }
       </mat-optgroup>
       }
-      @if ((filteredTeams$ | async)?.length) {
+
+      @if (filteredTeams().length) {
       <mat-optgroup [label]="'TEAM_MANAGEMENT.TEAMS' | translate">
-        @for (team of filteredTeams$ | async; track team) {
+        @for (team of filteredTeams(); track team.id) {
         <mat-option (onSelectionChange)="selectTeam(team)">
           <span [innerHtml]="team.htmlValue"></span>
         </mat-option>

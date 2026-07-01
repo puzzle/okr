@@ -21,7 +21,10 @@ describe('AddMemberToTeamDialogComponent', () => {
   };
 
   const teamServiceMock = {
-    addUsersToTeam: jest.fn()
+    addUsersToTeam: jest.fn(),
+    getAllTeams: jest.fn()
+      .mockReturnValue(of([])),
+    reload: jest.fn()
   };
 
   const matDialogRefMock = {};

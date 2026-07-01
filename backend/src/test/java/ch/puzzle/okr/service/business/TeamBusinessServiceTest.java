@@ -10,15 +10,18 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.team.Team;
+import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.persistence.UserTeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +38,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 class TeamBusinessServiceTest {
     @MockitoBean
     TeamPersistenceService teamPersistenceService = Mockito.mock(TeamPersistenceService.class);
+    @MockitoBean
+    QuarterBusinessService quarterBusinessService = Mockito.mock(QuarterBusinessService.class);
+
     Team team1;
     Team team2;
     Team team3;
@@ -150,6 +156,25 @@ class TeamBusinessServiceTest {
 
         List<Team> sortedList = teamBusinessService.getAllTeams(authUser);
         assertEquals(List.of(userTeam, notUserTeam, notUserTeam2), sortedList);
+    }
+
+    @DisplayName("Should pass input of getAllTeamsByQuarter() correctly to other methods")
+    @Test
+    void shouldGetAllTeamsByQuarter() {
+        Quarter quarter = Quarter.Builder
+                .builder()
+                .withId(1L)
+                .withLabel("Quarter 1")
+                .withStartDate(LocalDate.of(2025, 10, 10))
+                .build();
+
+        when(quarterBusinessService.getQuarterById(quarter.getId())).thenReturn(quarter);
+        when(teamPersistenceService.findActiveTeamsForQuarter(any())).thenReturn(List.of(team1, team2));
+
+        teamBusinessService.getAllTeamsByQuarter(quarter.getId());
+
+        verify(quarterBusinessService, times(1)).getQuarterById(quarter.getId());
+        verify(teamPersistenceService, times(1)).findActiveTeamsForQuarter(quarter.getStartDate());
     }
 
     @DisplayName("Should create new team with user as admin on createTeam()")
@@ -312,5 +337,54 @@ class TeamBusinessServiceTest {
 
         assertEquals(3, user.getUserTeamList().size());
         verify(cacheService, times(2)).emptyAuthorizationUsersCache();
+    }
+
+    @DisplayName("Should successfully archive team and call all required services")
+    @Test
+    void shouldArchiveTeamSuccessfully() {
+        Long teamId = 1L;
+        LocalDate archiveDate = LocalDate.of(2026, 6, 1);
+
+        Team team = Team.Builder.builder().withId(teamId).withName("Team to Archive").build();
+
+        Quarter firstQuarter = Quarter.Builder.builder().withStartDate(LocalDate.of(2026, 1, 1)).build();
+        Quarter lastQuarter = Quarter.Builder.builder().withEndDate(LocalDate.of(2026, 12, 31)).build();
+
+        when(teamPersistenceService.findById(teamId)).thenReturn(team);
+        when(quarterBusinessService.getFirstAndLastQuarterDates()).thenReturn(List.of(firstQuarter, lastQuarter));
+
+        when(teamPersistenceService.save(any(Team.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        Team result = teamBusinessService.archiveTeam(teamId, archiveDate);
+
+        verify(validator, times(1)).validateOnGet(teamId);
+        verify(validator, times(1))
+                .validateOnArchive(team, archiveDate, firstQuarter.getStartDate(), lastQuarter.getEndDate());
+        verify(cacheService, times(1)).emptyAuthorizationUsersCache();
+        verify(teamPersistenceService, times(1)).save(team);
+
+        assertEquals(archiveDate, result.getMarkedAsArchivedAt());
+    }
+
+    @DisplayName("Should successfully unarchive team, update status to ACTIVE, and clear archive date")
+    @Test
+    void shouldUnarchiveTeamSuccessfully() {
+        Long teamId = 2L;
+        Team team = Team.Builder.builder().withId(teamId).withName("Archived Team").build();
+        team.setMarkedAsArchivedAt(LocalDate.of(2026, 1, 1));
+
+        when(teamPersistenceService.findById(teamId)).thenReturn(team);
+
+        when(teamPersistenceService.save(any(Team.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        Team result = teamBusinessService.unarchiveTeam(teamId);
+
+        verify(validator, times(1)).validateOnGet(teamId);
+        verify(validator, times(1)).validateOnUnarchive(team);
+        verify(cacheService, times(1)).emptyAuthorizationUsersCache();
+        verify(teamPersistenceService, times(1)).save(team);
+
+        assertEquals(TeamStatus.ACTIVE, result.getStatus());
+        assertNull(result.getMarkedAsArchivedAt());
     }
 }

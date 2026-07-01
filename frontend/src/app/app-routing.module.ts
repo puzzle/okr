@@ -11,6 +11,7 @@ import { ObjectiveDetailComponent } from './components/objective-detail/objectiv
 import { KeyResultDetailComponent } from './components/key-result-detail/key-result-detail.component';
 import { TeamStateService } from './services/team.state.service';
 import { teamFilterResolver } from './resolvers/team-filter.resolver';
+import { defaultQueryParamsGuard } from './guards/default-query-params.quard';
 
 const currentUserResolver: ResolveFn<User | undefined> = () => {
   const oauthService = inject(OAuthService);
@@ -25,7 +26,8 @@ const routes: Routes = [
   {
     path: '',
     component: OverviewComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard,
+      defaultQueryParamsGuard],
     providers: [TeamStateService],
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',
 

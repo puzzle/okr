@@ -13,7 +13,7 @@ export const defaultQueryParamsGuard: CanActivateFn = (route): Observable<boolea
   const quarterQuery = route.queryParams['quarter'];
   const teamsQuery = route.queryParams['teams'];
 
-  if (quarterQuery && teamsQuery) {
+  if (quarterQuery) {
     return of(true);
   }
 
@@ -35,7 +35,7 @@ export const defaultQueryParamsGuard: CanActivateFn = (route): Observable<boolea
           mergedParams.teams = userTeams.map((t) => t.id)
             .join(',');
         } else {
-          mergedParams.teams = 'none';
+          mergedParams.teams = null;
         }
       }
 

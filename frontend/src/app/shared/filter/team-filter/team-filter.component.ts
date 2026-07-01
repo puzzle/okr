@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, inject, computed, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject, computed } from '@angular/core';
 import { map } from 'rxjs';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -67,12 +67,6 @@ export class TeamFilterComponent {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.teamStateService.reload());
-
-    effect(() => {
-      if (this.activeTeams().length > 0) {
-        this.refreshDataService.teamFilterReady.next();
-      }
-    });
   }
 
   changeTeamFilterParams(newActiveTeams: number[]): void {
@@ -82,8 +76,7 @@ export class TeamFilterComponent {
     this.router.navigate([], {
       queryParams: optionalParams,
       queryParamsHandling: 'merge'
-    })
-      .then(() => this.refreshDataService.teamFilterReady.next());
+    });
   }
 
   toggleSelection(id: number): void {

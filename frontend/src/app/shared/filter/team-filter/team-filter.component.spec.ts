@@ -9,7 +9,7 @@ import { teamList, testUser } from '../../test-data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../../services/user.service';
-import { extractTeamsFromUser } from '../../types/model/user';
+import { extractActiveTeamsFromUser } from '../../types/model/user';
 import { ApplicationBannerComponent } from '../../custom/application-banner/application-banner.component';
 import { Team } from '../../types/model/team';
 import { TeamStatus } from '../../types/enums/team-status';
@@ -105,7 +105,7 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
     tick();
 
-    const expectedUserTeams = extractTeamsFromUser(testUser)
+    const expectedUserTeams = extractActiveTeamsFromUser(testUser)
       .map((t) => t.id);
     expect(component.activeTeams())
       .toStrictEqual(expectedUserTeams);
@@ -287,7 +287,7 @@ describe('TeamFilterComponent', () => {
   it('should use teams of user if no known teams are in url', fakeAsync(() => {
     activatedRouteMock.snapshot.queryParams = { teams: '654,478' };
 
-    const userTeams = extractTeamsFromUser(testUser);
+    const userTeams = extractActiveTeamsFromUser(testUser);
 
     teamStateServiceMock.getTeams.mockReturnValue(signal(userTeams));
 

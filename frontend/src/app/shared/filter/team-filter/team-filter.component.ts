@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, inject, computed } from '@angular/core';
 import { map } from 'rxjs';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { areEqual, optionalReplaceWithNulls } from '../../common';
 import { RefreshDataService } from '../../../services/refresh-data.service';
@@ -62,12 +62,6 @@ export class TeamFilterComponent {
       return a.name.localeCompare(b.name);
     });
   });
-
-  constructor() {
-    this.refreshDataService.reloadOverviewSubject
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => this.teamStateService.reload());
-  }
 
   changeTeamFilterParams(newActiveTeams: number[]): void {
     const params = { teams: newActiveTeams.join(',') };

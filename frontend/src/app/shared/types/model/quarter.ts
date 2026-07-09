@@ -4,8 +4,8 @@ export class Quarter {
   ) {
     this.id = id;
     this.label = label;
-    this.startDate = startDate;
-    this.endDate = endDate;
+    this.startDate = startDate ? new Date(startDate) : null;
+    this.endDate = endDate ? new Date(endDate) : null;
     this.isBacklogQuarter = isBacklogQuarter;
   }
 

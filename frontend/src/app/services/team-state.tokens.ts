@@ -6,7 +6,8 @@ export const ALL_TEAMS_STATE = new InjectionToken<TeamStateService>('AllTeamsSta
   factory: () => {
     const service = new TeamStateService();
 
-    service.loadTeams();
+    service.loadTeams()
+      .subscribe();
 
     return service;
   }

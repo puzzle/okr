@@ -6,11 +6,15 @@
 >
   <ng-content></ng-content>
 
-  @if ((elements$ | async)?.length === 0 || !hasSelectedTeams) {
+  @if (isEmpty || !hasSelectedTeams) {
   <div class="d-flex align-items-center flex-column pt-5 gap-5">
-    <p id="no-team-text">Kein Team ausgewählt</p>
+
+    <p id="no-team-text">
+      {{ !hasSelectedTeams ? 'Kein Team ausgewählt' : 'Keine Daten vorhanden' }}
+    </p>
+
     <img
-      src="{{ backgroundLogoSrc$ | async }}"
+      [src]="backgroundLogoSrc$ | async"
       alt="Greyed out company logo"
       width="242"
       class="puzzle-logo"

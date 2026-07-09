@@ -1,11 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { DEFAULT_HEADER_HEIGHT_PX } from '../shared/constant-library';
+import { OverviewService } from './overview.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RefreshDataService {
+  overviewService = inject(OverviewService);
+
   public reloadOverviewSubject = new Subject<void>();
 
   public reloadKeyResultSubject = new Subject<void>();
@@ -14,5 +17,6 @@ export class RefreshDataService {
 
   markDataRefresh() {
     this.reloadOverviewSubject.next();
+    this.overviewService.reload();
   }
 }

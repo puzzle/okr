@@ -5,6 +5,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 export const authGuard: CanActivateFn = (route, state) => {
   const oAuthService = inject(OAuthService);
   const router = inject(Router);
+  console.log('🟡 Auth Guard running');
   return oAuthService.loadDiscoveryDocumentAndTryLogin()
     .then(async() => {
     // if the login failed initialize code flow

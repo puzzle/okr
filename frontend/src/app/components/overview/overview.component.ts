@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { OverviewEntity } from '../../shared/types/model/overview-entity';
 import { catchError, EMPTY, Subject } from 'rxjs';
 import { OverviewService } from '../../services/overview.service';
-import { trackByFn } from '../../shared/common';
 import { FilterPageChange } from '../../shared/types/model/filter-page-change';
 
 @Component({
@@ -17,7 +16,9 @@ export class OverviewComponent {
 
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
 
-  protected readonly trackByFn = trackByFn;
+  readonly data = this.overviewService.data;
+
+  readonly loading = this.overviewService.loading;
 
   loadOverview(filter: FilterPageChange) {
     this.overviewService

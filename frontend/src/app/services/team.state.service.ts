@@ -20,52 +20,57 @@ export class TeamStateService {
     return this.teams.asReadonly();
   }
 
-  loadTeams(filters: TeamFilters = {}): void {
+  loadTeams(filters: TeamFilters = {}): Observable<Team[]> {
     this.activeFilters = filters;
-    this.reload();
+    return this.reload();
   }
 
-  reload(): void {
-    this.teamService.getAllTeams(this.activeFilters)
-      .subscribe({
-        next: (teams) => this.teams.set(teams)
-      });
+  reload(): Observable<Team[]> {
+    return this.teamService.getAllTeams(this.activeFilters)
+      .pipe(tap((teams) => this.teams.set(teams)));
   }
 
   createTeam(team: Team): Observable<Team> {
     return this.teamService.createTeam(team)
-      .pipe(tap(() => this.reload()));
+      .pipe(tap(() => this.reload()
+        .subscribe()));
   }
 
   updateTeam(team: Team): Observable<Team> {
     return this.teamService.updateTeam(team)
-      .pipe(tap(() => this.reload()));
+      .pipe(tap(() => this.reload()
+        .subscribe()));
   }
 
   deleteTeam(id: number): Observable<void> {
     return this.teamService.deleteTeam(id)
-      .pipe(tap(() => this.reload()));
+      .pipe(tap(() => this.reload()
+        .subscribe()));
   }
 
   addUsersToTeam(team: Team, selectedUsers: User[]): Observable<void> {
     return this.teamService.addUsersToTeam(team, selectedUsers)
-      .pipe(tap(() => this.reload()));
+      .pipe(tap(() => this.reload()
+        .subscribe()));
   }
 
   removeUserFromTeam(userId: number, team: Team): Observable<void> {
     return this.teamService.removeUserFromTeam(userId, team)
-      .pipe(tap(() => this.reload()));
+      .pipe(tap(() => this.reload()
+        .subscribe()));
   }
 
   updateOrAddTeamMembership(userId: number, userTeam: UserTeam): Observable<void> {
     return this.teamService.updateOrAddTeamMembership(userId, userTeam)
-      .pipe(tap(() => this.reload()));
+      .pipe(tap(() => this.reload()
+        .subscribe()));
   }
 
   archiveTeam(team: Team): Observable<void> {
     return this.teamService.archiveTeam(team)
       .pipe(tap(() => {
-        this.reload();
+        this.reload()
+          .subscribe();
         this.userService.reloadUsers();
       }));
   }
@@ -73,7 +78,8 @@ export class TeamStateService {
   unarchiveTeam(id: number): Observable<void> {
     return this.teamService.unarchiveTeam(id)
       .pipe(tap(() => {
-        this.reload();
+        this.reload()
+          .subscribe();
         this.userService.reloadUsers();
       }));
   }

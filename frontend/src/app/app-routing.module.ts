@@ -10,8 +10,8 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
 import { KeyResultDetailComponent } from './components/key-result-detail/key-result-detail.component';
 import { TeamStateService } from './services/team.state.service';
-import { teamFilterResolver } from './resolvers/team-filter.resolver';
-import { defaultQueryParamsGuard } from './guards/default-query-params.quard';
+import { defaultQueryParamsGuard } from './guards/default-query-params.guard';
+import { overviewDataResolver } from './resolvers/overview-data.resolver';
 
 const currentUserResolver: ResolveFn<User | undefined> = () => {
   const oauthService = inject(OAuthService);
@@ -33,7 +33,7 @@ const routes: Routes = [
 
     resolve: {
       user: currentUserResolver,
-      filters: teamFilterResolver
+      filters: overviewDataResolver
     },
     children: [{
       path: 'details',
@@ -61,16 +61,12 @@ const routes: Routes = [
   {
     path: 'statistics',
     loadChildren: () => import('./statistics/statistics.module').then((m) => m.StatisticsModule),
-    canActivate: [authGuard],
+    canActivate: [authGuard,
+      defaultQueryParamsGuard],
 
     providers: [TeamStateService],
 
-    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-
-    resolve: {
-      user: currentUserResolver,
-      filters: teamFilterResolver
-    }
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange'
   },
   { path: '**',
     redirectTo: '',

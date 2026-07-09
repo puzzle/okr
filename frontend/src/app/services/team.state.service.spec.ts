@@ -72,21 +72,24 @@ describe('TeamStateService', () => {
     it('loadTeams should fetch teams via TeamService and update the global stream state', () => {
       const filters = { quarterId: 42 };
 
-      service.loadTeams(filters);
+      service.loadTeams(filters)
+        .subscribe();
 
       expect(teamServiceMock.getAllTeams)
         .toHaveBeenCalledWith(filters);
-
       expect(service.getTeams()())
         .toEqual(mockTeams);
     });
 
     it('reload should re-fetch teams using current active filters', () => {
       const filters = { quarterId: 99 };
-      service.loadTeams(filters);
+
+      service.loadTeams(filters)
+        .subscribe();
       teamServiceMock.getAllTeams.mockClear();
 
-      service.reload();
+      service.reload()
+        .subscribe();
 
       expect(teamServiceMock.getAllTeams)
         .toHaveBeenCalledWith(filters);

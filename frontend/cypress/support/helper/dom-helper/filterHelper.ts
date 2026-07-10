@@ -28,8 +28,11 @@ export default class FilterHelper extends PageObjectMapperBase {
   }
 
   toggleOption(text: string): this {
+    cy.intercept('GET', '**/api/v2/overview*')
+      .as('fetchOverview');
     this.getOption(text)
       .click();
+    cy.wait('@fetchOverview');
     return this;
   }
 

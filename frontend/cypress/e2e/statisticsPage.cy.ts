@@ -90,6 +90,8 @@ describe('StatisticsPage', () => {
 
   it('Should display statistics for user with least privileges', () => {
     cy.logout();
+    cy.url()
+      .should('include', 'localhost:8544');
     cy.loginAsUser(users.member);
     FilterHelper.do()
       .toggleOption('Alle');

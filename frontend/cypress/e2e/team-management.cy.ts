@@ -457,11 +457,10 @@ describe('okr team-management', () => {
             .should('be.disabled');
         });
 
-      // This removes basically every problem I ever had with flakiness for this test. Feel free to explore a better solution if you have more time
-      cy.wait(500);
-
       // Unarchive team again
       cy.realPress('Escape');
+      // This removes basically every problem I ever had with flakiness for this test. Feel free to explore a better solution if you have more time
+      cy.wait(500);
       teamManagementPage.unarchiveTeam('/BBT')
         .submit();
     });

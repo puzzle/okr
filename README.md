@@ -10,6 +10,7 @@ This project contains two parts:
 
 
 ## Backend
+
 [Backend description](backend/README.md)
 
 ## Development
@@ -24,6 +25,8 @@ Start docker container in docker folder.
 Path to folder from repository root `cd docker`
 
 Type `docker-compose up` in terminal to start up the docker container, `docker-compose down` to shut the container down.
+
+This will start the Database and the Keycloak services that are both used to run the backend.
 
 ## Users
 All users PITC

@@ -1,40 +1,39 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EMPTY, map, Observable, tap, finalize } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { Params } from '@angular/router';
 import { optionalValue, getValueFromQuery, getQueryString } from '../shared/common';
 import { State } from '../shared/types/enums/state';
 import { OverviewEntity } from '../shared/types/model/overview-entity';
 import { FilterPageChange } from '../shared/types/model/filter-page-change';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OverviewService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
-  private lastFilters: FilterPageChange | null = null;
+  private readonly filter = signal<FilterPageChange | null>(null);
 
-  private _data = signal<OverviewEntity[] | null>(null);
+  overviewResource = rxResource({
+    params: () => this.filter(),
+    stream: ({ params: filters }) => {
+      if (!filters) {
+        return of(null);
+      }
+      return this.getOverview(filters.quarterId, filters.teamIds, filters.objectiveQueryString);
+    }
+  });
 
-  private _loading = signal(false);
-
-  public readonly data = this._data.asReadonly();
-
-  public readonly loading = this._loading.asReadonly();
+  public readonly data = this.overviewResource.value;
 
   load(params: Params) {
-    const filters = this.mapParamsToFilters(params);
-    this.lastFilters = filters;
-    return this.fetch(filters);
+    this.filter.set(this.mapParamsToFilters(params));
   }
 
   reload() {
-    if (!this.lastFilters) {
-      return EMPTY;
-    }
-    return this.fetch(this.lastFilters)
-      .subscribe();
+    this.overviewResource.reload();
   }
 
   private mapParamsToFilters(params: Params): FilterPageChange {
@@ -43,13 +42,6 @@ export class OverviewService {
       teamIds: getValueFromQuery(params['teams']),
       objectiveQueryString: getQueryString(params['objectiveQuery'])
     };
-  }
-
-  private fetch(filters: FilterPageChange) {
-    this._loading.set(true);
-
-    return this.getOverview(filters.quarterId, filters.teamIds, filters.objectiveQueryString)
-      .pipe(tap((data) => this._data.set(data)), finalize(() => this._loading.set(false)));
   }
 
   getOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string): Observable<OverviewEntity[]> {

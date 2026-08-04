@@ -8,8 +8,8 @@ export const teamFilterResolver: ResolveFn<void> = (route) => {
   const quarterQuery = route.queryParams['quarter'];
   const quarterIdStr = Array.isArray(quarterQuery) ? quarterQuery[0] : quarterQuery;
 
-  const filters = quarterIdStr && !isNaN(Number(quarterIdStr))
-    ? { quarterId: parseInt(quarterIdStr, 10) }
+  const filters = quarterIdStr && !isNaN(parseInt(quarterIdStr))
+    ? { quarterId: parseInt(quarterIdStr) }
     : {};
 
   teamStateService.loadTeams(filters);

@@ -18,8 +18,6 @@ export class OverviewComponent {
 
   readonly data = this.overviewService.data;
 
-  readonly loading = this.overviewService.loading;
-
   loadOverview(filter: FilterPageChange) {
     this.overviewService
       .getOverview(filter.quarterId, filter.teamIds, filter.objectiveQueryString)

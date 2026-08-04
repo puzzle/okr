@@ -13,17 +13,13 @@ export interface User {
 }
 
 export const extractActiveTeamsFromUser = (user: User, quarter?: Quarter) => {
-  if (!user || !user.userTeamList) {
+  if (!user?.userTeamList) {
     return [];
   }
 
-  const test = user.userTeamList
+  return user.userTeamList
     .map((u) => u.team)
-    .filter((team) => isTeamArchived(team) || (new Date(team.markedAsArchivedAt!)
-      ?.getTime() ?? 0) > (quarter?.startDate?.getTime() ?? 0));
-
-  test.forEach((t) => console.log('user model ids returned: ' + t.id));
-  return test;
+    .filter((team) => isTeamArchived(team) || isTeamArchivedAfterQuarterStarted(team, quarter));
 };
 
 export const getFullNameOfUser = (user: User | UserTableEntry) => {
@@ -32,3 +28,10 @@ export const getFullNameOfUser = (user: User | UserTableEntry) => {
 
 const isTeamArchived = (team: Team): boolean => !team.markedAsArchivedAt;
 
+const isTeamArchivedAfterQuarterStarted = (team: Team, quarter: Quarter | undefined) => {
+  const teamArchivedAt = new Date(team.markedAsArchivedAt!)
+    ?.getTime() ?? 0;
+  const quarterStartTime = quarter?.startDate?.getTime() ?? 0;
+
+  return teamArchivedAt >= quarterStartTime;
+};

@@ -48,17 +48,12 @@ export const defaultQueryParamsGuard: CanActivateFn = (route, state: RouterState
             }
           }
 
-
-          console.log(requestParams);
-          console.log(redirectParams);
-          console.log(requestParams.quarterId !== redirectParams.quarterId, !containsSameValues(requestParams.teamIds, redirectParams.teamIds));
-
           if (requestParams.quarterId !== redirectParams.quarterId || !containsSameValues(requestParams.teamIds, redirectParams.teamIds)) {
             const targetPath = state.url.split('?')[0];
-            console.log('redirectParams', redirectParams);
+
             return router.createUrlTree([targetPath], {
               queryParams: { quarter: redirectParams.quarterId,
-                teams: redirectParams.teamIds }
+                teams: redirectParams.teamIds?.join(',') }
             });
           }
           return true;
@@ -74,13 +69,16 @@ const containsSameValues = (array1: number[] | undefined, array2: number[] | und
 
 const parseParams = (paramMap: ParamMap, initialLoad: boolean): RequestParams => {
   const quarterIdStr = paramMap.getAll('quarter')[0];
-  const teamIdsStr = paramMap.getAll('teams');
-  console.log('navigated÷ ', initialLoad, teamIdsStr);
+  const teamIdsStr = normalizeParamList(paramMap.getAll('teams'));
   const quaterId = Number.parseInt(quarterIdStr);
   return {
     quarterId: Number.isSafeInteger(quaterId) ? quaterId : undefined,
-    teamIds: initialLoad && teamIdsStr.length === 0 ? undefined : teamIdsStr.map((id: string) => Number.parseInt(id))
+    teamIds: initialLoad && teamIdsStr?.length === 0 ? undefined : teamIdsStr?.map((id: string) => Number.parseInt(id))
   };
 };
+
+const normalizeParamList = (list: string[]) => list.flatMap((v) => v.split(','))
+  .map((v) => v.trim())
+  .filter((v) => v.length > 0);
 
 

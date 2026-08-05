@@ -25,17 +25,20 @@ const currentUserResolver: ResolveFn<User | undefined> = () => {
 const routes: Routes = [
   {
     path: '',
-    component: OverviewComponent,
     canActivate: [authGuard,
       defaultQueryParamsGuard],
     providers: [TeamStateService],
-    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-
-    resolve: {
-      user: currentUserResolver,
-      filters: overviewDataResolver
-    },
     children: [{
+      // We duplicated the path, because we wanted to split the runGuardsAndResolvers value from resolver and guards
+      path: '',
+      component: OverviewComponent,
+      runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+      resolve: {
+        user: currentUserResolver,
+        filters: overviewDataResolver
+      }
+    },
+    {
       path: 'details',
       component: SidePanelComponent,
       children: [{

@@ -36,18 +36,18 @@ const routes: Routes = [
       resolve: {
         user: currentUserResolver,
         filters: overviewDataResolver
-      }
-    },
-    {
-      path: 'details',
-      component: SidePanelComponent,
-      children: [{
-        path: 'objective/:id',
-        component: ObjectiveDetailComponent
       },
-      {
-        path: 'keyresult/:id',
-        component: KeyResultDetailComponent
+      children: [{
+        path: 'details',
+        component: SidePanelComponent,
+        children: [{
+          path: 'objective/:id',
+          component: ObjectiveDetailComponent
+        },
+        {
+          path: 'keyresult/:id',
+          component: KeyResultDetailComponent
+        }]
       }]
     }]
   },

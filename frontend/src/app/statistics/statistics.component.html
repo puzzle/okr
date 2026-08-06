@@ -1,4 +1,5 @@
-<app-application-page>  <app-application-banner app-banner>
+<app-application-page [isEmpty]="activeFilter?.teamIds?.length === 0">
+  <app-application-banner app-banner>
     <div class="container-fluid">
       <div class="row first-line">
         <div class="col-12">
@@ -17,6 +18,9 @@
       </div>
     </div>
   </app-application-banner>
+  <p no-data-message>
+    Kein Team Ausgewählt
+  </p>
   <div class="container-fluid ms-1">
     <div class="d-flex gap-2 my-3 align-items-end">
       <div class="d-flex flex-column gap-2">

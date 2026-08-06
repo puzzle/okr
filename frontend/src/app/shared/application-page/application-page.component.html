@@ -6,12 +6,10 @@
 >
   <ng-content></ng-content>
 
-  @if (isEmpty || !hasSelectedTeams) {
+  @if (isEmpty()) {
   <div class="d-flex align-items-center flex-column pt-5 gap-5">
 
-    <p id="no-team-text">
-      {{ !hasSelectedTeams ? 'Kein Team ausgewählt' : 'Keine Daten vorhanden' }}
-    </p>
+    <ng-content select="[no-data-message]"></ng-content>
 
     <img
       [src]="backgroundLogoSrc$ | async"

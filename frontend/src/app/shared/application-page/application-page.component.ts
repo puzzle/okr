@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit, OnDestroy, inject, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, inject, input } from '@angular/core';
 import { BehaviorSubject, ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../../services/config.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { getValueFromQuery, isMobileDevice } from '../common';
+import { isMobileDevice } from '../common';
 
 @Component({
   selector: 'app-application-page',
@@ -14,8 +13,6 @@ import { getValueFromQuery, isMobileDevice } from '../common';
 export class ApplicationPageComponent implements OnInit, OnDestroy {
   private refreshDataService = inject(RefreshDataService);
 
-  private activatedRoute = inject(ActivatedRoute);
-
   private changeDetector = inject(ChangeDetectorRef);
 
   private configService = inject(ConfigService);
@@ -24,20 +21,9 @@ export class ApplicationPageComponent implements OnInit, OnDestroy {
 
   backgroundLogoSrc$ = new BehaviorSubject<string>('assets/images/empty.svg');
 
-  hasSelectedTeams = false;
-
-  @Input() isEmpty = false;
+  isEmpty = input<boolean>();
 
   private destroyed$ = new ReplaySubject<boolean>(1);
-
-  constructor() {
-    this.activatedRoute.queryParams
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((params) => {
-        const teamIds = getValueFromQuery(params['teams']);
-        this.hasSelectedTeams = teamIds && teamIds.length > 0;
-      });
-  }
 
   ngOnInit(): void {
     this.refreshDataService.okrBannerHeightSubject

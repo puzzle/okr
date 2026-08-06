@@ -1,8 +1,9 @@
 import { ResolveFn } from '@angular/router';
 import { inject } from '@angular/core';
 import { TeamStateService } from '../services/team.state.service';
+import { Team } from '../shared/types/model/team';
 
-export const teamFilterResolver: ResolveFn<void> = (route) => {
+export const teamFilterResolver: ResolveFn<Team[]> = (route) => {
   const teamStateService = inject(TeamStateService);
 
   const quarterQuery = route.queryParams['quarter'];
@@ -12,5 +13,5 @@ export const teamFilterResolver: ResolveFn<void> = (route) => {
     ? { quarterId: parseInt(quarterIdStr) }
     : {};
 
-  teamStateService.loadTeams(filters);
+  return teamStateService.loadTeams(filters);
 };

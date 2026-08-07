@@ -1,11 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, EMPTY, Observable } from 'rxjs';
-import { EvaluationService } from '../services/evaluation.service';
+import { Component, inject, WritableSignal } from '@angular/core';
 import { Statistics } from '../shared/types/model/statistics';
+import { StatisticsService } from '../services/statistics.service';
 import { FilterPageChange } from '../shared/types/model/filter-page-change';
-import { getValueFromQuery, getQueryString } from '../shared/common';
 
 @Component({
   selector: 'app-statistics',
@@ -14,36 +10,11 @@ import { getValueFromQuery, getQueryString } from '../shared/common';
   styleUrl: './statistics.component.scss'
 })
 export class StatisticsComponent {
-  private evaluationService = inject(EvaluationService);
+  private readonly statisticsService = inject(StatisticsService);
 
-  private activatedRoute = inject(ActivatedRoute);
-
-  statistics = new Observable<Statistics>();
+  readonly statistics: WritableSignal<Statistics | undefined | null> = this.statisticsService.data;
 
   activeFilter: FilterPageChange | undefined;
-
-  constructor() {
-    this.activatedRoute.queryParams
-      .pipe(takeUntilDestroyed())
-      .subscribe((params: Params) => {
-        const filters: FilterPageChange = {
-          quarterId: getValueFromQuery(params['quarter'])[0],
-          teamIds: getValueFromQuery(params['teams']),
-          objectiveQueryString: getQueryString(params['objectiveQuery'])
-        };
-
-        this.loadOverview(filters);
-      });
-  }
-
-  loadOverview(filterPage: FilterPageChange) {
-    this.activeFilter = filterPage;
-    this.statistics = this.evaluationService
-      .getStatistics(filterPage.quarterId, filterPage.teamIds)
-      .pipe(catchError(() => {
-        return EMPTY;
-      }));
-  }
 
   krObjectiveRelation(s: Statistics): number {
     return s.keyResultAmount / s.objectiveAmount || 0;

@@ -32,7 +32,7 @@
 
 
     @if (activeFilter?.teamIds?.length != 0) {
-    @if (statistics | async; as statistics) {
+    @if (statistics(); as statistics) {
     <div class="d-flex flex-column ">
       @if (statistics.objectiveAmount == 0 && statistics.keyResultAmount == 0) {
       <div

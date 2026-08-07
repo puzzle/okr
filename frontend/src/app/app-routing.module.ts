@@ -12,6 +12,7 @@ import { KeyResultDetailComponent } from './components/key-result-detail/key-res
 import { TeamStateService } from './services/team.state.service';
 import { defaultQueryParamsGuard } from './guards/default-query-params.guard';
 import { overviewDataResolver } from './resolvers/overview-data.resolver';
+import { statisticsDataResolver } from './resolvers/statistics-data.resolver';
 
 const currentUserResolver: ResolveFn<User | undefined> = () => {
   const oauthService = inject(OAuthService);
@@ -68,6 +69,7 @@ const routes: Routes = [
       defaultQueryParamsGuard],
 
     providers: [TeamStateService],
+    resolve: { filters: statisticsDataResolver },
 
     runGuardsAndResolvers: 'paramsOrQueryParamsChange'
   },

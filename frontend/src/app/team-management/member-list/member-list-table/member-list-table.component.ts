@@ -26,7 +26,7 @@ export class MemberListTableComponent {
 
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;
 
-  currentTeam = input<Team>();
+  currentTeam = input.required<Team | undefined>();
 
   private allColumns = [
     'icon',

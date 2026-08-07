@@ -65,8 +65,17 @@ const filterActiveTeams = (teamIds: number[], activeTeamIds: any) => teamIds.fil
 
 const toTeamIds = (teams: Team[]) => teams.map((team) => team.id);
 
-const containsSameValues = (array1: number[] | undefined, array2: number[] | undefined) => array1?.every((value) => array2?.includes(value)) && array1.length === array2?.length;
+const containsSameValues = (array1: number[] | undefined, array2: number[] | undefined): boolean => {
+  if (array1 === array2) {
+    return true;
+  }
 
+  if (!array1 || !array2) {
+    return false;
+  }
+
+  return array1.every((value) => array2.includes(value)) && array1.length === array2.length;
+};
 const parseParams = (paramMap: ParamMap, initialLoad: boolean): RequestParams => {
   const quarterIdStr = paramMap.getAll('quarter')[0];
   const teamIdsStr = normalizeParamList(paramMap.getAll('teams'));

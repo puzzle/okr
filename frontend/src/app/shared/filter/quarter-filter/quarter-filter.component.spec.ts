@@ -75,7 +75,7 @@ describe('QuarterFilterComponent', () => {
 
   describe('Reactive State (Signals & Effects)', () => {
     it('should read currentQuarterId from query params', () => {
-      (getValueFromQuery as jest.Mock).mockReturnValue(['5']);
+      (getValueFromQuery as jest.Mock).mockReturnValue([5]);
       mockActivatedRoute.queryParams.next({ quarter: '5' });
 
       setupComponent();
@@ -86,7 +86,7 @@ describe('QuarterFilterComponent', () => {
     });
 
     it('should emit the correct quarter label when a valid quarter ID is present in the route', () => {
-      (getValueFromQuery as jest.Mock).mockReturnValue(['7']);
+      (getValueFromQuery as jest.Mock).mockReturnValue([7]);
       mockActivatedRoute.queryParams.next({ quarter: '7' });
 
       setupComponent();

@@ -17,7 +17,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { FilterPageChange } from '../../shared/types/model/filter-page-change';
 import { OverviewEntity } from '../../shared/types/model/overview-entity';
 
 const overviewService = {
@@ -36,13 +35,6 @@ const refreshDataServiceMock = {
   reloadOverviewSubject: new Subject(),
   okrBannerHeightSubject: new BehaviorSubject(5)
 };
-
-const filterPage = {
-  quarterId: 1,
-  teamIds: [2,
-    3],
-  objectiveQueryString: 'test'
-} as FilterPageChange;
 
 describe('OverviewComponent', () => {
   window.ResizeObserver =
@@ -111,24 +103,8 @@ describe('OverviewComponent', () => {
       .toBeTruthy();
   });
 
-  it('should call service method with correct params overview based on query-params', () => {
-    jest.spyOn(overviewService, 'getOverview');
-    jest.spyOn(component, 'loadOverview');
-    component.loadOverview(filterPage);
-    expect(overviewService.getOverview)
-      .toHaveBeenCalledWith(1, [2,
-        3], 'test');
-  });
-
-  it('should refresh overview entities after getOverview() is called', () => {
-    jest.spyOn(component.overviewEntities$, 'next');
-    jest.spyOn(component, 'loadOverview');
-
-    component.loadOverview(filterPage);
-
-    expect(component.loadOverview)
-      .toHaveBeenCalledTimes(1);
-    expect(component.overviewEntities$.next)
-      .toHaveBeenCalledWith([overViewEntity1]);
+  it('should expose data from overviewService', () => {
+    expect(component.data())
+      .toEqual([overViewEntity1]);
   });
 });

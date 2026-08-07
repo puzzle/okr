@@ -51,29 +51,11 @@ describe('ApplicationPageComponent', () => {
       .toBeTruthy();
   });
 
-  describe('Initialization (Constructor & Route Params)', () => {
-    it('should set hasSelectedTeams to true if teams exist in query params', () => {
-      (getValueFromQuery as jest.Mock).mockReturnValue(['team1',
-        'team2']);
-      mockActivatedRoute.queryParams.next({ teams: 'team1,team2' });
-
-      setupComponent();
-
-      expect(getValueFromQuery)
-        .toHaveBeenCalledWith('team1,team2');
-      expect(component.hasSelectedTeams)
-        .toBe(true);
-    });
-
-    it('should set hasSelectedTeams to false if no teams are in query params', () => {
-      (getValueFromQuery as jest.Mock).mockReturnValue([]);
-      mockActivatedRoute.queryParams.next({ teams: '' });
-
-      setupComponent();
-
-      expect(component.hasSelectedTeams)
-        .toBe(false);
-    });
+  it('should accept the isEmpty signal input', () => {
+    setupComponent();
+    fixture.componentRef.setInput('isEmpty', true);
+    expect(component.isEmpty())
+      .toBe(true);
   });
 
   describe('ngOnInit behavior', () => {

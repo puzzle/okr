@@ -4,7 +4,7 @@ import { team1, testUser } from '../../../shared/test-data';
 import { of } from 'rxjs';
 import { UserTableEntry } from '../../../shared/types/model/user-table-entry';
 import { UserService } from '../../../services/user.service';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DialogService } from '../../../services/dialog.service';
 import { ALL_TEAMS_STATE } from '../../../services/team-state.tokens';
 
@@ -43,6 +43,9 @@ describe('MemberListTableComponent', () => {
 
     fixture = TestBed.createComponent(MemberListTableComponent);
     component = fixture.componentInstance;
+
+    component.dataSource = new MatTableDataSource<UserTableEntry>([]);
+    fixture.componentRef.setInput('currentTeam', undefined);
 
     teamStateServiceMock.removeUserFromTeam.mockReset();
     teamStateServiceMock.updateOrAddTeamMembership.mockReset();

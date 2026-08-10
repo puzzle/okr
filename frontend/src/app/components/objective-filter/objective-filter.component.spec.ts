@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, flush } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, flushMicrotasks } from '@angular/core/testing';
 import { ObjectiveFilterComponent } from './objective-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppRoutingModule } from '../../app-routing.module';
@@ -74,14 +74,14 @@ describe('ObjectiveFilterComponent', () => {
 
     loader.getHarness(MatInputHarness)
       .then((h) => search = h);
-    flush();
+    flushMicrotasks();
 
     jest.spyOn(router, 'navigate')
       .mockResolvedValue(true);
     jest.spyOn(component, 'updateUrl');
 
     search.setValue('this is a test');
-    flush();
+    flushMicrotasks();
 
     fixture.detectChanges();
     component.refresh.next();

@@ -17,30 +17,46 @@ describe('okr team-management', () => {
     });
 
     it('should preserve team-filter', () => {
+      let selectedTeams: string[] = [];
+      FilterHelper.do()
+        .getSelectedTeamsTitles()
+        .then((teams) => selectedTeams = teams);
+
+      let notSelectedTeams: string[] = [];
+      FilterHelper.do()
+        .getNotSelectedTeamsTitles()
+        .then((teams) => notSelectedTeams = teams);
+
       CyOverviewPage.do()
         .visitViaURL();
       FilterHelper.do()
-        .toggleOption('/BBT')
-        .toggleOption('Puzzle ITC');
-      checkTeamsSelected();
+        .checkTeamsNotSelected(notSelectedTeams);
+      FilterHelper.do()
+        .checkTeamsSelected(selectedTeams);
+
       CyOverviewPage.do()
         .visitTeamManagement();
-      checkTeamsSelected();
+      FilterHelper.do()
+        .checkTeamsNotSelected(notSelectedTeams);
+      FilterHelper.do()
+        .checkTeamsSelected(selectedTeams);
+
       TeamManagementPage.do()
         .backToOverview();
-      checkTeamsSelected();
+      FilterHelper.do()
+        .checkTeamsNotSelected(notSelectedTeams);
+      FilterHelper.do()
+        .checkTeamsSelected(selectedTeams);
+
       CyOverviewPage.do()
         .visitTeamManagement();
       TeamManagementPage.do()
         .visitOverview();
-      checkTeamsSelected();
-    });
-
-    function checkTeamsSelected() {
       FilterHelper.do()
-        .optionShouldBeSelected('LoremIpsum')
-        .optionShouldBeSelected('/BBT');
-    }
+        .checkTeamsNotSelected(notSelectedTeams);
+      FilterHelper.do()
+        .checkTeamsSelected(selectedTeams);
+    });
   });
 
   describe('as "GL"', () => {

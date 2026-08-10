@@ -1,6 +1,6 @@
 <app-application-page [isEmpty]="data()?.length === 0">
   <app-overview-banner app-banner id="banner-component"></app-overview-banner>
-  <p no-data-message>Kein Team Ausgewählt</p>
+  <p no-data-message>Kein Team ausgewählt</p>
 
   @for (overviewEntity of data(); track $index) {
   <app-team [overviewEntity]="overviewEntity"></app-team>

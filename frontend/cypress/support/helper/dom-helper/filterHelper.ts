@@ -53,4 +53,34 @@ export default class FilterHelper extends PageObjectMapperBase {
         });
       });
   }
+
+  public checkTeamsSelected(teams: string[]) {
+    teams.forEach((team) => {
+      FilterHelper.do()
+        .optionShouldBeSelected(team);
+    });
+  }
+
+  public checkTeamsNotSelected(teams: string[]) {
+    teams.forEach((team) => {
+      FilterHelper.do()
+        .optionShouldNotBeSelected(team);
+    });
+  }
+
+  public getSelectedTeamsTitles() {
+    return cy.get('mat-chip.mat-mdc-chip-highlighted p')
+      .then(($paragraphs) => {
+        return $paragraphs.toArray()
+          .map((p) => p.innerText.trim());
+      });
+  }
+
+  public getNotSelectedTeamsTitles() {
+    return cy.get('mat-chip:not(.mat-mdc-chip-highlighted) p')
+      .then(($paragraphs) => {
+        return $paragraphs.toArray()
+          .map((p) => p.innerText.trim());
+      });
+  }
 }

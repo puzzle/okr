@@ -432,11 +432,11 @@ describe('okr team-management', () => {
         .getOption('/BBT')
         .should('exist');
 
-      // Unarchive team again
       TeamManagementPage.do()
         .visitViaURL()
         .unarchiveTeam('/BBT')
         .submit();
+      teamManagementPage.checkForToaster('Das Team wurde erfolgreich aktualisiert.', 'success');
     });
 
     it('should archive /BBT and as a result disable all edit buttons', () => {
@@ -479,6 +479,8 @@ describe('okr team-management', () => {
       cy.wait(500);
       teamManagementPage.unarchiveTeam('/BBT')
         .submit();
+      teamManagementPage.checkForToaster('Das Team wurde erfolgreich aktualisiert.', 'success');
+      cy.wait(500);
     });
   });
 
@@ -516,6 +518,8 @@ describe('okr team-management', () => {
     });
 
     it('should be able to edit team "/BBT" and edit its name', () => {
+      // TeamManagementPage.do().visitViaURL().unarchiveTeam('/BBT')
+
       cy.get('app-team-management')
         .contains('/BBT')
         .click();

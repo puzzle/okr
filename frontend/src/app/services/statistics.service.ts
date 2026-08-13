@@ -13,9 +13,9 @@ import { Statistics } from '../shared/types/model/statistics';
 export class StatisticsService {
   private readonly filter = signal<FilterPageChange | null>(null);
 
-  private readonly evaluationService = inject(EvaluationService);
+  public readonly publicFilter = this.filter.asReadonly();
 
-  activeFilter: FilterPageChange | undefined;
+  private readonly evaluationService = inject(EvaluationService);
 
   statisticsResource = rxResource({
     params: () => this.filter(),
@@ -30,7 +30,6 @@ export class StatisticsService {
   public readonly data = this.statisticsResource.value;
 
   loadOverview(filterPage: FilterPageChange): Observable<Statistics> {
-    this.activeFilter = filterPage;
     return this.evaluationService
       .getStatistics(filterPage.quarterId, filterPage.teamIds)
       .pipe(catchError(() => {

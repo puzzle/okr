@@ -1,7 +1,6 @@
 import { Component, inject, WritableSignal } from '@angular/core';
 import { Statistics } from '../shared/types/model/statistics';
 import { StatisticsService } from '../services/statistics.service';
-import { FilterPageChange } from '../shared/types/model/filter-page-change';
 
 @Component({
   selector: 'app-statistics',
@@ -14,7 +13,7 @@ export class StatisticsComponent {
 
   readonly statistics: WritableSignal<Statistics | undefined | null> = this.statisticsService.data;
 
-  activeFilter: FilterPageChange | undefined;
+  readonly publicFilter = this.statisticsService.publicFilter;
 
   krObjectiveRelation(s: Statistics): number {
     return s.keyResultAmount / s.objectiveAmount || 0;

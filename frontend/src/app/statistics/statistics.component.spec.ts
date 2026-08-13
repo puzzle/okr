@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatisticsComponent } from './statistics.component';
-import { ActivatedRoute, provideRouter, RouterModule } from '@angular/router';
+import { provideRouter, RouterModule } from '@angular/router'; // ActivatedRoute removed
 import { of } from 'rxjs';
 import { EvaluationService } from '../services/evaluation.service';
 import { QuarterFilterComponent } from '../shared/filter/quarter-filter/quarter-filter.component';
@@ -37,6 +37,7 @@ const teamStateServiceMock = {
 };
 
 const mockStatisticsData = signal<any>(model);
+const mockPublicFilter = signal<boolean>(false);
 
 describe('StatisticsComponent', () => {
   window.ResizeObserver =
@@ -49,19 +50,9 @@ describe('StatisticsComponent', () => {
       }));
   let component: StatisticsComponent;
   let fixture: ComponentFixture<StatisticsComponent>;
-  let activatedRouteStub: any;
 
   beforeEach(async() => {
     evaluationServiceStub.getStatistics.mockReturnValue(of(model));
-
-    activatedRouteStub = {
-      snapshot: {
-        queryParams: {
-          quarter: '1',
-          teams: '2,3'
-        }
-      }
-    };
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -79,8 +70,6 @@ describe('StatisticsComponent', () => {
         FormsModule
       ],
       providers: [
-        { provide: ActivatedRoute,
-          useValue: activatedRouteStub },
         { provide: EvaluationService,
           useValue: evaluationServiceStub },
         provideRouter([]),
@@ -89,7 +78,10 @@ describe('StatisticsComponent', () => {
         { provide: TeamStateService,
           useValue: teamStateServiceMock },
         { provide: StatisticsService,
-          useValue: { data: mockStatisticsData } }
+          useValue: {
+            data: mockStatisticsData,
+            publicFilter: mockPublicFilter
+          } }
       ]
     })
       .compileComponents();

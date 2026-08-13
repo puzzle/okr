@@ -23,7 +23,7 @@ export const defaultQueryParamsGuard: CanActivateFn = (route, state: RouterState
   const router = inject(Router);
   const userService = inject(UserService);
 
-  const requestParams = parseParams(route.queryParamMap, !router.navigated);
+  const requestParams = parseParams(route.queryParamMap, router.navigated);
 
   return forkJoin({ currentQuarter: quarterService.getCurrentQuarter(),
     user: userService.getOrInitCurrentUser() })
@@ -48,7 +48,7 @@ export const defaultQueryParamsGuard: CanActivateFn = (route, state: RouterState
             }
           }
 
-          if (requestParams.quarterId !== redirectParams.quarterId || !containsSameValues(requestParams.teamIds, redirectParams.teamIds)) {
+          if (needsRedirect(requestParams, redirectParams)) {
             const targetPath = state.url.split('?')[0];
 
             return router.createUrlTree([targetPath], {
@@ -76,13 +76,13 @@ const containsSameValues = (array1: number[] | undefined, array2: number[] | und
 
   return array1.every((value) => array2.includes(value)) && array1.length === array2.length;
 };
-const parseParams = (paramMap: ParamMap, initialLoad: boolean): RequestParams => {
+const parseParams = (paramMap: ParamMap, userAlreadyOnPage: boolean): RequestParams => {
   const quarterIdStr = paramMap.getAll('quarter')[0];
   const teamIdsStr = normalizeParamList(paramMap.getAll('teams'));
   const quaterId = Number.parseInt(quarterIdStr);
   return {
     quarterId: Number.isSafeInteger(quaterId) ? quaterId : undefined,
-    teamIds: initialLoad && teamIdsStr?.length === 0 ? undefined : teamIdsStr?.map((id: string) => Number.parseInt(id))
+    teamIds: !userAlreadyOnPage && teamIdsStr?.length === 0 ? undefined : teamIdsStr?.map((id: string) => Number.parseInt(id))
   };
 };
 
@@ -90,4 +90,4 @@ const normalizeParamList = (list: string[]) => list.flatMap((v) => v.split(','))
   .map((v) => v.trim())
   .filter((v) => v.length > 0);
 
-
+const needsRedirect = (requestParams: RequestParams, redirectParams: ResponseParams) => requestParams.quarterId !== redirectParams.quarterId || !containsSameValues(requestParams.teamIds, redirectParams.teamIds);

@@ -20,6 +20,7 @@ import { Completed } from './types/model/completed';
 import { Objective } from './types/model/objective';
 import { Item } from '../components/action-plan/action-plan.component';
 import { TeamStatus } from './types/enums/team-status';
+import { Statistics } from './types/model/statistics';
 
 export const teamFormObject = {
   name: 'newTeamName',
@@ -692,3 +693,16 @@ export const items: Item[] = [item1,
   item2,
   item3];
 
+export const statistics: Statistics = {
+  completedObjectivesAmount: 3,
+  keyResultAmount: 12,
+  keyResultsInCommitAmount: 3,
+  keyResultsInFailAmount: 3,
+  keyResultsInStretchAmount: 3,
+  keyResultsInTargetAmount: 3,
+  keyResultsInTargetOrStretchAmount: 6,
+  keyResultsMetricAmount: 6,
+  keyResultsOrdinalAmount: 6,
+  objectiveAmount: 6,
+  successfullyCompletedObjectivesAmount: 3
+};

@@ -45,23 +45,23 @@ describe('ApplicationPageComponent', () => {
     fixture.detectChanges();
   };
 
-  it('should create', () => {
-    setupComponent();
-    expect(component)
-      .toBeTruthy();
-  });
-
-  it('should accept the isEmpty signal input', () => {
-    setupComponent();
-    fixture.componentRef.setInput('isEmpty', true);
-    expect(component.isEmpty())
-      .toBe(true);
-  });
-
   describe('ngOnInit behavior', () => {
-    it('should push new banner height to overviewPadding and detect changes', () => {
+    beforeEach(() => {
       setupComponent();
+    });
 
+    it('should create', () => {
+      expect(component)
+        .toBeTruthy();
+    });
+
+    it('should accept the isEmpty signal input', () => {
+      fixture.componentRef.setInput('isEmpty', true);
+      expect(component.isEmpty())
+        .toBe(true);
+    });
+
+    it('should push new banner height to overviewPadding and detect changes', () => {
       const cdSpy = jest.spyOn((component as any).changeDetector, 'detectChanges');
       const paddingSpy = jest.spyOn(component.overviewPadding, 'next');
 
@@ -74,7 +74,6 @@ describe('ApplicationPageComponent', () => {
     });
 
     it('should update backgroundLogoSrc$ when config enables triangles', () => {
-      setupComponent();
       const logoSpy = jest.spyOn(component.backgroundLogoSrc$, 'next');
 
       mockConfigService.config$.next({ triangles: true,
@@ -85,7 +84,6 @@ describe('ApplicationPageComponent', () => {
     });
 
     it('should NOT update backgroundLogoSrc$ when config disables triangles', () => {
-      setupComponent();
       const logoSpy = jest.spyOn(component.backgroundLogoSrc$, 'next');
 
       mockConfigService.config$.next({ triangles: false,

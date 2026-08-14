@@ -9,7 +9,9 @@
   @if (isEmpty()) {
   <div class="d-flex align-items-center flex-column pt-5 gap-5">
 
-    <ng-content select="[no-data-message]"></ng-content>
+    <ng-content select="[no-data-message]">
+      <p>Keine Daten vorhanden</p>
+    </ng-content>
 
     <img
       [src]="backgroundLogoSrc$ | async"

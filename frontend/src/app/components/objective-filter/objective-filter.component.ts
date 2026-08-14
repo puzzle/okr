@@ -11,9 +11,9 @@ import { debounceTime, map, Subject } from 'rxjs';
   standalone: false
 })
 export class ObjectiveFilterComponent implements OnInit {
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   refresh = new Subject<void>();
 

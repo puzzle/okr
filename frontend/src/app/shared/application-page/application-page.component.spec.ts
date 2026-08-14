@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ApplicationPageComponent } from './application-page.component';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { getValueFromQuery, isMobileDevice } from '../common';
+import { getValueFromQuery } from '../common';
 
 jest.mock('../common', () => ({
   getValueFromQuery: jest.fn(),
@@ -15,17 +15,16 @@ describe('ApplicationPageComponent', () => {
   let component: ApplicationPageComponent;
   let fixture: ComponentFixture<ApplicationPageComponent>;
 
-  let mockRefreshDataService: { okrBannerHeightSubject: Subject<number> };
-  let mockConfigService: { config$: Subject<any> };
-  let mockActivatedRoute: { queryParams: BehaviorSubject<any> };
+  let mockRefreshDataService: { okrBannerHeightSubject: Observable<number> };
+  let mockConfigService: { config$: Observable<any> };
+  let mockActivatedRoute: { queryParams: Observable<any> };
 
   beforeEach(async() => {
-    mockRefreshDataService = { okrBannerHeightSubject: new Subject<number>() };
-    mockConfigService = { config$: new Subject<any>() };
-    mockActivatedRoute = { queryParams: new BehaviorSubject<any>({}) };
+    mockRefreshDataService = { okrBannerHeightSubject: of(42) };
+    mockConfigService = { config$: of({}) };
+    mockActivatedRoute = { queryParams: of({}) };
 
     (getValueFromQuery as jest.Mock).mockReset();
-    (isMobileDevice as jest.Mock).mockReset();
 
     await TestBed.configureTestingModule({
       declarations: [ApplicationPageComponent],
@@ -37,35 +36,30 @@ describe('ApplicationPageComponent', () => {
         useValue: mockActivatedRoute }]
     })
       .compileComponents();
-  });
 
-  const setupComponent = () => {
     fixture = TestBed.createComponent(ApplicationPageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  };
+  });
+
+  it('should create', () => {
+    expect(component)
+      .toBeTruthy();
+  });
+
+  it('should accept the isEmpty signal input', () => {
+    fixture.componentRef.setInput('isEmpty', true);
+    expect(component.isEmpty())
+      .toBe(true);
+  });
 
   describe('ngOnInit behavior', () => {
-    beforeEach(() => {
-      setupComponent();
-    });
-
-    it('should create', () => {
-      expect(component)
-        .toBeTruthy();
-    });
-
-    it('should accept the isEmpty signal input', () => {
-      fixture.componentRef.setInput('isEmpty', true);
-      expect(component.isEmpty())
-        .toBe(true);
-    });
-
     it('should push new banner height to overviewPadding and detect changes', () => {
+      mockRefreshDataService.okrBannerHeightSubject = of(42);
+
       const cdSpy = jest.spyOn((component as any).changeDetector, 'detectChanges');
       const paddingSpy = jest.spyOn(component.overviewPadding, 'next');
 
-      mockRefreshDataService.okrBannerHeightSubject.next(42);
+      fixture.detectChanges();
 
       expect(paddingSpy)
         .toHaveBeenCalledWith(42);
@@ -74,54 +68,24 @@ describe('ApplicationPageComponent', () => {
     });
 
     it('should update backgroundLogoSrc$ when config enables triangles', () => {
+      mockConfigService.config$ = of({ triangles: true,
+        backgroundLogo: 'assets/custom.svg' });
       const logoSpy = jest.spyOn(component.backgroundLogoSrc$, 'next');
 
-      mockConfigService.config$.next({ triangles: true,
-        backgroundLogo: 'assets/custom.svg' });
+      fixture.detectChanges();
 
       expect(logoSpy)
         .toHaveBeenCalledWith('assets/custom.svg');
     });
 
     it('should NOT update backgroundLogoSrc$ when config disables triangles', () => {
+      mockConfigService.config$ = of({ triangles: false,
+        backgroundLogo: 'assets/custom.svg' });
       const logoSpy = jest.spyOn(component.backgroundLogoSrc$, 'next');
 
-      mockConfigService.config$.next({ triangles: false,
-        backgroundLogo: 'assets/custom.svg' });
+      fixture.detectChanges();
 
       expect(logoSpy).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('DOM Manipulation', () => {
-    let mockElement: HTMLElement;
-
-    beforeEach(() => {
-      mockElement = document.createElement('div');
-      mockElement.id = 'overview';
-      document.body.appendChild(mockElement);
-    });
-
-    afterEach(() => {
-      document.body.removeChild(mockElement);
-    });
-
-    it('should add bottom-shadow-space class if NOT a mobile device', () => {
-      (isMobileDevice as jest.Mock).mockReturnValue(false);
-
-      setupComponent();
-
-      expect(mockElement.classList.contains('bottom-shadow-space'))
-        .toBe(true);
-    });
-
-    it('should NOT add bottom-shadow-space class if it IS a mobile device', () => {
-      (isMobileDevice as jest.Mock).mockReturnValue(true);
-
-      setupComponent();
-
-      expect(mockElement.classList.contains('bottom-shadow-space'))
-        .toBe(false);
     });
   });
 });

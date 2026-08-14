@@ -6,7 +6,7 @@ import { Team } from '../shared/types/model/team';
 export const teamFilterResolver: ResolveFn<Team[]> = (route) => {
   const teamStateService = inject(TeamStateService);
 
-  const quarterQuery = route.queryParams['quarter'];
+  const quarterQuery = route.queryParams['quarter']; // todo this needs to be updated in the ticket: Query Params Service #1822
   const quarterIdStr = Array.isArray(quarterQuery) ? quarterQuery[0] : quarterQuery;
 
   const filters = quarterIdStr && !isNaN(parseInt(quarterIdStr))

@@ -64,7 +64,7 @@ export class TeamFilterComponent {
   });
 
   changeTeamFilterParams(newActiveTeams: number[]): void {
-    const params = { teams: newActiveTeams.join(',') };
+    const params = { teams: newActiveTeams.join(',') }; // todo this needs to be updated in the ticket: reconfigure the router #1824
     const optionalParams = optionalReplaceWithNulls(params);
 
     this.router.navigate([], {

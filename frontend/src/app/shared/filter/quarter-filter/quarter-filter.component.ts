@@ -27,7 +27,7 @@ export class QuarterFilterComponent {
 
   quarters = toSignal(this.quarterService.getAllQuarters(), { initialValue: [] });
 
-  currentQuarterId = toSignal(this.route.queryParams.pipe(map((params) => getValueFromQuery(params['quarter'])[0])), { initialValue: -1 });
+  currentQuarterId = toSignal(this.route.queryParams.pipe(map((params) => getValueFromQuery(params['quarter'])[0])), { initialValue: -1 }); // todo this needs to be updated in the ticket: Query Params Service #1822
 
   constructor() {
     effect(() => {

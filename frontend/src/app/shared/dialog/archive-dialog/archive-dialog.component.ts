@@ -30,20 +30,7 @@ export class ArchiveTeamDialogComponent {
 
   readonly userSelectedQuarter = signal<Quarter | null>(null);
 
-  readonly selectedQuarter = computed(() => {
-    const userChoice = this.userSelectedQuarter();
-    if (userChoice) {
-      return userChoice;
-    }
-
-    const current = this.currentQuarter();
-    const quarters = this.availableQuarters();
-
-    if (!current) {
-      return null;
-    }
-    return quarters.find((q) => q.id === current.id) || null;
-  });
+  readonly selectedQuarter = computed(() => this.getSelectedQuarter(this.userSelectedQuarter(), this.currentQuarter(), this.availableQuarters()));
 
   compareById(q1: Quarter | null, q2: Quarter | null): boolean {
     return q1?.id === q2?.id;
@@ -51,5 +38,17 @@ export class ArchiveTeamDialogComponent {
 
   onSave(): void {
     this.dialogRef.close(this.selectedQuarter());
+  }
+
+  getSelectedQuarter(userSelectedQuarter: Quarter | null, currentQuarter: Quarter | undefined, availableQuarters: Quarter[]) {
+    if (userSelectedQuarter) {
+      return userSelectedQuarter;
+    }
+
+    if (!currentQuarter) {
+      return null;
+    }
+
+    return availableQuarters.find((q) => q.id === currentQuarter.id) || null;
   }
 }

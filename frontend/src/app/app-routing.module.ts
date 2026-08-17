@@ -31,6 +31,7 @@ const routes: Routes = [
     providers: [TeamStateService],
     children: [{
       // We duplicated the path, because we wanted to split the runGuardsAndResolvers value from resolver and guards
+      canActivate: [defaultQueryParamsGuard],
       path: '',
       component: OverviewComponent,
       runGuardsAndResolvers: 'paramsOrQueryParamsChange',

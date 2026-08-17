@@ -45,12 +45,10 @@ export default class FilterHelper extends PageObjectMapperBase {
 
   public optionShouldNotExist(text: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.get('.team-title')
-      .then((elements) => {
-        elements.each((index, element) => {
-          const elementText = element.innerText;
+      .each((element) => {
+        const elementText = element.text();
 
-          expect(elementText).to.not.contain(text);
-        });
+        expect(elementText).to.not.contain(text);
       });
   }
 

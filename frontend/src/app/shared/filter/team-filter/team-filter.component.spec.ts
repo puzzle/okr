@@ -5,11 +5,13 @@ import { BehaviorSubject } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { TeamStateService } from '../../../services/team.state.service';
 import { RefreshDataService } from '../../../services/refresh-data.service';
-import { signal, WritableSignal } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, signal, WritableSignal } from '@angular/core';
+import { isMobileDevice } from '../../common';
 
 jest.mock('../../common', () => ({
   areEqual: (a: any[], b: any[]) => a.length === b.length && a.every((val) => b.includes(val)),
-  optionalReplaceWithNulls: jest.fn((obj) => obj)
+  optionalReplaceWithNulls: jest.fn((obj) => obj),
+  isMobileDevice: jest.fn(() => false)
 }));
 
 const mockTeamsData = [{ id: 1,
@@ -29,6 +31,7 @@ describe('TeamFilterComponent', () => {
   let mockTeamsSignal: WritableSignal<any[]>;
 
   beforeEach(async() => {
+    (isMobileDevice as jest.Mock).mockReturnValue(false);
     mockRouter = { navigate: jest.fn() };
     queryParamsSubject = new BehaviorSubject<any>({});
     breakpointSubject = new BehaviorSubject<any>({ matches: false });
@@ -36,6 +39,8 @@ describe('TeamFilterComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [TeamFilterComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA,
+        NO_ERRORS_SCHEMA],
       providers: [
         { provide: Router,
           useValue: mockRouter },
@@ -52,6 +57,10 @@ describe('TeamFilterComponent', () => {
       ]
     })
       .compileComponents();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   const setupComponent = () => {
@@ -71,7 +80,7 @@ describe('TeamFilterComponent', () => {
       queryParamsSubject.next({});
       setupComponent();
 
-      expect(component.activeTeams())
+      expect(component.activeTeamIds())
         .toEqual([]);
     });
 
@@ -79,7 +88,7 @@ describe('TeamFilterComponent', () => {
       queryParamsSubject.next({ teams: '1,3' });
       setupComponent();
 
-      expect(component.activeTeams())
+      expect(component.activeTeamIds())
         .toEqual([1,
           3]);
     });
@@ -89,16 +98,18 @@ describe('TeamFilterComponent', () => {
         '3'] });
       setupComponent();
 
-      expect(component.activeTeams())
+      expect(component.activeTeamIds())
         .toEqual([2,
           3]);
     });
 
     it('should react to mobile breakpoint changes', () => {
       breakpointSubject.next({ matches: true });
+      (isMobileDevice as jest.Mock).mockReturnValue(true);
+
       setupComponent();
 
-      expect(component.isMobile())
+      expect(component.isMobileDevice())
         .toBe(true);
     });
   });
@@ -119,6 +130,7 @@ describe('TeamFilterComponent', () => {
     it('should sort active teams first, then alphabetically by name on mobile devices', () => {
       breakpointSubject.next({ matches: true });
       queryParamsSubject.next({ teams: '3' });
+      (isMobileDevice as jest.Mock).mockReturnValue(true);
       setupComponent();
 
       const sortedIds = component.teams()

@@ -2,10 +2,9 @@ import { ChangeDetectionStrategy, Component, Input, inject, computed } from '@an
 import { map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { areEqual, optionalReplaceWithNulls } from '../../common';
-import { RefreshDataService } from '../../../services/refresh-data.service';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { areEqual, isMobileDevice, optionalReplaceWithNulls } from '../../common';
 import { TeamStateService } from '../../../services/team.state.service';
+import { Team } from '../../types/model/team';
 
 @Component({
   selector: 'app-team-filter',
@@ -17,19 +16,18 @@ import { TeamStateService } from '../../../services/team.state.service';
 export class TeamFilterComponent {
   private readonly teamStateService = inject(TeamStateService);
 
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
-  private refreshDataService = inject(RefreshDataService);
-
-  private breakpointObserver = inject(BreakpointObserver);
+  readonly isMobileDevice = isMobileDevice;
 
   @Input() minTeams = 0;
 
   showMoreTeams = true;
 
-  activeTeams = toSignal(this.route.queryParams.pipe(map((params) => {
+  activeTeamIds = toSignal(this.route.queryParams.pipe(map((params): number[] => {
+    // todo this needs to be updated in the ticket: Query Params Service #1822
     const teamsParam = params['teams'];
 
     if (!teamsParam) {
@@ -41,26 +39,14 @@ export class TeamFilterComponent {
     return teamArray.map(Number);
   })), { initialValue: [] as number[] });
 
-  isMobile = toSignal(this.breakpointObserver.observe(['(min-width: 1px) and (max-width: 767px)'])
-    .pipe(map((result) => result.matches)), { initialValue: false });
-
   rawTeams = this.teamStateService.getTeams();
 
-  teams = computed(() => {
-    const t = this.rawTeams();
-    if (!this.isMobile()) {
-      return t;
+  teams = computed((): Team[] => {
+    if (!isMobileDevice()) {
+      return this.rawTeams();
     }
 
-    const active = this.activeTeams();
-    return [...t].sort((a, b) => {
-      const aToggled = active.includes(a.id) ? 0 : 1;
-      const bToggled = active.includes(b.id) ? 0 : 1;
-      if (aToggled !== bToggled) {
-        return aToggled - bToggled;
-      }
-      return a.name.localeCompare(b.name);
-    });
+    return this.sortTeamsByActiveStatus(this.activeTeamIds(), this.rawTeams());
   });
 
   changeTeamFilterParams(newActiveTeams: number[]): void {
@@ -74,7 +60,7 @@ export class TeamFilterComponent {
   }
 
   toggleSelection(id: number): void {
-    const currentActive = this.activeTeams();
+    const currentActive = this.activeTeamIds();
     let nextActive: number[];
 
     if (this.areAllTeamsShown()) {
@@ -93,7 +79,7 @@ export class TeamFilterComponent {
   }
 
   areAllTeamsShown(): boolean {
-    return areEqual(this.activeTeams(), this.getAllTeamIds());
+    return areEqual(this.activeTeamIds(), this.getAllTeamIds());
   }
 
   toggleAll(): void {
@@ -107,5 +93,16 @@ export class TeamFilterComponent {
   getAllTeamIds(): number[] {
     return this.rawTeams()
       .map((team) => team.id);
+  }
+
+  sortTeamsByActiveStatus(activeTeamIds: number[], rawTeams: Team[]): Team[] {
+    return [...rawTeams].sort((a, b) => {
+      const aToggled = activeTeamIds.includes(a.id) ? 0 : 1;
+      const bToggled = activeTeamIds.includes(b.id) ? 0 : 1;
+      if (aToggled !== bToggled) {
+        return aToggled - bToggled;
+      }
+      return a.name.localeCompare(b.name);
+    });
   }
 }

@@ -112,6 +112,11 @@ export function formInputCheck(form: FormGroup, propertyName: string) {
   }
 }
 
+export function isMobileDevice() {
+  return window.navigator.userAgent.toLowerCase()
+    .includes('mobile');
+}
+
 export function hasFormFieldErrors(formGroup: FormGroup, field: string) {
   if (formGroup.get(field)?.dirty || formGroup.get(field)?.touched) {
     return formGroup.get(field)?.errors;

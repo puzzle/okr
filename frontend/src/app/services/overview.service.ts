@@ -38,6 +38,7 @@ export class OverviewService {
 
   private mapParamsToFilters(params: Params): FilterPageChange {
     return {
+      // todo this needs to be updated in the ticket: Query Params Service #1822
       quarterId: getValueFromQuery(params['quarter'])[0],
       teamIds: getValueFromQuery(params['teams']),
       objectiveQueryString: getQueryString(params['objectiveQuery'])

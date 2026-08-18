@@ -4,7 +4,7 @@ import { forkJoin, map, Observable, switchMap } from 'rxjs';
 import { QuarterService } from '../services/quarter.service';
 import { UserService } from '../services/user.service';
 import { TeamStateService } from '../services/team.state.service';
-import { extractActiveTeamsFromUser } from '../shared/types/model/user';
+import { extractActiveTeamsFromUser, User } from '../shared/types/model/user';
 import { Team } from '../shared/types/model/team';
 
 interface RequestParams {
@@ -25,40 +25,50 @@ export const defaultQueryParamsGuard: CanActivateFn = (route, state: RouterState
 
   const requestParams = parseParams(route.queryParamMap, router.navigated);
 
-  return forkJoin({ currentQuarter: quarterService.getCurrentQuarter(),
-    user: userService.getOrInitCurrentUser() })
+  return forkJoin({
+    currentQuarter: quarterService.getCurrentQuarter(),
+    user: userService.getOrInitCurrentUser()
+  })
     .pipe(switchMap(({ currentQuarter, user }) => {
       const targetQuarterId = requestParams.quarterId ?? currentQuarter.id;
 
       return teamStateService.loadTeams({ quarterId: targetQuarterId })
         .pipe(map((teams) => teams.map((team) => team.id)), map((currentTeamIds) => {
+          const targetTeamIds = resolveTeamIds(requestParams.teamIds, currentTeamIds, user);
+
           const redirectParams: ResponseParams = { quarterId: targetQuarterId,
-            teamIds: requestParams.teamIds };
+            teamIds: targetTeamIds };
 
-          if (requestParams.teamIds === undefined) {
-            const userTeams = extractActiveTeamsFromUser(user);
-            const availableRequestedTeamIds = filterActiveTeams(toTeamIds(userTeams), currentTeamIds);
-            if (availableRequestedTeamIds.length > 0) {
-              redirectParams.teamIds = availableRequestedTeamIds;
-            }
-          } else {
-            const availableRequestedTeamIds = filterActiveTeams(requestParams.teamIds, currentTeamIds);
-            if (!containsSameValues(availableRequestedTeamIds, requestParams.teamIds)) {
-              redirectParams.teamIds = availableRequestedTeamIds;
-            }
-          }
+          if (areParamsIdentical(requestParams, redirectParams)) {
+            const urlTree = router.parseUrl(state.url);
 
-          if (needsRedirect(requestParams, redirectParams)) {
-            const targetPath = state.url.split('?')[0];
+            urlTree.queryParams = {
+              quarter: redirectParams.quarterId,
+              teams: redirectParams.teamIds?.join(',')
+            };
 
-            return router.createUrlTree([targetPath], {
-              queryParams: { quarter: redirectParams.quarterId,
-                teams: redirectParams.teamIds?.join(',') }
-            });
+            return urlTree;
           }
           return true;
         }));
     }));
+};
+
+const resolveTeamIds = (teamIds: number[] | undefined, currentTeamIds: number[], user: User): number[] | undefined => {
+  if (teamIds === undefined) {
+    const userTeams = extractActiveTeamsFromUser(user);
+    const availableRequestedTeamIds = filterActiveTeams(toTeamIds(userTeams), currentTeamIds);
+    if (availableRequestedTeamIds.length > 0) {
+      return availableRequestedTeamIds;
+    }
+  } else {
+    const availableRequestedTeamIds = filterActiveTeams(teamIds, currentTeamIds);
+    if (!containsSameValues(availableRequestedTeamIds, teamIds)) {
+      return availableRequestedTeamIds;
+    }
+  }
+
+  return teamIds;
 };
 
 const filterActiveTeams = (teamIds: number[], activeTeamIds: any) => teamIds.filter((id) => activeTeamIds.includes(id));
@@ -78,11 +88,20 @@ const containsSameValues = (array1: number[] | undefined, array2: number[] | und
 };
 const parseParams = (paramMap: ParamMap, userAlreadyOnPage: boolean): RequestParams => {
   const quarterIdStr = paramMap.getAll('quarter')[0];
-  const teamIdsStr = normalizeParamList(paramMap.getAll('teams'));
   const quaterId = Number.parseInt(quarterIdStr);
+  const validQuaterId = Number.isSafeInteger(quaterId) ? quaterId : undefined;
+
+  const teamIdsStr = normalizeParamList(paramMap.getAll('teams'));
+
+  const isInitialLoad = !userAlreadyOnPage;
+  const isTeamEmpty = teamIdsStr?.length === 0;
+  const ignoreEmptyTeams = isInitialLoad && isTeamEmpty;
+
+  const parsedTeamIds = ignoreEmptyTeams ? undefined : teamIdsStr?.map((id: string) => Number.parseInt(id));
+
   return {
-    quarterId: Number.isSafeInteger(quaterId) ? quaterId : undefined,
-    teamIds: !userAlreadyOnPage && teamIdsStr?.length === 0 ? undefined : teamIdsStr?.map((id: string) => Number.parseInt(id))
+    quarterId: validQuaterId,
+    teamIds: parsedTeamIds
   };
 };
 
@@ -90,4 +109,4 @@ const normalizeParamList = (list: string[]) => list.flatMap((v) => v.split(','))
   .map((v) => v.trim())
   .filter((v) => v.length > 0);
 
-const needsRedirect = (requestParams: RequestParams, redirectParams: ResponseParams) => requestParams.quarterId !== redirectParams.quarterId || !containsSameValues(requestParams.teamIds, redirectParams.teamIds);
+const areParamsIdentical = (requestParams: RequestParams, redirectParams: ResponseParams) => requestParams.quarterId !== redirectParams.quarterId || !containsSameValues(requestParams.teamIds, redirectParams.teamIds);

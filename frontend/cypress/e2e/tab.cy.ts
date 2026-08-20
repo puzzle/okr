@@ -284,9 +284,9 @@ describe('tabbing workflows', () => {
       tabAndCheck('teamManagementSearch');
       tabAndCheck('add-team', 'Team erfassen');
 
-      cy.get('.mat-mdc-list-item')
+      getMemberTabs()
         .then((teams) => {
-        // We remove one because Alle Teams tab doesn't cound as team
+        // We remove one because Alle Teams tab doesn't count as team
           tabAndCheck('all-teams-selector', `Alle Teams (${teams.length - 1})`);
         });
 
@@ -376,4 +376,8 @@ describe('tabbing workflows', () => {
 function tabToThreeDotMenuOption(name: string) {
   cy.pressUntilContains(name, 'ArrowDown');
   cy.realPress('Enter');
+}
+
+function getMemberTabs() {
+  return cy.get('.mat-mdc-list-item');
 }

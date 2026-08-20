@@ -19,7 +19,7 @@ export const extractActiveTeamsFromUser = (user: User, quarter?: Quarter) => {
 
   return user.userTeamList
     .map((u) => u.team)
-    .filter((team) => isTeamArchived(team) || isTeamArchivedAfterQuarterStarted(team, quarter));
+    .filter((team) => isTeamArchivedAfterQuarterStarted(team, quarter));
 };
 
 export const getFullNameOfUser = (user: User | UserTableEntry) => {

@@ -36,8 +36,10 @@ const teamStateServiceMock = {
     .mockReturnValue(signal([]))
 };
 
-const mockStatisticsData = signal<any>(model);
-const mockPublicFilter = signal<boolean>(false);
+const mockStatisticsData = jest.fn()
+  .mockReturnValue(model);
+const mockPublicFilter = jest.fn()
+  .mockReturnValue(false);
 
 describe('StatisticsComponent', () => {
   window.ResizeObserver =

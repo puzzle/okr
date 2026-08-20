@@ -27,10 +27,13 @@ export const defaultQueryParamsGuard: CanActivateFn = (route, state: RouterState
 
   return forkJoin({
     currentQuarter: quarterService.getCurrentQuarter(),
+    availableQuarters: quarterService.getAllQuarters(),
     user: userService.getOrInitCurrentUser()
   })
-    .pipe(switchMap(({ currentQuarter, user }) => {
-      const targetQuarterId = requestParams.quarterId ?? currentQuarter.id;
+    .pipe(switchMap(({ currentQuarter, availableQuarters, user }) => {
+      const targetQuarterId = availableQuarters.some((q) => q.id === requestParams.quarterId)
+        ? requestParams.quarterId as number
+        : currentQuarter.id;
 
       return teamStateService.loadTeams({ quarterId: targetQuarterId })
         .pipe(map((teams) => teams.map((team) => team.id)), map((currentTeamIds) => {

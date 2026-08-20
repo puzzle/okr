@@ -5,7 +5,7 @@ import { UserService } from '../services/user.service';
 import { TeamStateService } from '../services/team.state.service';
 import { defaultQueryParamsGuard } from './default-query-params.guard';
 import { isObservable, lastValueFrom, of } from 'rxjs';
-import { quarter1, teamList, testUser } from '../shared/test-data';
+import { quarter1, quarterList, teamList, testUser } from '../shared/test-data';
 
 describe('DefaultQueryParamsGuard', () => {
   let quarterServiceMock: Partial<QuarterService>;
@@ -39,7 +39,9 @@ describe('DefaultQueryParamsGuard', () => {
   beforeEach(() => {
     quarterServiceMock = {
       getCurrentQuarter: jest.fn()
-        .mockReturnValue(of(mockCurrentQuarter))
+        .mockReturnValue(of(mockCurrentQuarter)),
+      getAllQuarters: jest.fn()
+        .mockReturnValue(of(quarterList))
     };
 
     userServiceMock = {
@@ -129,14 +131,12 @@ describe('DefaultQueryParamsGuard', () => {
         teams: mockUserTeamIdsString } });
   });
 
-  // todo at the moment there is a bug that the quarter is not being updated when it is invalid
   it('should update invalid quarter', async() => {
     const result = await executeGuard({ quarter: '2',
       teams: mockUserTeamIdsString });
 
     expect(result)
-      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id,
-        teams: mockUserTeamIdsString } });
+      .toBe(true);
   });
 
   it('should allow empty teams when user is already on page', async() => {

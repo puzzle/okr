@@ -76,20 +76,12 @@ describe('DefaultQueryParamsGuard', () => {
     jest.clearAllMocks();
   });
 
-  it('should be created', () => {
-    expect(executeGuard)
-      .toBeTruthy();
-  });
-
-  it('should redirect with default quarter and user teams when no query params exist (initial load)', async() => {
+  it('should redirect with default quarter and user teams when no query params exist', async() => {
     const result = await executeGuard();
 
-    const injectedTeamStateService = TestBed.inject(TeamStateService);
-    const injectedRouter = TestBed.inject(Router);
-
-    expect(injectedTeamStateService.loadTeams)
+    expect(teamStateServiceMock.loadTeams)
       .toHaveBeenCalledWith({ quarterId: mockCurrentQuarter.id });
-    expect(injectedRouter.parseUrl)
+    expect(routerMock.parseUrl)
       .toHaveBeenCalledWith('');
 
     expect(result)
@@ -101,59 +93,57 @@ describe('DefaultQueryParamsGuard', () => {
       });
   });
 
-  describe('Invalid or missing queryParams when user get redirected', () => {
-    it('should return true when query params exactly math the stata', async() => {
-      const result = await executeGuard({ quarter: mockCurrentQuarter.id.toString(),
-        teams: mockUserTeamIdsString });
+  it('should return true when query params exactly math the stata', async() => {
+    const result = await executeGuard({ quarter: mockCurrentQuarter.id.toString(),
+      teams: mockUserTeamIdsString });
 
-      expect(result)
-        .toBe(true);
-      expect(routerMock.parseUrl).not.toHaveBeenCalled();
-    });
+    expect(result)
+      .toBe(true);
+    expect(routerMock.parseUrl).not.toHaveBeenCalled();
+  });
 
-    it('should filter out invalid team ids', async() => {
-      const result = await executeGuard({ quarter: mockCurrentQuarter.id.toString(),
-        teams: '1,9999,-1,2,3' });
+  it('should filter out invalid team ids', async() => {
+    const result = await executeGuard({ quarter: mockCurrentQuarter.id.toString(),
+      teams: '1,9999,-1,2,3' });
 
-      expect(result)
-        .toEqual({ queryParams: { quarter: 1,
-          teams: '1,2,3' } });
-    });
+    expect(result)
+      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id,
+        teams: '1,2,3' } });
+  });
 
-    it('should update missing teams', async() => {
-      const result = await executeGuard({ quarter: mockCurrentQuarter.id.toString(),
-        teams: '' });
+  it('should update missing teams', async() => {
+    const result = await executeGuard({ quarter: mockCurrentQuarter.id.toString(),
+      teams: '' });
 
-      expect(result)
-        .toEqual({ queryParams: { quarter: 1,
-          teams: mockUserTeamIdsString } });
-    });
+    expect(result)
+      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id,
+        teams: mockUserTeamIdsString } });
+  });
 
-    it('should update missing quarter', async() => {
-      const result = await executeGuard({ quarter: '',
-        teams: mockUserTeamIdsString });
+  it('should update missing quarter', async() => {
+    const result = await executeGuard({ quarter: '',
+      teams: mockUserTeamIdsString });
 
-      expect(result)
-        .toEqual({ queryParams: { quarter: 1,
-          teams: mockUserTeamIdsString } });
-    });
+    expect(result)
+      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id,
+        teams: mockUserTeamIdsString } });
+  });
 
-    // todo at the moment there is a bug that the quarter is not being updated when it is invalid
-    it('should update invalid quarter', async() => {
-      const result = await executeGuard({ quarter: '2',
-        teams: mockUserTeamIdsString });
+  // todo at the moment there is a bug that the quarter is not being updated when it is invalid
+  it('should update invalid quarter', async() => {
+    const result = await executeGuard({ quarter: '2',
+      teams: mockUserTeamIdsString });
 
-      expect(result)
-        .toEqual({ queryParams: { quarter: 1,
-          teams: mockUserTeamIdsString } });
-    });
+    expect(result)
+      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id,
+        teams: mockUserTeamIdsString } });
+  });
 
-    it('should allow empty teams when user is already on page', async() => {
-      const result = await executeGuard({ quarter: mockCurrentQuarter.id.toString(),
-        teams: '' }, '', true);
+  it('should allow empty teams when user is already on page', async() => {
+    const result = await executeGuard({ quarter: mockCurrentQuarter.id.toString(),
+      teams: '' }, '', true);
 
-      expect(result)
-        .toBe(true);
-    });
+    expect(result)
+      .toBe(true);
   });
 });

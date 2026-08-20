@@ -13,9 +13,11 @@ import { Statistics } from '../shared/types/model/statistics';
 export class StatisticsService {
   private readonly filter = signal<FilterPageChange | null>(null);
 
-  public readonly publicFilter = this.filter.asReadonly();
-
   private readonly evaluationService = inject(EvaluationService);
+
+  get publicFilter() {
+    return this.filter.asReadonly();
+  }
 
   statisticsResource = rxResource({
     params: () => this.filter(),

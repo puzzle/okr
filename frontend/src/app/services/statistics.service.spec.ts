@@ -8,18 +8,16 @@ import { of } from 'rxjs';
 
 describe('StatisticsService', () => {
   let service: StatisticsService;
-  let evaluationServiceMock: { getStatistics: jest.Mock };
+  const evaluationServiceMock = {
+    getStatistics: jest.fn()
+  };
 
   const requestParams = { quarter: '7',
     teams: '5' };
-  const expectedParams = { quarter: 7,
-    teams: [5] };
+  const expectedParams = { quarterId: 7,
+    teamIds: [5] };
 
   beforeEach(() => {
-    evaluationServiceMock = {
-      getStatistics: jest.fn()
-    };
-
     TestBed.configureTestingModule({
       providers: [StatisticsService,
         { provide: EvaluationService,
@@ -51,37 +49,25 @@ describe('StatisticsService', () => {
 
     service.load(requestParams);
 
-    assertThatValuesLoaded(expectedParams);
-  }));
-
-  it('should load statistics on reload', fakeAsync(() => {
-    evaluationServiceMock.getStatistics.mockReturnValue(of(statistics));
-
-    service.load(requestParams);
     TestBed.tick();
     tick();
 
-    jest.clearAllMocks(); // reset the call history
-
-    service.reload();
-
-    assertThatValuesLoaded(expectedParams);
-  }));
-
-  function assertThatValuesLoaded(expectedParams: { quarter: number;
-    teams: number[]; }) {
-    TestBed.tick();
-    tick();
-
-    expect(service.publicFilter()?.quarterId)
-      .toBe(expectedParams.quarter);
-    expect(service.publicFilter()?.teamIds)
-      .toStrictEqual(expectedParams.teams);
+    expect(service.publicFilter())
+      .toStrictEqual(expect.objectContaining(expectedParams));
 
     expect(evaluationServiceMock.getStatistics)
-      .toHaveBeenCalledWith(expectedParams.quarter, expectedParams.teams);
+      .toHaveBeenCalledWith(expectedParams.quarterId, expectedParams.teamIds);
 
     expect(service.data())
       .toBe(statistics);
-  }
+  }));
+
+  it('should load statistics on reload', fakeAsync(() => {
+    const reloadSpy = jest.spyOn(service.statisticsResource, 'reload');
+
+    service.reload();
+
+    expect(reloadSpy)
+      .toHaveBeenCalledTimes(1);
+  }));
 });

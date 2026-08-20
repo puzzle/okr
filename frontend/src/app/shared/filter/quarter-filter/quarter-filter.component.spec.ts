@@ -59,16 +59,14 @@ describe('QuarterFilterComponent', () => {
       ]
     })
       .compileComponents();
-  });
 
-  const setupComponent = () => {
     fixture = TestBed.createComponent(QuarterFilterComponent);
     component = fixture.componentInstance;
-  };
+  });
 
   it('should create', () => {
-    setupComponent();
     fixture.detectChanges();
+
     expect(component)
       .toBeTruthy();
   });
@@ -78,7 +76,6 @@ describe('QuarterFilterComponent', () => {
       (getValueFromQuery as jest.Mock).mockReturnValue([5]);
       mockActivatedRoute.queryParams.next({ quarter: '5' });
 
-      setupComponent();
       fixture.detectChanges();
 
       expect(component.currentQuarterId())
@@ -88,8 +85,6 @@ describe('QuarterFilterComponent', () => {
     it('should emit the correct quarter label when a valid quarter ID is present in the route', () => {
       (getValueFromQuery as jest.Mock).mockReturnValue([7]);
       mockActivatedRoute.queryParams.next({ quarter: '7' });
-
-      setupComponent();
 
       const emitSpy = jest.spyOn(component.quarterLabel$, 'emit');
 
@@ -103,8 +98,6 @@ describe('QuarterFilterComponent', () => {
       (getValueFromQuery as jest.Mock).mockReturnValue(['999']);
       mockActivatedRoute.queryParams.next({ quarter: '999' });
 
-      setupComponent();
-
       const emitSpy = jest.spyOn(component.quarterLabel$, 'emit');
 
       fixture.detectChanges();
@@ -116,7 +109,6 @@ describe('QuarterFilterComponent', () => {
 
   describe('User Interactions', () => {
     it('should navigate and merge query params when changeDisplayedQuarter is called', () => {
-      setupComponent();
       fixture.detectChanges();
 
       component.changeDisplayedQuarter(2);

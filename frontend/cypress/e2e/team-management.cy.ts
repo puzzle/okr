@@ -518,8 +518,6 @@ describe('okr team-management', () => {
     });
 
     it('should be able to edit team "/BBT" and edit its name', () => {
-      // TeamManagementPage.do().visitViaURL().unarchiveTeam('/BBT')
-
       cy.get('app-team-management')
         .contains('/BBT')
         .click();

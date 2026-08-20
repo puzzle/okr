@@ -21,28 +21,21 @@ new Quarter(
   7, 'Q3 - 2025', new Date(), new Date(), false
 )];
 
+const mockRouter = { navigate: jest.fn() };
+const mockQuarterService = { getAllQuarters: jest.fn()
+  .mockReturnValue(of(mockQuarters)) };
+
 describe('QuarterFilterComponent', () => {
   let component: QuarterFilterComponent;
   let fixture: ComponentFixture<QuarterFilterComponent>;
-  let mockRouter: { navigate: jest.Mock };
   let mockActivatedRoute: { queryParams: BehaviorSubject<any> };
-  let mockQuarterService: { getAllQuarters: jest.Mock };
 
   beforeEach(async() => {
     (getValueFromQuery as jest.Mock).mockReset()
       .mockReturnValue([]);
 
-    mockRouter = {
-      navigate: jest.fn()
-    };
-
     mockActivatedRoute = {
       queryParams: new BehaviorSubject<any>({})
-    };
-
-    mockQuarterService = {
-      getAllQuarters: jest.fn()
-        .mockReturnValue(of(mockQuarters))
     };
 
     await TestBed.configureTestingModule({

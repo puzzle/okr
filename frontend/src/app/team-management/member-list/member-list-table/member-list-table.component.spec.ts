@@ -66,7 +66,6 @@ describe('MemberListTableComponent', () => {
   });
 
   it('should set displayedColumns for all teams correctly', fakeAsync(() => {
-    fixture.componentRef.setInput('currentTeam', undefined); // Fixed Input Name
     tick();
     expect(component.displayedColumns())
       .toStrictEqual([

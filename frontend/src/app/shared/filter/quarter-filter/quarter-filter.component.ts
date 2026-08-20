@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject, effect } from '@angular/core';
 import { QuarterService } from '../../../services/quarter.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RefreshDataService } from '../../../services/refresh-data.service';
 import { getValueFromQuery } from '../../common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { Quarter } from '../../types/model/quarter';
 
 @Component({
   selector: 'app-quarter-filter',
@@ -13,13 +13,11 @@ import { map } from 'rxjs';
   standalone: false
 })
 export class QuarterFilterComponent {
-  private quarterService = inject(QuarterService);
+  private readonly quarterService = inject(QuarterService);
 
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
-  private route = inject(ActivatedRoute);
-
-  private refreshDataService = inject(RefreshDataService);
+  private readonly route = inject(ActivatedRoute);
 
   @Input() showBacklog = true;
 
@@ -30,15 +28,7 @@ export class QuarterFilterComponent {
   currentQuarterId = toSignal(this.route.queryParams.pipe(map((params) => getValueFromQuery(params['quarter'])[0])), { initialValue: -1 }); // todo this needs to be updated in the ticket: Query Params Service #1822
 
   constructor() {
-    effect(() => {
-      const id = this.currentQuarterId();
-      const quartersList = this.quarters();
-
-      if (id !== -1 && quartersList.length > 0) {
-        const label = quartersList.find((e) => e.id === id)?.label || '';
-        this.quarterLabel$.emit(label);
-      }
-    });
+    effect(() => this.emitQuarterLabel(this.currentQuarterId(), this.quarters()));
   }
 
   changeDisplayedQuarter(newId: number) {
@@ -46,5 +36,14 @@ export class QuarterFilterComponent {
       queryParams: { quarter: newId },
       queryParamsHandling: 'merge'
     });
+  }
+
+  emitQuarterLabel(targetQuarterId: number, availableQuarters: Quarter[]) {
+    if (targetQuarterId !== -1 && availableQuarters.length > 0) {
+      const matchedQuarter = availableQuarters.find((q) => q.id === targetQuarterId);
+      const quarterLabel = matchedQuarter?.label || '';
+
+      this.quarterLabel$.emit(quarterLabel);
+    }
   }
 }

@@ -39,7 +39,7 @@ export const defaultQueryParamsGuard: CanActivateFn = (route, state: RouterState
           const redirectParams: ResponseParams = { quarterId: targetQuarterId,
             teamIds: targetTeamIds };
 
-          if (areParamsIdentical(requestParams, redirectParams)) {
+          if (areParamsDifferent(requestParams, redirectParams)) {
             const urlTree = router.parseUrl(state.url);
 
             urlTree.queryParams = {
@@ -109,4 +109,4 @@ const normalizeParamList = (list: string[]) => list.flatMap((v) => v.split(','))
   .map((v) => v.trim())
   .filter((v) => v.length > 0);
 
-const areParamsIdentical = (requestParams: RequestParams, redirectParams: ResponseParams) => requestParams.quarterId !== redirectParams.quarterId || !containsSameValues(requestParams.teamIds, redirectParams.teamIds);
+const areParamsDifferent = (requestParams: RequestParams, redirectParams: ResponseParams) => requestParams.quarterId !== redirectParams.quarterId || !containsSameValues(requestParams.teamIds, redirectParams.teamIds);

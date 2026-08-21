@@ -89,7 +89,7 @@ describe('DefaultQueryParamsGuard', () => {
     expect(result)
       .toEqual({
         queryParams: {
-          quarter: mockCurrentQuarter.id,
+          quarter: mockCurrentQuarter.id.toString(),
           teams: mockUserTeamIdsString
         }
       });
@@ -109,7 +109,7 @@ describe('DefaultQueryParamsGuard', () => {
       teams: '1,9999,-1,2,3' });
 
     expect(result)
-      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id,
+      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id.toString(),
         teams: '1,2,3' } });
   });
 
@@ -118,7 +118,7 @@ describe('DefaultQueryParamsGuard', () => {
       teams: '' });
 
     expect(result)
-      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id,
+      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id.toString(),
         teams: mockUserTeamIdsString } });
   });
 
@@ -127,7 +127,7 @@ describe('DefaultQueryParamsGuard', () => {
       teams: mockUserTeamIdsString });
 
     expect(result)
-      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id,
+      .toEqual({ queryParams: { quarter: mockCurrentQuarter.id.toString(),
         teams: mockUserTeamIdsString } });
   });
 

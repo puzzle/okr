@@ -26,8 +26,6 @@ export const getFullNameOfUser = (user: User | UserTableEntry) => {
   return `${user?.firstName || ''} ${user?.lastName || ''}`;
 };
 
-const isTeamArchived = (team: Team): boolean => !team.markedAsArchivedAt;
-
 const isTeamArchivedAfterQuarterStarted = (team: Team, quarter: Quarter | undefined) => {
   const teamArchivedAt = new Date(team.markedAsArchivedAt!)
     ?.getTime() ?? 0;

@@ -27,7 +27,7 @@ export class TeamFilterComponent {
   showMoreTeams = true;
 
   activeTeamIds = toSignal(this.route.queryParams.pipe(map((params): number[] => {
-    // todo this needs to be updated in the ticket: Query Params Service #1822
+    // TODO: this needs to be updated in the ticket: Query Params Service #1822
     const teamsParam = params['teams'];
 
     if (!teamsParam) {
@@ -50,7 +50,7 @@ export class TeamFilterComponent {
   });
 
   changeTeamFilterParams(newActiveTeams: number[]): void {
-    const params = { teams: newActiveTeams.join(',') }; // todo this needs to be updated in the ticket: reconfigure the router #1824
+    const params = { teams: newActiveTeams.join(',') }; // TODO this needs to be updated in the ticket: reconfigure the router #1824
     const optionalParams = optionalReplaceWithNulls(params);
 
     this.router.navigate([], {

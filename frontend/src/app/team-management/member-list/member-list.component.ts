@@ -36,7 +36,7 @@ export class MemberListComponent {
 
   private readonly dialog = inject(MatDialog);
 
-  // todo this needs to be updated in the ticket: Query Params Service #1822
+  // TODO: this needs to be updated in the ticket: Query Params Service #1822
   private readonly teamIdParam = toSignal(this.route.paramMap.pipe(map((params) => params.get('teamId'))), { initialValue: null });
 
   private readonly users = toSignal(this.userService.getUsers(), { initialValue: [] });

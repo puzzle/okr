@@ -24,19 +24,19 @@ import { ALL_TEAMS_STATE } from '../../../services/team-state.tokens';
   standalone: false
 })
 export class ObjectiveFormComponent implements OnInit {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   private readonly teamStateService = inject(ALL_TEAMS_STATE);
 
-  private quarterService = inject(QuarterService);
+  private readonly quarterService = inject(QuarterService);
 
   private objectiveService = inject(ObjectiveService);
 
   dialogRef = inject<MatDialogRef<ObjectiveFormComponent>>(MatDialogRef);
 
-  private dialogService = inject(DialogService);
+  private readonly dialogService = inject(DialogService);
 
-  private destroyRef = inject(DestroyRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   data = inject<{
     action: string;
@@ -44,7 +44,7 @@ export class ObjectiveFormComponent implements OnInit {
       teamId?: number; };
   }>(MAT_DIALOG_DATA);
 
-  private translate = inject(TranslateService);
+  private readonly translate = inject(TranslateService);
 
   objectiveForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required,

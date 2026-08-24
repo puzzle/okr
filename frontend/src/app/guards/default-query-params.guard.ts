@@ -86,6 +86,7 @@ const containsSameValues = (array1: number[] | undefined, array2: number[] | und
 
   return array1.every((value) => array2.includes(value)) && array1.length === array2.length;
 };
+
 const parseParams = (paramMap: ParamMap, userAlreadyOnPage: boolean): RequestParams => {
   const quarterIdStr = paramMap.getAll('quarter')[0];
   const quaterId = Number.parseInt(quarterIdStr);

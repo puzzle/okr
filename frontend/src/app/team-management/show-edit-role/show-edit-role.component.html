@@ -1,17 +1,29 @@
 <div class="role">
   @if (!edit) {
   <span>{{ getRole() }}</span>
-  @if (isEditable()) {
-  <app-puzzle-icon-button
-    (click)="setEditAsync($event, true)"
-    [attr.data-testId]="'edit-role'"
-    icon="edit.svg"
-    alt="Edit Team Icon"
+
+  @if (isWriteable()) {
+  <span
+    [matTooltip]="'Rolle kann nicht bearbeitet werden, da das Team archiviert ist.'"
+    [matTooltipDisabled]="!isArchived()"
+    class="d-inline-block"
   >
-  </app-puzzle-icon-button>
+    <app-puzzle-icon-button
+      (click)="setEditAsync($event, true)"
+      [disabled]="isArchived()"
+      [attr.data-testId]="'edit-role'"
+      icon="edit.svg"
+      alt="Edit Team Icon"
+    >
+    </app-puzzle-icon-button>
+  </span>
   }
   }
+
   @if (edit) {
-  <app-team-role-dropdown [isAdmin]="userTeam.isTeamAdmin" (isAdminChange)="saveIsAdmin($event)"></app-team-role-dropdown>
+  <app-team-role-dropdown
+    [isAdmin]="userTeam().isTeamAdmin"
+    (isAdminChange)="saveIsAdmin($event)">
+  </app-team-role-dropdown>
   }
 </div>

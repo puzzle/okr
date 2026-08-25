@@ -1,0 +1,59 @@
+<app-dialog-template-core [title]="'Team archivieren'">
+  <ng-container content>
+    <div>
+      <div class="col">
+        <div class="okr-form-row okr-form-label-input-container">
+          <label class="okr-form-label okr-form-col" for="archive-quarter">
+            Letztes aktives Quartal
+          </label>
+
+          <div class="okr-form-input pe-5">
+            <select
+              class="custom-select bg-white"
+              id="archive-quarter"
+              [ngModel]="selectedQuarter()"
+              (ngModelChange)="userSelectedQuarter.set($event)"
+              [compareWith]="compareById"
+              [attr.data-testId]="'archiveQuarterSelect'"
+            >
+              @for (quarter of availableQuarters(); track quarter.id) {
+              <option [ngValue]="quarter">
+                {{ quarter.fullLabel() }}
+              </option>
+              }
+            </select>
+
+            <p class="text-muted small mt-4 mb-0">
+              Das Team wird ab dem <b>darauffolgenden Quartal</b> ausgeblendet und kann ab sofort nicht mehr bearbeitet werden.
+              Das Team kann zu einem beliebigen Zeitpunkt wieder reaktiviert werden.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container actions>
+    <div class="col-auto">
+      <button
+        [attr.data-testId]="'save'"
+        type="button"
+        (click)="onSave()"
+        color="primary"
+        mat-flat-button
+        [disabled]="!selectedQuarter()"
+      >
+        Speichern
+      </button>
+
+      <button
+        mat-button
+        mat-dialog-close
+        color="primary"
+        [attr.data-testId]="'cancel'"
+      >
+        Abbrechen
+      </button>
+    </div>
+  </ng-container>
+</app-dialog-template-core>

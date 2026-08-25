@@ -1,5 +1,7 @@
 import { UserTeam } from './user-team';
 import { UserTableEntry } from './user-table-entry';
+import { Quarter } from './quarter';
+import { Team } from './team';
 
 export interface User {
   id: number;
@@ -10,10 +12,24 @@ export interface User {
   isOkrChampion: boolean;
 }
 
-export const extractTeamsFromUser = (user: User) => {
-  return user.userTeamList.map((u) => u.team);
+export const extractActiveTeamsFromUser = (user: User, quarter?: Quarter) => {
+  if (!user?.userTeamList) {
+    return [];
+  }
+
+  return user.userTeamList
+    .map((u) => u.team)
+    .filter((team) => isTeamArchivedAfterQuarterStarted(team, quarter));
 };
 
 export const getFullNameOfUser = (user: User | UserTableEntry) => {
   return `${user?.firstName || ''} ${user?.lastName || ''}`;
+};
+
+const isTeamArchivedAfterQuarterStarted = (team: Team, quarter: Quarter | undefined) => {
+  const teamArchivedAt = new Date(team.markedAsArchivedAt!)
+    ?.getTime() ?? 0;
+  const quarterStartTime = quarter?.startDate?.getTime() ?? 0;
+
+  return teamArchivedAt >= quarterStartTime;
 };

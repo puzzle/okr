@@ -50,10 +50,12 @@ create table if not exists quarter
 
 create table if not exists team
 (
-    id              bigint       not null,
-    version         int          not null,
-    name            varchar(250) not null,
-    description     varchar(250),
+    id                      bigint       not null,
+    version                 int          not null,
+    name                    varchar(250) not null,
+    description             varchar(250),
+    status                  text default 'ACTIVE',
+    marked_as_archived_at   timestamp default null,
     primary key (id)
 );
 
@@ -178,18 +180,19 @@ create index if not exists idx_completed_objective
 
 DROP VIEW IF EXISTS OVERVIEW;
 CREATE VIEW OVERVIEW AS
-SELECT TQ.TEAM_ID          AS "TEAM_ID",
-       TQ.TEAM_VERSION     AS "TEAM_VERSION",
-       TQ.NAME             AS "TEAM_NAME",
-       TQ.QUARTER_ID       AS "QUARTER_ID",
-       TQ.LABEL            AS "QUARTER_LABEL",
-       COALESCE(O.ID, -1)  AS "OBJECTIVE_ID",
-       O.TITLE             AS "OBJECTIVE_TITLE",
-       O.STATE             AS "OBJECTIVE_STATE",
-       O.CREATED_ON        AS "OBJECTIVE_CREATED_ON",
-       COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
-       KR.TITLE            AS "KEY_RESULT_TITLE",
-       KR.KEY_RESULT_TYPE  AS "KEY_RESULT_TYPE",
+SELECT TQ.TEAM_ID                         AS "TEAM_ID",
+       TQ.TEAM_VERSION                    AS "TEAM_VERSION",
+       TQ.NAME                            AS "TEAM_NAME",
+       TQ.TEAM_MARKED_AS_ARCHIVED_AT      AS "TEAM_MARKED_AS_ARCHIVED_AT",
+       TQ.QUARTER_ID                      AS "QUARTER_ID",
+       TQ.LABEL                           AS "QUARTER_LABEL",
+       COALESCE(O.ID, -1)                 AS "OBJECTIVE_ID",
+       O.TITLE                            AS "OBJECTIVE_TITLE",
+       O.STATE                            AS "OBJECTIVE_STATE",
+       O.CREATED_ON                       AS "OBJECTIVE_CREATED_ON",
+       COALESCE(KR.ID, -1)                AS "KEY_RESULT_ID",
+       KR.TITLE                           AS "KEY_RESULT_TITLE",
+       KR.KEY_RESULT_TYPE                 AS "KEY_RESULT_TYPE",
        KR.COMMIT_VALUE,
        KR.TARGET_VALUE,
        KR.BASELINE,
@@ -202,7 +205,7 @@ SELECT TQ.TEAM_ID          AS "TEAM_ID",
        C.ZONE              AS "CHECK_IN_ZONE",
        C.CONFIDENCE,
        C.CREATED_ON        AS "CHECK_IN_CREATED_ON"
-FROM (SELECT T.ID AS TEAM_ID, T.VERSION AS TEAM_VERSION, T.NAME, Q.ID AS QUARTER_ID, Q.LABEL
+FROM (SELECT T.ID AS TEAM_ID, T.VERSION AS TEAM_VERSION, t.MARKED_AS_ARCHIVED_AT as TEAM_MARKED_AS_ARCHIVED_AT, T.NAME, Q.ID AS QUARTER_ID, Q.LABEL
       FROM TEAM T,
            QUARTER Q) TQ
          LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUARTER_ID = O.QUARTER_ID

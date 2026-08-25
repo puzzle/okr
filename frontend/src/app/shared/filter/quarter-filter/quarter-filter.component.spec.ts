@@ -1,143 +1,116 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { QuarterFilterComponent } from './quarter-filter.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { OverviewService } from '../../../services/overview.service';
-import { Observable, of } from 'rxjs';
-import { Quarter } from '../../types/model/quarter';
 import { QuarterService } from '../../../services/quarter.service';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatSelectHarness } from '@angular/material/select/testing';
-import { Router } from '@angular/router';
+import { RefreshDataService } from '../../../services/refresh-data.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, of } from 'rxjs';
+import { getValueFromQuery } from '../../common';
+import { Quarter } from '../../types/model/quarter';
 
-const overviewService = {
-  getOverview: jest.fn()
-};
+jest.mock('../../common', () => ({
+  getValueFromQuery: jest.fn()
+}));
 
-const quarters = [
-  new Quarter(
-    999, 'Backlog', null, null, true
-  ),
-  new Quarter(
-    2, '23.02.2025', new Date(), new Date(), false
-  ),
-  new Quarter(
-    5, '23.02.2025', new Date(), new Date(), false
-  ),
-  new Quarter(
-    7, '23.02.2025', new Date(), new Date(), false
-  )
-];
+const mockQuarters = [new Quarter(
+  2, '23.02.2025', new Date(), new Date(), false
+),
+new Quarter(
+  5, 'Q2 - 2025', new Date(), new Date(), false
+),
+new Quarter(
+  7, 'Q3 - 2025', new Date(), new Date(), false
+)];
 
-const quarterService = {
-  getAllQuarters(): Observable<Quarter[]> {
-    return of(quarters);
-  },
-  getCurrentQuarter(): Observable<Quarter> {
-    return of(quarters[2]);
-  }
-};
+const mockRouter = { navigate: jest.fn() };
+const mockQuarterService = { getAllQuarters: jest.fn()
+  .mockReturnValue(of(mockQuarters)) };
 
 describe('QuarterFilterComponent', () => {
   let component: QuarterFilterComponent;
   let fixture: ComponentFixture<QuarterFilterComponent>;
-  let loader: HarnessLoader;
-  let router: Router;
+  let mockActivatedRoute: { queryParams: BehaviorSubject<any> };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    (getValueFromQuery as jest.Mock).mockReset()
+      .mockReturnValue([]);
+
+    mockActivatedRoute = {
+      queryParams: new BehaviorSubject<any>({})
+    };
+
+    await TestBed.configureTestingModule({
       declarations: [QuarterFilterComponent],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        FormsModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        NoopAnimationsModule
-      ],
-      providers: [{ provide: OverviewService,
-        useValue: overviewService },
-      { provide: QuarterService,
-        useValue: quarterService }]
-    });
+      providers: [
+        { provide: Router,
+          useValue: mockRouter },
+        { provide: ActivatedRoute,
+          useValue: mockActivatedRoute },
+        { provide: QuarterService,
+          useValue: mockQuarterService },
+        { provide: RefreshDataService,
+          useValue: {} }
+      ]
+    })
+      .compileComponents();
+
     fixture = TestBed.createComponent(QuarterFilterComponent);
     component = fixture.componentInstance;
-    loader = TestbedHarnessEnvironment.loader(fixture);
-    router = TestBed.inject(Router);
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
+
     expect(component)
       .toBeTruthy();
   });
 
-  it('should set correct default quarter if no route param is defined', async() => {
-    jest.spyOn(component, 'changeDisplayedQuarter');
-    jest.spyOn(quarters[2] as any, 'isCurrent')
-      .mockReturnValue(true);
-    const quarterSelect = await loader.getHarness(MatSelectHarness);
-    expect(quarterSelect)
-      .toBeTruthy();
-    component.ngOnInit();
-    fixture.detectChanges();
-    expect(component.currentQuarterId)
-      .toBe(quarters[2].id);
-    expect(await quarterSelect.getValueText())
-      .toBe(quarters[2].label + ' Aktuell');
-    expect(component.changeDisplayedQuarter)
-      .toHaveBeenCalledTimes(1);
+  describe('Reactive State (Signals & Effects)', () => {
+    it('should read currentQuarterId from query params', () => {
+      (getValueFromQuery as jest.Mock).mockReturnValue([5]);
+      mockActivatedRoute.queryParams.next({ quarter: '5' });
+
+      fixture.detectChanges();
+
+      expect(component.currentQuarterId())
+        .toBe(5);
+    });
+
+    it('should emit the correct quarter label when a valid quarter ID is present in the route', () => {
+      (getValueFromQuery as jest.Mock).mockReturnValue([7]);
+      mockActivatedRoute.queryParams.next({ quarter: '7' });
+
+      const emitSpy = jest.spyOn(component.quarterLabel$, 'emit');
+
+      fixture.detectChanges();
+
+      expect(emitSpy)
+        .toHaveBeenCalledWith('Q3 - 2025');
+    });
+
+    it('should NOT emit a label if the ID does not match any quarters', () => {
+      (getValueFromQuery as jest.Mock).mockReturnValue(['999']);
+      mockActivatedRoute.queryParams.next({ quarter: '999' });
+
+      const emitSpy = jest.spyOn(component.quarterLabel$, 'emit');
+
+      fixture.detectChanges();
+
+      expect(emitSpy)
+        .toHaveBeenCalledWith('');
+    });
   });
 
-  it('should set correct value in form according to route param', async() => {
-    jest.spyOn(component, 'changeDisplayedQuarter');
-    const routerHarnessPromise = RouterTestingHarness.create();
-    const quarterSelectPromise = loader.getHarness(MatSelectHarness);
-    await Promise.all([routerHarnessPromise,
-      quarterSelectPromise])
-      .then(async([routerHarness,
-        quarterSelect]) => {
-        await routerHarness.navigateByUrl('/?quarter=' + quarters[3].id);
+  describe('User Interactions', () => {
+    it('should navigate and merge query params when changeDisplayedQuarter is called', () => {
+      fixture.detectChanges();
 
-        expect(quarterSelect)
-          .toBeTruthy();
-        routerHarness.detectChanges();
-        component.ngOnInit();
-        fixture.detectChanges();
+      component.changeDisplayedQuarter(2);
 
-        expect(component.currentQuarterId)
-          .toBe(quarters[3].id);
-        expect(await quarterSelect.getValueText())
-          .toBe(quarters[3].label);
-        expect(component.changeDisplayedQuarter)
-          .toHaveBeenCalledTimes(1);
-      });
-  });
-
-  it('should set default quarter if quarter id in route params does not exist', async() => {
-    jest.spyOn(component, 'changeDisplayedQuarter');
-    const quarterSelect = await loader.getHarness(MatSelectHarness);
-
-    const routerHarness = await RouterTestingHarness.create();
-    await routerHarness.navigateByUrl('/?quarter=1000');
-
-    expect(quarterSelect)
-      .toBeTruthy();
-    routerHarness.detectChanges();
-    component.ngOnInit();
-    fixture.detectChanges();
-    expect(component.currentQuarterId)
-      .toBe(quarters[2].id);
-    expect(await quarterSelect.getValueText())
-      .toBe(quarters[2].label + ' Aktuell');
-    expect(component.changeDisplayedQuarter)
-      .toHaveBeenCalledTimes(1);
-    expect(router.url)
-      .toBe('/?quarter=' + quarters[2].id);
+      expect(mockRouter.navigate)
+        .toHaveBeenCalledWith([], {
+          queryParams: { quarter: 2 },
+          queryParamsHandling: 'merge'
+        });
+    });
   });
 });

@@ -56,6 +56,12 @@ public class QuarterBusinessService {
         return quarterPersistenceService.getCurrentQuarter();
     }
 
+    public List<Quarter> getFirstAndLastQuarterDates() {
+        List<Quarter> quarters = quarterPersistenceService.getFirstAndLastQuarterDates();
+        quarters.forEach(QuarterValidationService::throwExceptionWhenStartEndDateQuarterIsNull);
+        return quarters;
+    }
+
     private String shortenYear(int fullYear) {
         return padWithZeros(2, fullYear % 100);
     }

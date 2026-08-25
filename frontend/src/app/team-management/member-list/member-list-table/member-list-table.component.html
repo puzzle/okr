@@ -14,19 +14,17 @@
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef>Name</th>
     <td mat-cell *matCellDef="let element">
-      <a [routerLink]="getMemberDetailsLink(element, selectedTeam$.value)">
+      <a [routerLink]="getMemberDetailsLink(element, currentTeam())">
         {{ element.firstName }} {{ element.lastName }}
       </a>
     </td>
   </ng-container>
 
-  <!--  all roles for all teams view-->
   <ng-container matColumnDef="roles">
     <th mat-header-cell *matHeaderCellDef>Rolle</th>
     <td mat-cell *matCellDef="let element">{{ element.roles | roles }}</td>
   </ng-container>
 
-  <!--  single role with edit for team view-->
   <ng-container matColumnDef="role">
     <th mat-header-cell *matHeaderCellDef>Rolle</th>
     <td mat-cell *matCellDef="let element">
@@ -60,16 +58,23 @@
   <ng-container matColumnDef="menu">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
-      @if (selectedTeam$.value?.isWriteable) {
+      @if (isTeamWriteable()) {
       <div class="menu">
-        <app-puzzle-icon-button
-          (click)="$event.stopPropagation()"
-          [matMenuTriggerFor]="userMenu"
-          [attr.data-testId]="'member-list-more'"
-          icon="three-dot-menu-icon.svg"
-          alt="More Icon"
+        <span
+          [matTooltip]="'Aktion nicht möglich, da das Team archiviert ist'"
+          [matTooltipDisabled]="!isTeamArchived()"
         >
-        </app-puzzle-icon-button>
+          <app-puzzle-icon-button
+            (click)="!isTeamArchived() && $event.stopPropagation()"
+            [matMenuTriggerFor]="isTeamArchived() ? null : userMenu"
+            [disabled]="isTeamArchived()"
+            [attr.data-testId]="'member-list-more'"
+            icon="three-dot-menu-icon.svg"
+            alt="More Icon"
+          >
+          </app-puzzle-icon-button>
+        </span>
+
         <mat-menu #userMenu="matMenu">
           <button
             (click)="removeMemberFromTeam(element, $event)"
@@ -85,15 +90,15 @@
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
   <tr
     mat-row
     class="cursor-pointer"
-    [routerLink]="getMemberDetailsLink(row, selectedTeam$.value)"
-    *matRowDef="let row; columns: displayedColumns"
+    [routerLink]="getMemberDetailsLink(row, currentTeam())"
+    *matRowDef="let row; columns: displayedColumns()"
   ></tr>
 
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell px-2" [attr.colspan]="displayedColumns.length">Keine Members</td>
+    <td class="mat-cell px-2" [attr.colspan]="displayedColumns().length">Keine Members</td>
   </tr>
 </table>

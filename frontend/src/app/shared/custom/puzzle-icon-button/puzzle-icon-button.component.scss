@@ -6,9 +6,16 @@
   button.puzzle-icon-button {
     border: none;
     background: none;
+    padding: 4px;
+    border-radius: 12px;
 
     &:hover {
       background-color: #dbdee0;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
 }

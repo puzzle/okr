@@ -1,6 +1,8 @@
-<app-application-page [elements$]="overviewEntities$" (reloadPage)="loadOverview($event)">
+<app-application-page [isEmpty]="data()?.length === 0">
   <app-overview-banner app-banner id="banner-component"></app-overview-banner>
-  @for (overviewEntity of overviewEntities$ | async; track $index) {
+  <p no-data-message>Kein Team ausgewählt</p>
+
+  @for (overviewEntity of data(); track $index) {
   <app-team [overviewEntity]="overviewEntity"></app-team>
   }
 </app-application-page>

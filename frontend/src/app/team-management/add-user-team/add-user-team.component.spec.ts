@@ -1,25 +1,33 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddUserTeamComponent } from './add-user-team.component';
-import { TeamService } from '../../services/team.service';
 import { team1, team2, team3, testUser } from '../../shared/test-data';
-import { of } from 'rxjs';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
+import { signal, WritableSignal } from '@angular/core';
+import { Team } from '../../shared/types/model/team';
 
 describe('AddUserTeamComponent', () => {
   let component: AddUserTeamComponent;
   let fixture: ComponentFixture<AddUserTeamComponent>;
+  let teamsSignal: WritableSignal<Team[]>;
+
   const team1Copy = { ...team1 };
   const team2Copy = { ...team2 };
   const team3Copy = { ...team3 };
 
-  const teamServiceMock = {
-    getAllTeams: jest.fn()
-  };
+  let teamStateServiceMock: any;
 
   beforeEach(async() => {
+    teamsSignal = signal<Team[]>([]);
+
+    teamStateServiceMock = {
+      getTeams: jest.fn()
+        .mockReturnValue(teamsSignal)
+    };
+
     await TestBed.configureTestingModule({
       declarations: [AddUserTeamComponent],
-      providers: [{ provide: TeamService,
-        useValue: teamServiceMock }]
+      providers: [{ provide: ALL_TEAMS_STATE,
+        useValue: teamStateServiceMock }]
     })
       .compileComponents();
   });
@@ -28,10 +36,11 @@ describe('AddUserTeamComponent', () => {
     fixture = TestBed.createComponent(AddUserTeamComponent);
     component = fixture.componentInstance;
 
-    teamServiceMock.getAllTeams.mockReturnValue(of([team1Copy,
+    teamsSignal.set([team1Copy,
       team2Copy,
-      team3Copy]));
-    component.currentTeams$ = of(testUser.userTeamList);
+      team3Copy]);
+
+    fixture.componentRef.setInput('currentTeams', testUser.userTeamList);
 
     fixture.detectChanges();
   });
@@ -41,36 +50,42 @@ describe('AddUserTeamComponent', () => {
       .toBeTruthy();
   });
 
-  it('should filter selectableAdminTeams correctly', (done) => {
+  it('should filter selectableAdminTeams correctly', () => {
     team1Copy.isWriteable = true;
     team2Copy.isWriteable = true;
     team3Copy.isWriteable = false;
-    component.ngOnInit();
-    component.selectableAdminTeams$!.subscribe((teams) => {
-      expect(teams.length)
-        .toBe(1);
-      expect(teams[0].id)
-        .toBe(team2Copy.id);
-      done();
-    });
+    teamsSignal.set([team1Copy,
+      team2Copy,
+      team3Copy]);
+    fixture.detectChanges();
+
+    const teams = component.selectableAdminTeams();
+
+    expect(teams.length)
+      .toBe(1);
+    expect(teams[0].id)
+      .toBe(team2Copy.id);
   });
 
-  it('should filter allAdminTeams correctly', (done) => {
+  it('should filter allAdminTeams correctly', () => {
     team1Copy.isWriteable = true;
     team2Copy.isWriteable = true;
     team3Copy.isWriteable = false;
-    component.ngOnInit();
-    component.allAdminTeams$!.subscribe((teams) => {
-      expect(teams.length)
-        .toBe(2);
-      expect(teams[0].id)
-        .toBe(team1Copy.id);
-      expect(teams[1].id)
-        .toBe(team2Copy.id);
-      expect(component.isAddButtonVisible(teams))
-        .toBeTruthy();
-      done();
-    });
+    teamsSignal.set([team1Copy,
+      team2Copy,
+      team3Copy]);
+    fixture.detectChanges();
+
+    const teams = component.allAdminTeams();
+
+    expect(teams.length)
+      .toBe(2);
+    expect(teams[0].id)
+      .toBe(team1Copy.id);
+    expect(teams[1].id)
+      .toBe(team2Copy.id);
+    expect(component.isAddButtonVisible(teams))
+      .toBeTruthy();
   });
 
   it('should create the userTeam when createUserTeam is called', () => {
@@ -87,14 +102,16 @@ describe('AddUserTeamComponent', () => {
       .toThrow('UserTeam should be defined here');
   });
 
-  it('should emit addUserTeam event and set userTeam to undefined after save', (done) => {
+  it('should emit addUserTeam event and set userTeam to undefined after save', () => {
     component.userTeam = testUser.userTeamList[0];
-    component.addUserTeam.subscribe(() => {
-      done();
-    });
+    jest.spyOn(component.addUserTeam, 'emit');
+
     component.save();
+
+    expect(component.addUserTeam.emit)
+      .toHaveBeenCalledWith(testUser.userTeamList[0]);
     expect(component.userTeam)
-      .toBe(undefined);
+      .toBeUndefined();
   });
 
   it('should test showAddButton', () => {
@@ -104,6 +121,7 @@ describe('AddUserTeamComponent', () => {
     expect(component.isAddButtonVisible([team1Copy,
       team2Copy]))
       .toBeFalsy();
+
     component.userTeam = undefined;
     expect(component.isAddButtonVisible([]))
       .toBeFalsy();

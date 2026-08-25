@@ -1,8 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { catchError, EMPTY, Observable } from 'rxjs';
-import { EvaluationService } from '../services/evaluation.service';
+import { Component, inject, WritableSignal } from '@angular/core';
 import { Statistics } from '../shared/types/model/statistics';
-import { FilterPageChange } from '../shared/types/model/filter-page-change';
+import { StatisticsService } from '../services/statistics.service';
 
 @Component({
   selector: 'app-statistics',
@@ -11,20 +9,11 @@ import { FilterPageChange } from '../shared/types/model/filter-page-change';
   styleUrl: './statistics.component.scss'
 })
 export class StatisticsComponent {
-  private evaluationService = inject(EvaluationService);
+  private readonly statisticsService = inject(StatisticsService);
 
-  statistics = new Observable<Statistics>();
+  readonly statistics: WritableSignal<Statistics | undefined | null> = this.statisticsService.data;
 
-  activeFilter: FilterPageChange | undefined;
-
-  loadOverview(filterPage: FilterPageChange) {
-    this.activeFilter = filterPage;
-    this.statistics = this.evaluationService
-      .getStatistics(filterPage.quarterId, filterPage.teamIds)
-      .pipe(catchError(() => {
-        return EMPTY;
-      }));
-  }
+  readonly publicFilter = this.statisticsService.publicFilter;
 
   krObjectiveRelation(s: Statistics): number {
     return s.keyResultAmount / s.objectiveAmount || 0;
@@ -46,13 +35,12 @@ export class StatisticsComponent {
     multiplier: number; } {
     const all = s.keyResultsInFailAmount + s.keyResultsInCommitAmount + s.keyResultsInTargetAmount + s.keyResultsInStretchAmount;
 
-    const r =
-      {
-        fail: s.keyResultsInFailAmount / all || 0,
-        commit: s.keyResultsInCommitAmount / all || 0,
-        target: s.keyResultsInTargetAmount / all || 0,
-        stretch: s.keyResultsInStretchAmount / all || 0
-      };
+    const r = {
+      fail: s.keyResultsInFailAmount / all || 0,
+      commit: s.keyResultsInCommitAmount / all || 0,
+      target: s.keyResultsInTargetAmount / all || 0,
+      stretch: s.keyResultsInStretchAmount / all || 0
+    };
     const max = Math.max(
       r.fail, r.commit, r.target, r.stretch
     );

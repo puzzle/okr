@@ -12,6 +12,7 @@ import ch.puzzle.okr.service.business.QuarterBusinessService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import ch.puzzle.okr.test.TestHelper;
 import ch.puzzle.okr.util.quarter.check.QuarterRangeChecker;
+import ch.puzzle.okr.util.quarter.generate.h2.QuarterFunction;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
@@ -63,7 +64,7 @@ class QuarterPersistenceServiceIT {
     void getMostCurrentQuartersShouldReturnCurrentQuarterAndFutureQuarterAndGJForTestsQuarter() {
         List<Quarter> quarterListFromFunction = quarterPersistenceService.getMostCurrentQuarters();
 
-        assertEquals(3, quarterListFromFunction.size());
+        assertEquals(4, quarterListFromFunction.size());
         assertGJForTestsQuarterIsFoundOnce(quarterListFromFunction);
         assertCurrentQuarterIsFoundOnce(quarterListFromFunction);
     }
@@ -143,6 +144,10 @@ class QuarterPersistenceServiceIT {
             "9,2,0,7", "10,3,1,10", "11,3,0,10", "12,3,0,10" })
     void shouldGenerateQuarterWithCronJob(int month, int quarterIndex, int amountOfInvocations,
                                           int currentQuarterStart) {
+
+        List<Quarter> quartersBeforeTest = quarterPersistenceService.findAll();
+        int initialQuarterCount = quartersBeforeTest.size();
+
         int startQuarter = 7;
         ReflectionTestUtils.setField(quarterBusinessService, "quarterStart", startQuarter);
         int nextYear = Year.now().atMonth(startQuarter).plusMonths(month + 12 - 1).getYear();
@@ -170,13 +175,28 @@ class QuarterPersistenceServiceIT {
 
         Mockito.verify(quarterPersistenceService, Mockito.times(amountOfInvocations)).save(ArgumentMatchers.any());
 
-        List<Quarter> createdQuarters = quarterPersistenceService
+        assertEquals(initialQuarterCount + amountOfInvocations, quarterBusinessService.getQuarters().size());
+
+        List<Quarter> newlyCreatedQuarters = quarterPersistenceService
                 .findAll()
                 .stream()
+                .filter(q -> !quartersBeforeTest.contains(q))
                 .filter(quarter -> quarter.getLabel().equals(expectedLabel))
                 .toList();
-        assertEquals(amountOfInvocations, createdQuarters.size());
-        assertEquals(4 + amountOfInvocations, quarterBusinessService.getQuarters().size());
-        createdQuarters.forEach(quarter -> quarterPersistenceService.deleteById(quarter.getId()));
+
+        assertEquals(amountOfInvocations, newlyCreatedQuarters.size());
+
+        newlyCreatedQuarters.forEach(quarter -> quarterPersistenceService.deleteById(quarter.getId()));
+    }
+
+    @Test
+    void shouldGetFirstAndLastQuarter() {
+        List<Quarter> result = quarterPersistenceService.getFirstAndLastQuarterDates();
+
+        Quarter firstQuarter = result.get(0);
+        Quarter lastQuarter = result.get(1);
+
+        assertEquals(LocalDate.of(2000, 7, 1), firstQuarter.getStartDate());
+        assertEquals(LocalDate.parse(QuarterFunction.nextQuarterEndDate()), lastQuarter.getEndDate());
     }
 }

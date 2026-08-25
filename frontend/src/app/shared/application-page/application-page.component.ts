@@ -1,10 +1,7 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, OnInit, OnDestroy, inject } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { RefreshDataService } from '../../services/refresh-data.service';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, inject, input } from '@angular/core';
+import { BehaviorSubject, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
-import { getQueryString, getValueFromQuery, isMobileDevice } from '../common';
-import { FilterPageChange } from '../types/model/filter-page-change';
+import { RefreshDataService } from '../../services/refresh-data.service';
 
 @Component({
   selector: 'app-application-page',
@@ -15,68 +12,35 @@ import { FilterPageChange } from '../types/model/filter-page-change';
 export class ApplicationPageComponent implements OnInit, OnDestroy {
   private refreshDataService = inject(RefreshDataService);
 
-  private activatedRoute = inject(ActivatedRoute);
-
   private changeDetector = inject(ChangeDetectorRef);
 
   private configService = inject(ConfigService);
-
-  @Input() elements$?: Observable<any>;
 
   overviewPadding = new Subject<number>();
 
   backgroundLogoSrc$ = new BehaviorSubject<string>('assets/images/empty.svg');
 
+  isEmpty = input<boolean>();
+
   private destroyed$ = new ReplaySubject<boolean>(1);
 
-  @Output() reloadPage = new EventEmitter<FilterPageChange>();
-
-
-  constructor() {
-    this.refreshDataService.reloadOverviewSubject
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => this.reloadPage.next(this.getFilterPageChange()));
-
-    combineLatest([this.refreshDataService.teamFilterReady.asObservable(),
-      this.refreshDataService.quarterFilterReady.asObservable()])
-      .pipe(take(1))
-      .subscribe(() => {
-        this.activatedRoute.queryParams.pipe(takeUntil(this.destroyed$))
-          .subscribe(() => {
-            this.reloadPage.next(this.getFilterPageChange());
-          });
-      });
-  }
-
-  getFilterPageChange(): FilterPageChange {
-    const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
-    const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
-    const objectiveQuery = this.activatedRoute.snapshot.queryParams['objectiveQuery'];
-
-    const teamIds = getValueFromQuery(teamQuery);
-    const quarterId = getValueFromQuery(quarterQuery)[0];
-    const objectiveQueryString = getQueryString(objectiveQuery);
-    return { quarterId,
-      teamIds,
-      objectiveQueryString };
-  }
-
-
   ngOnInit(): void {
-    this.refreshDataService.okrBannerHeightSubject.subscribe((e) => {
-      this.overviewPadding.next(e);
-      this.changeDetector.detectChanges();
-    });
-    if (!isMobileDevice()) {
-      document.getElementById('overview')?.classList.add('bottom-shadow-space');
-    }
-    this.configService.config$.subscribe({
-      next: (config) => {
-        if (config.triangles) {
-          this.backgroundLogoSrc$.next(config.backgroundLogo);
+    this.refreshDataService.okrBannerHeightSubject
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((e) => {
+        this.overviewPadding.next(e);
+        this.changeDetector.detectChanges();
+      });
+
+    this.configService.config$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (config) => {
+          if (config.triangles) {
+            this.backgroundLogoSrc$.next(config.backgroundLogo);
+          }
         }
-      }
-    });
+      });
   }
 
   ngOnDestroy(): void {

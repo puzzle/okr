@@ -1,44 +1,44 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ApplicationPageComponent } from './application-page.component';
-import { provideRouter, RouterModule } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { ConfigService } from '../../services/config.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { RouterTestingHarness } from '@angular/router/testing';
+import { getValueFromQuery } from '../common';
 
-const refreshDataServiceMock = {
-  teamFilterReady: new Subject<any>(),
-  quarterFilterReady: new Subject<any>(),
-  reloadOverviewSubject: new Subject<any>(),
-  okrBannerHeightSubject: new BehaviorSubject(5)
-};
+jest.mock('../common', () => ({
+  getValueFromQuery: jest.fn(),
+  isMobileDevice: jest.fn()
+}));
 
 describe('ApplicationPageComponent', () => {
   let component: ApplicationPageComponent;
   let fixture: ComponentFixture<ApplicationPageComponent>;
 
+  let mockRefreshDataService: { okrBannerHeightSubject: Observable<number> };
+  let mockConfigService: { config$: Observable<any> };
+  let mockActivatedRoute: { queryParams: Observable<any> };
+
   beforeEach(async() => {
+    mockRefreshDataService = { okrBannerHeightSubject: of(42) };
+    mockConfigService = { config$: of({}) };
+    mockActivatedRoute = { queryParams: of({}) };
+
+    (getValueFromQuery as jest.Mock).mockReset();
+
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
       declarations: [ApplicationPageComponent],
-      providers: [
-        provideRouter([]),
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        {
-          provide: RefreshDataService,
-          useValue: refreshDataServiceMock
-        }
-      ]
+      providers: [{ provide: RefreshDataService,
+        useValue: mockRefreshDataService },
+      { provide: ConfigService,
+        useValue: mockConfigService },
+      { provide: ActivatedRoute,
+        useValue: mockActivatedRoute }]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(ApplicationPageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-    jest.spyOn(component.reloadPage, 'next');
   });
 
   it('should create', () => {
@@ -46,71 +46,46 @@ describe('ApplicationPageComponent', () => {
       .toBeTruthy();
   });
 
-  it('should emit page reloader if all filters are ready', () => {
-    refreshDataServiceMock.quarterFilterReady.next(true);
-    refreshDataServiceMock.teamFilterReady.next(true);
-    expect(component.reloadPage.next)
-      .toHaveBeenCalled();
+  it('should accept the isEmpty signal input', () => {
+    fixture.componentRef.setInput('isEmpty', true);
+    expect(component.isEmpty())
+      .toBe(true);
   });
 
-  it('should emit page reloader reloadOverviewSubject is called', () => {
-    refreshDataServiceMock.reloadOverviewSubject.next(true);
-    expect(component.reloadPage.next)
-      .toHaveBeenCalled();
-  });
+  describe('ngOnInit behavior', () => {
+    it('should push new banner height to overviewPadding and detect changes', () => {
+      mockRefreshDataService.okrBannerHeightSubject = of(42);
 
-  it.each([
-    [
-      '?quarter=7',
-      7,
-      [],
-      ''
-    ],
-    [
-      '?teams=1,2',
-      undefined,
-      [1,
-        2],
-      ''
-    ],
-    [
-      '?objectiveQuery=a%20a',
-      undefined,
-      [],
-      'a a'
-    ],
-    [
-      '?teams=1,2&objectiveQuery=a%20a',
-      undefined,
-      [1,
-        2],
-      'a a'
-    ],
-    [
-      '?teams=1,2&quarter=7',
-      7,
-      [1,
-        2],
-      ''
-    ],
-    [
-      '?quarter=7&objectiveQuery=a%20a',
-      7,
-      [],
-      'a a'
-    ]
-  ])('should call service method with correct params overview based on query-params', async(
-    query: string, quarterParam?: number, teamsParam?: number[], objectiveParam?: string
-  ) => {
-    const routerHarness = await RouterTestingHarness.create();
-    await routerHarness.navigateByUrl('/' + query);
-    routerHarness.detectChanges();
-    const filterPageChange = component.getFilterPageChange();
-    expect(filterPageChange.quarterId)
-      .toEqual(quarterParam);
-    expect(filterPageChange.objectiveQueryString)
-      .toEqual(objectiveParam);
-    expect(filterPageChange.teamIds)
-      .toEqual(teamsParam);
+      const cdSpy = jest.spyOn((component as any).changeDetector, 'detectChanges');
+      const paddingSpy = jest.spyOn(component.overviewPadding, 'next');
+
+      fixture.detectChanges();
+
+      expect(paddingSpy)
+        .toHaveBeenCalledWith(42);
+      expect(cdSpy)
+        .toHaveBeenCalled();
+    });
+
+    it('should update backgroundLogoSrc$ when config enables triangles', () => {
+      mockConfigService.config$ = of({ triangles: true,
+        backgroundLogo: 'assets/custom.svg' });
+      const logoSpy = jest.spyOn(component.backgroundLogoSrc$, 'next');
+
+      fixture.detectChanges();
+
+      expect(logoSpy)
+        .toHaveBeenCalledWith('assets/custom.svg');
+    });
+
+    it('should NOT update backgroundLogoSrc$ when config disables triangles', () => {
+      mockConfigService.config$ = of({ triangles: false,
+        backgroundLogo: 'assets/custom.svg' });
+      const logoSpy = jest.spyOn(component.backgroundLogoSrc$, 'next');
+
+      fixture.detectChanges();
+
+      expect(logoSpy).not.toHaveBeenCalled();
+    });
   });
 });

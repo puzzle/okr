@@ -94,6 +94,8 @@ describe('okr check-in', () => {
       .cancel();
 
     cy.logout();
+    cy.url()
+      .should('include', 'localhost:8544');
     cy.loginAsUser(users.bbt);
 
     FilterHelper.do()

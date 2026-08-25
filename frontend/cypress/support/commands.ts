@@ -20,6 +20,11 @@ Cypress.Commands.add('logout', () => {
     .as('logoutButton');
   cy.get('@logoutButton')
     .click();
+  cy.env(['LOGIN_URL'])
+    .then(({ LOGIN_URL }) => {
+      cy.url()
+        .should('include', LOGIN_URL);
+    });
 });
 
 

@@ -19,6 +19,8 @@ import { CheckInMetricMin } from './types/model/check-in-metric-min';
 import { Completed } from './types/model/completed';
 import { Objective } from './types/model/objective';
 import { Item } from '../components/action-plan/action-plan.component';
+import { TeamStatus } from './types/enums/team-status';
+import { Statistics } from './types/model/statistics';
 
 export const teamFormObject = {
   name: 'newTeamName',
@@ -31,7 +33,9 @@ export const marketingTeamWriteable: Team = {
   version: 2,
   name: 'Marketing Team',
   description: 'The writeable Marketing Team',
-  isWriteable: true
+  isWriteable: true,
+  markedAsArchivedAt: null,
+  status: TeamStatus.ACTIVE
 };
 
 export const marketingTeamNotWriteable: Team = {
@@ -39,7 +43,9 @@ export const marketingTeamNotWriteable: Team = {
   version: 3,
   name: 'Marketing Team',
   description: 'The not writeable Marketing Team',
-  isWriteable: false
+  isWriteable: false,
+  markedAsArchivedAt: null,
+  status: TeamStatus.ACTIVE
 };
 
 export const team1: Team = {
@@ -47,7 +53,9 @@ export const team1: Team = {
   version: 2,
   name: 'Team1',
   description: 'The not writeable Team1',
-  isWriteable: false
+  isWriteable: false,
+  markedAsArchivedAt: null,
+  status: TeamStatus.ACTIVE
 };
 
 export const team2: Team = {
@@ -55,7 +63,9 @@ export const team2: Team = {
   version: 3,
   name: 'Team2',
   description: 'The not writeable Team2',
-  isWriteable: false
+  isWriteable: false,
+  markedAsArchivedAt: null,
+  status: TeamStatus.ACTIVE
 };
 
 export const team3: Team = {
@@ -63,7 +73,9 @@ export const team3: Team = {
   version: 4,
   name: 'Team3',
   description: 'The not writeable Team3',
-  isWriteable: false
+  isWriteable: false,
+  markedAsArchivedAt: null,
+  status: TeamStatus.ACTIVE
 };
 
 export const teamList = [team1,
@@ -681,3 +693,16 @@ export const items: Item[] = [item1,
   item2,
   item3];
 
+export const statistics: Statistics = {
+  completedObjectivesAmount: 3,
+  keyResultAmount: 12,
+  keyResultsInCommitAmount: 3,
+  keyResultsInFailAmount: 3,
+  keyResultsInStretchAmount: 3,
+  keyResultsInTargetAmount: 3,
+  keyResultsInTargetOrStretchAmount: 6,
+  keyResultsMetricAmount: 6,
+  keyResultsOrdinalAmount: 6,
+  objectiveAmount: 6,
+  successfullyCompletedObjectivesAmount: 3
+};

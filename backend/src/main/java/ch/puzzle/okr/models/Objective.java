@@ -1,5 +1,6 @@
 package ch.puzzle.okr.models;
 
+import ch.puzzle.okr.models.team.Team;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -2,6 +2,7 @@ import { Page } from './page';
 import TeamDialog from '../dialogs/teamDialog';
 import AngularSearchBox from '../angularSearchBox';
 import ConfirmDialog from '../dialogs/confirmDialog';
+import ArchiveDialog from '../dialogs/archiveDialog';
 
 export default class TeamManagementPage extends Page {
   elements = {
@@ -66,6 +67,34 @@ export default class TeamManagementPage extends Page {
     return ConfirmDialog.do()
       .checkForContentOnDialog('Team löschen')
       .checkForContentOnDialog(`Möchtest du das Team '${teamName}' wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!`);
+  }
+
+  archiveTeam(teamName: string) {
+    cy.get('app-team-list .mat-mdc-list-item')
+      .contains(teamName)
+      .click();
+    cy.getByTestId('teamMoreButton')
+      .click();
+    cy.getByTestId('teamArchiveButton')
+      .click();
+
+    return ArchiveDialog.do()
+      .checkForContentOnDialog('Team archivieren')
+      .checkForContentOnDialog('Das Team wird ab dem darauffolgenden Quartal ausgeblendet und kann ab sofort nicht mehr bearbeitet werden. Das Team kann zu einem beliebigen Zeitpunkt wieder reaktiviert werden. ');
+  }
+
+  unarchiveTeam(teamName: string) {
+    cy.get('app-team-list .mat-mdc-list-item')
+      .contains(teamName)
+      .click();
+    cy.getByTestId('teamMoreButton')
+      .click();
+    cy.getByTestId('teamUnarchiveButton')
+      .click();
+
+    return ConfirmDialog.do()
+      .checkForContentOnDialog('Team reaktivieren')
+      .checkForContentOnDialog(`Soll das Team '${teamName}' reaktiviert werden?`);
   }
 
   getURL(): string {

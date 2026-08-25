@@ -14,13 +14,15 @@ import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'a
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { FilterPageChange } from '../../shared/types/model/filter-page-change';
+import { OverviewEntity } from '../../shared/types/model/overview-entity';
 
 const overviewService = {
-  getOverview: jest.fn()
+  getOverview: jest.fn(),
+  data: signal<OverviewEntity[]>([]),
+  loading: signal(false)
 };
 
 const authGuardMock = () => {
@@ -34,13 +36,6 @@ const refreshDataServiceMock = {
   okrBannerHeightSubject: new BehaviorSubject(5)
 };
 
-const filterPage = {
-  quarterId: 1,
-  teamIds: [2,
-    3],
-  objectiveQueryString: 'test'
-} as FilterPageChange;
-
 describe('OverviewComponent', () => {
   window.ResizeObserver =
     window.ResizeObserver ||
@@ -53,6 +48,7 @@ describe('OverviewComponent', () => {
 
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
+
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [
@@ -95,7 +91,10 @@ describe('OverviewComponent', () => {
 
     fixture = TestBed.createComponent(OverviewComponent);
     component = fixture.componentInstance;
+
     overviewService.getOverview.mockReturnValue(of([overViewEntity1]));
+    overviewService.data.set([overViewEntity1]);
+
     fixture.detectChanges();
   });
 
@@ -104,22 +103,8 @@ describe('OverviewComponent', () => {
       .toBeTruthy();
   });
 
-  it('should call service method with correct params overview based on query-params', () => {
-    jest.spyOn(overviewService, 'getOverview');
-    jest.spyOn(component, 'loadOverview');
-    component.loadOverview(filterPage);
-    expect(overviewService.getOverview)
-      .toHaveBeenCalledWith(1, [2,
-        3], 'test');
-  });
-
-  it('should refresh overview entities after getOverview() is called', async() => {
-    jest.spyOn(component.overviewEntities$, 'next');
-    jest.spyOn(component, 'loadOverview');
-    component.loadOverview(filterPage);
-    expect(component.loadOverview)
-      .toHaveBeenCalledTimes(1);
-    expect(component.overviewEntities$.next)
-      .toHaveBeenCalledWith([overViewEntity1]);
+  it('should expose data from overviewService', () => {
+    expect(component.data())
+      .toEqual([overViewEntity1]);
   });
 });

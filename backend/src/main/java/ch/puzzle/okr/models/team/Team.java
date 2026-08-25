@@ -1,11 +1,15 @@
-package ch.puzzle.okr.models;
+package ch.puzzle.okr.models.team;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.okr.models.MessageKey;
+import ch.puzzle.okr.models.UserTeam;
+import ch.puzzle.okr.models.WriteableInterface;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,6 +37,11 @@ public class Team implements WriteableInterface {
     @Transient
     private boolean writeable;
 
+    @Enumerated(EnumType.STRING)
+    private TeamStatus status = TeamStatus.ACTIVE;
+
+    private LocalDate markedAsArchivedAt;
+
     public Team() {
     }
 
@@ -42,6 +51,8 @@ public class Team implements WriteableInterface {
         setName(builder.name);
         setDescription(builder.description);
         setUserTeamList(builder.userTeamList);
+        setStatus(builder.status);
+        setMarkedAsArchivedAt(builder.markedAsArchivedAt);
     }
 
     public Long getId() {
@@ -76,6 +87,27 @@ public class Team implements WriteableInterface {
         this.userTeamList = userTeamList;
     }
 
+    public TeamStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TeamStatus status) {
+        this.status = status;
+    }
+
+    public LocalDate getMarkedAsArchivedAt() {
+        return markedAsArchivedAt;
+    }
+
+    public void setMarkedAsArchivedAt(LocalDate markedAsArchivedAt) {
+        this.markedAsArchivedAt = markedAsArchivedAt;
+    }
+
+    public void archiveTeam(LocalDate markedAsArchivedAt) {
+        this.status = TeamStatus.ARCHIVED;
+        this.markedAsArchivedAt = markedAsArchivedAt;
+    }
+
     @Override
     public boolean isWriteable() {
         return writeable;
@@ -90,7 +122,7 @@ public class Team implements WriteableInterface {
     public String toString() {
         return "Team{" + "id=" + getId() + ", name='" + getName() + '\'' + ", description='" + getDescription() + '\''
                + ", version=" + getVersion() + ", userTeamList=" + getUserTeamList() + ", writeable=" + isWriteable()
-               + '}';
+               + ", status=" + getStatus() + ", markedAsArchivedAt=" + getMarkedAsArchivedAt() + '}';
     }
 
     @Override
@@ -99,12 +131,22 @@ public class Team implements WriteableInterface {
             return false;
         return getVersion() == team.getVersion() && isWriteable() == team.isWriteable()
                && Objects.equals(getId(), team.getId()) && Objects.equals(getName(), team.getName())
-               && Objects.equals(getDescription(), team.getDescription());
+               && Objects.equals(getDescription(), team.getDescription())
+               && Objects.equals(getStatus(), team.getStatus())
+               && Objects.equals(getMarkedAsArchivedAt(), team.getMarkedAsArchivedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getDescription(), getVersion(), getUserTeamList(), isWriteable());
+        return Objects
+                .hash(getId(),
+                      getName(),
+                      getDescription(),
+                      getVersion(),
+                      getUserTeamList(),
+                      isWriteable(),
+                      getStatus(),
+                      getMarkedAsArchivedAt());
     }
 
     public static final class Builder {
@@ -112,6 +154,8 @@ public class Team implements WriteableInterface {
         private int version;
         private String name;
         private String description;
+        private TeamStatus status;
+        private LocalDate markedAsArchivedAt;
 
         private List<UserTeam> userTeamList;
 
@@ -144,6 +188,16 @@ public class Team implements WriteableInterface {
 
         public Builder withUserTeamList(List<UserTeam> userTeamList) {
             this.userTeamList = userTeamList;
+            return this;
+        }
+
+        public Builder withStatus(TeamStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder withMarkedAsArchivedAt(LocalDate markedAsArchivedAt) {
+            this.markedAsArchivedAt = markedAsArchivedAt;
             return this;
         }
 

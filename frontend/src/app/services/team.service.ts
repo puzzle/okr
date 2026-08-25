@@ -1,55 +1,41 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Team } from '../shared/types/model/team';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../shared/types/model/user';
 import { UserTeam } from '../shared/types/model/user-team';
+
+export interface TeamFilters {
+  quarterId?: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class TeamService {
   private http = inject(HttpClient);
 
-
-  private teams: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
-
-  private teamsLoaded = false;
-
   private readonly API_URL = '/api/v2/teams';
 
-  getAllTeams(): Observable<Team[]> {
-    if (!this.teamsLoaded) {
-      this.reloadTeams();
-      this.teamsLoaded = true;
+  getAllTeams(filters: TeamFilters = {}): Observable<Team[]> {
+    let params = new HttpParams();
+    if (filters.quarterId != null && !Number.isNaN(Number(filters.quarterId))) {
+      params = params.set('quarterId', filters.quarterId.toString());
     }
-    return this.teams.asObservable();
-  }
-
-  reloadTeams(): void {
-    this.http.get<Team[]>(this.API_URL)
-      .subscribe((teams) => {
-        if (!this.teams) {
-          this.teams = new BehaviorSubject<Team[]>(teams);
-          return;
-        }
-        this.teams.next(teams);
-      });
+    return this.http.get<Team[]>(this.API_URL, { params });
   }
 
   createTeam(team: Team): Observable<Team> {
-    return this.http.post<Team>(this.API_URL, team)
-      .pipe(tap(() => this.reloadTeams()));
+    return this.http.post<Team>(this.API_URL, team);
   }
 
   updateTeam(team: Team): Observable<Team> {
-    return this.http.put<Team>(`${this.API_URL}/${team.id}`, team)
-      .pipe(tap(() => this.reloadTeams()));
+    return this.http.put<Team>(`${this.API_URL}/${team.id}`, team);
   }
 
   deleteTeam(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${id}`)
-      .pipe(tap(() => this.reloadTeams()));
+    return this.http.delete<void>(`${this.API_URL}/${id}`);
   }
 
   addUsersToTeam(team: Team, selectedUsers: User[]): Observable<void> {
@@ -57,14 +43,19 @@ export class TeamService {
   }
 
   removeUserFromTeam(userId: number, team: Team): Observable<void> {
-    return this.http
-      .put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`, null)
-      .pipe(tap(() => this.reloadTeams()));
+    return this.http.put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`, {});
   }
 
   updateOrAddTeamMembership(userId: number, userTeam: UserTeam): Observable<void> {
-    return this.http
-      .put<void>(`${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`, {})
-      .pipe(tap(() => this.reloadTeams()));
+    return this.http.put<void>(`${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`, {});
+  }
+
+  archiveTeam(team: Team): Observable<void> {
+    const payload = { markedAsArchivedAt: team.markedAsArchivedAt };
+    return this.http.put<void>(`${this.API_URL}/${team.id}/archive`, payload);
+  }
+
+  unarchiveTeam(id: number): Observable<void> {
+    return this.http.put<void>(`${this.API_URL}/${id}/unarchive`, {});
   }
 }

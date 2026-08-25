@@ -28,12 +28,57 @@ export default class FilterHelper extends PageObjectMapperBase {
   }
 
   toggleOption(text: string): this {
+    cy.intercept({
+      method: 'GET',
+      url: /\/api\/v2\/(overview|evaluation)/
+    })
+      .as('fetchData');
     this.getOption(text)
       .click();
+    cy.wait('@fetchData');
     return this;
   }
 
   public getOption(text: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.contains('mat-chip:visible', text);
+  }
+
+  public optionShouldNotExist(text: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.get('.team-title')
+      .each((element) => {
+        const elementText = element.text();
+
+        expect(elementText).to.not.contain(text);
+      });
+  }
+
+  public checkTeamsSelected(teams: string[]) {
+    teams.forEach((team) => {
+      FilterHelper.do()
+        .optionShouldBeSelected(team);
+    });
+  }
+
+  public checkTeamsNotSelected(teams: string[]) {
+    teams.forEach((team) => {
+      FilterHelper.do()
+        .optionShouldNotBeSelected(team);
+    });
+  }
+
+  public getSelectedTeamsTitles() {
+    return cy.get('mat-chip.mat-mdc-chip-highlighted p')
+      .then(($paragraphs) => {
+        return $paragraphs.toArray()
+          .map((p) => p.innerText.trim());
+      });
+  }
+
+  public getNotSelectedTeamsTitles() {
+    return cy.get('mat-chip:not(.mat-mdc-chip-highlighted) p')
+      .then(($paragraphs) => {
+        return $paragraphs.toArray()
+          .map((p) => p.innerText.trim());
+      });
   }
 }

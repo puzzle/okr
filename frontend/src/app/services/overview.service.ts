@@ -1,16 +1,49 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-import { optionalValue } from '../shared/common';
+import { map, Observable, of } from 'rxjs';
+import { Params } from '@angular/router';
+import { optionalValue, getValueFromQuery, getQueryString } from '../shared/common';
 import { State } from '../shared/types/enums/state';
 import { OverviewEntity } from '../shared/types/model/overview-entity';
+import { FilterPageChange } from '../shared/types/model/filter-page-change';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OverviewService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
+  private readonly filter = signal<FilterPageChange | null>(null);
+
+  overviewResource = rxResource({
+    params: () => this.filter(),
+    stream: ({ params: filters }) => {
+      if (!filters) {
+        return of(null);
+      }
+      return this.getOverview(filters.quarterId, filters.teamIds, filters.objectiveQueryString);
+    }
+  });
+
+  public readonly data = this.overviewResource.value;
+
+  load(params: Params) {
+    this.filter.set(this.mapParamsToFilters(params));
+  }
+
+  reload() {
+    this.overviewResource.reload();
+  }
+
+  private mapParamsToFilters(params: Params): FilterPageChange {
+    return {
+      // TODO: this needs to be updated in the ticket: Query Params Service #1822
+      quarterId: getValueFromQuery(params['quarter'])[0],
+      teamIds: getValueFromQuery(params['teams']),
+      objectiveQueryString: getQueryString(params['objectiveQuery'])
+    };
+  }
 
   getOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string): Observable<OverviewEntity[]> {
     const params = optionalValue({

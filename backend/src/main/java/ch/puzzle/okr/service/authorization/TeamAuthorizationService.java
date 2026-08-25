@@ -5,9 +5,10 @@ import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWr
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.team.Team;
 import ch.puzzle.okr.service.business.TeamBusinessService;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,16 @@ public class TeamAuthorizationService {
         teamBusinessService.deleteTeam(id);
     }
 
+    public Team archiveTeam(Long id, LocalDate markedAsArchivedAT) {
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_ARCHIVE, TEAM), id);
+        return teamBusinessService.archiveTeam(id, markedAsArchivedAT);
+    }
+
+    public Team unarchiveTeam(Long id) {
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_UNARCHIVE, TEAM), id);
+        return teamBusinessService.unarchiveTeam(id);
+    }
+
     public void addUsersToTeam(long entityId, List<Long> userIdList) {
         checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
         teamBusinessService.addUsersToTeam(entityId, userIdList);
@@ -64,6 +75,12 @@ public class TeamAuthorizationService {
     public List<Team> getAllTeams() {
         AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         List<Team> allTeams = teamBusinessService.getAllTeams(authorizationUser);
+        allTeams.forEach(team -> team.setWriteable(isUserWriteAllowed(team.getId())));
+        return allTeams;
+    }
+
+    public List<Team> getAllTeamsByQuarter(Long quarterId) {
+        List<Team> allTeams = teamBusinessService.getAllTeamsByQuarter(quarterId);
         allTeams.forEach(team -> team.setWriteable(isUserWriteAllowed(team.getId())));
         return allTeams;
     }

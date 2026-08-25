@@ -2,16 +2,19 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.team.Team;
+import ch.puzzle.okr.models.team.TeamStatus;
 import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.persistence.UserTeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -26,6 +29,8 @@ public class TeamBusinessService {
 
     private final ObjectiveBusinessService objectiveBusinessService;
 
+    private final QuarterBusinessService quarterBusinessService;
+
     private final UserPersistenceService userPersistenceService;
 
     private final UserTeamPersistenceService userTeamPersistenceService;
@@ -34,11 +39,13 @@ public class TeamBusinessService {
     private final CacheService cacheService;
 
     public TeamBusinessService(TeamPersistenceService teamPersistenceService,
-                               ObjectiveBusinessService objectiveBusinessService, TeamValidationService validator,
+                               ObjectiveBusinessService objectiveBusinessService,
+                               QuarterBusinessService quarterBusinessService, TeamValidationService validator,
                                CacheService cacheService, UserPersistenceService userPersistenceService,
                                UserTeamPersistenceService userTeamPersistenceService) {
         this.teamPersistenceService = teamPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
+        this.quarterBusinessService = quarterBusinessService;
         this.userPersistenceService = userPersistenceService;
         this.validator = validator;
         this.cacheService = cacheService;
@@ -99,6 +106,11 @@ public class TeamBusinessService {
         return sortTeams(mutableTeams, authorizationUser);
     }
 
+    public List<Team> getAllTeamsByQuarter(Long quarterId) {
+        Quarter quarter = quarterBusinessService.getQuarterById(quarterId);
+        return teamPersistenceService.findActiveTeamsForQuarter(quarter.getStartDate());
+    }
+
     private List<Team> sortTeams(List<Team> teams, AuthorizationUser authorizationUser) {
         teams.sort(new TeamComparator(authorizationUser));
         return teams;
@@ -106,6 +118,7 @@ public class TeamBusinessService {
 
     @Transactional
     public void addUsersToTeam(long teamId, List<Long> userIdList) {
+        validator.throwExceptionIfTeamIsArchived(teamId);
         Team team = teamPersistenceService.findById(teamId);
         for (Long userId : userIdList) {
             User user = userPersistenceService.findById(userId);
@@ -118,6 +131,7 @@ public class TeamBusinessService {
 
     @Transactional
     public void removeUserFromTeam(long teamId, long userId) {
+        validator.throwExceptionIfTeamIsArchived(teamId);
         User user = userPersistenceService.findById(userId);
         Team team = this.teamPersistenceService.findById(teamId);
 
@@ -147,8 +161,40 @@ public class TeamBusinessService {
         }
     }
 
+    public Team archiveTeam(Long id, LocalDate markedAsArchivedAt) {
+        validator.validateOnGet(id);
+        Team entity = teamPersistenceService.findById(id);
+
+        List<Quarter> quarters = quarterBusinessService.getFirstAndLastQuarterDates();
+
+        validator
+                .validateOnArchive(entity,
+                                   markedAsArchivedAt,
+                                   quarters.get(0).getStartDate(),
+                                   quarters.get(1).getEndDate());
+
+        entity.archiveTeam(markedAsArchivedAt);
+        cacheService.emptyAuthorizationUsersCache();
+
+        return teamPersistenceService.save(entity);
+    }
+
+    public Team unarchiveTeam(Long id) {
+        validator.validateOnGet(id);
+        Team entity = teamPersistenceService.findById(id);
+
+        validator.validateOnUnarchive(entity);
+
+        entity.setStatus(TeamStatus.ACTIVE);
+        entity.setMarkedAsArchivedAt(null);
+
+        cacheService.emptyAuthorizationUsersCache();
+        return teamPersistenceService.save(entity);
+    }
+
     @Transactional
     public void updateOrAddTeamMembership(long teamId, long userId, boolean isAdmin) {
+        validator.throwExceptionIfTeamIsArchived(teamId);
         User user = userPersistenceService.findById(userId);
         List<UserTeam> userTeamList = user.getUserTeamList();
         for (UserTeam ut : userTeamList) {

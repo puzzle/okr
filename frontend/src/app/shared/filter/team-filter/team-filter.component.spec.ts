@@ -1,366 +1,243 @@
-import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TeamFilterComponent } from './team-filter.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
-import { MatChipsModule } from '@angular/material/chips';
-import { TeamService } from '../../../services/team.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { TeamStateService } from '../../../services/team.state.service';
 import { RefreshDataService } from '../../../services/refresh-data.service';
-import { BehaviorSubject, of, Subject } from 'rxjs';
-import { team1, team2, team3, teamList, testUser } from '../../test-data';
-import { Router } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { UserService } from '../../../services/user.service';
-import { extractTeamsFromUser } from '../../types/model/user';
-import { ApplicationBannerComponent } from '../../custom/application-banner/application-banner.component';
-import { Team } from '../../types/model/team';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, signal, WritableSignal } from '@angular/core';
+import { isMobileDevice } from '../../common';
 
-const teamServiceMock = {
-  getAllTeams: jest.fn()
-};
+jest.mock('../../common', () => ({
+  areEqual: (a: any[], b: any[]) => a.length === b.length && a.every((val) => b.includes(val)),
+  optionalReplaceWithNulls: jest.fn((obj) => obj),
+  isMobileDevice: jest.fn(() => false)
+}));
 
-const refreshDataServiceMock = {
-  reloadOverviewSubject: new Subject(),
-  teamFilterReady: new Subject(),
-  markDataRefresh: jest.fn
-};
-
-const userServiceMock = {
-  getCurrentUser: jest.fn()
-};
+const mockTeamsData = [{ id: 1,
+  name: 'Zebra Team' },
+{ id: 2,
+  name: 'Apple Team' },
+{ id: 3,
+  name: 'Banana Team' }];
 
 describe('TeamFilterComponent', () => {
   let component: TeamFilterComponent;
   let fixture: ComponentFixture<TeamFilterComponent>;
-  let router: Router;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [TeamFilterComponent,
-        ApplicationBannerComponent],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        MatChipsModule,
-        MatIconModule
-      ],
-      providers: [{ provide: TeamService,
-        useValue: teamServiceMock },
-      { provide: RefreshDataService,
-        useValue: refreshDataServiceMock },
-      { provide: UserService,
-        useValue: userServiceMock }]
-    });
-    fixture = TestBed.createComponent(TeamFilterComponent);
-    component = fixture.componentInstance;
-    teamServiceMock.getAllTeams.mockReturnValue(of(teamList));
-    refreshDataServiceMock
-      .markDataRefresh()
-      .mockImplementation(() => refreshDataServiceMock.reloadOverviewSubject.next(null));
-    router = TestBed.inject(Router);
-    userServiceMock.getCurrentUser.mockReturnValue(testUser);
-    fixture.detectChanges();
+  let mockRouter: { navigate: jest.Mock };
+  let queryParamsSubject: BehaviorSubject<any>;
+  let breakpointSubject: BehaviorSubject<any>;
+  let mockTeamsSignal: WritableSignal<any[]>;
+
+  beforeEach(async() => {
+    (isMobileDevice as jest.Mock).mockReturnValue(false);
+    mockRouter = { navigate: jest.fn() };
+    queryParamsSubject = new BehaviorSubject<any>({});
+    breakpointSubject = new BehaviorSubject<any>({ matches: false });
+    mockTeamsSignal = signal(mockTeamsData);
+
+    await TestBed.configureTestingModule({
+      declarations: [TeamFilterComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA,
+        NO_ERRORS_SCHEMA],
+      providers: [
+        { provide: Router,
+          useValue: mockRouter },
+        { provide: ActivatedRoute,
+          useValue: { queryParams: queryParamsSubject } },
+        { provide: BreakpointObserver,
+          useValue: { observe: jest.fn()
+            .mockReturnValue(breakpointSubject) } },
+        { provide: TeamStateService,
+          useValue: { getTeams: jest.fn()
+            .mockReturnValue(mockTeamsSignal) } },
+        { provide: RefreshDataService,
+          useValue: {} }
+      ]
+    })
+      .compileComponents();
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const setupComponent = () => {
+    fixture = TestBed.createComponent(TeamFilterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  };
+
   it('should create', () => {
+    setupComponent();
     expect(component)
       .toBeTruthy();
   });
 
-  it('should select all chips per default', waitForAsync(async() => {
-    jest.spyOn(component.teams$, 'next');
-    jest.spyOn(component, 'changeTeamFilterParams');
-    component.ngOnInit();
-    fixture.detectChanges();
+  describe('Reactive Signals (activeTeams & isMobile)', () => {
+    it('should resolve empty activeTeams when no param is provided', () => {
+      queryParamsSubject.next({});
+      setupComponent();
 
-    expect(component.teams$.next)
-      .toHaveBeenCalledWith(teamList);
-    expect(component.teams$.next)
-      .toHaveBeenCalledTimes(1);
-    expect(component.changeTeamFilterParams)
-      .toHaveBeenCalledTimes(1);
-  }));
+      expect(component.activeTeamIds())
+        .toEqual([]);
+    });
 
-  it('should select the correct chips', waitForAsync(async() => {
-    const teamIds = teamList.map((e) => e.id)
-      .filter((e, i) => i < 2);
-    jest.spyOn(component.teams$, 'next');
-    jest.spyOn(component, 'changeTeamFilterParams');
-    const routerHarness = await RouterTestingHarness.create();
+    it('should parse activeTeams correctly from a comma-separated query string', () => {
+      queryParamsSubject.next({ teams: '1,3' });
+      setupComponent();
 
-    await routerHarness.navigateByUrl('/?teams=' + teamIds.join(','));
+      expect(component.activeTeamIds())
+        .toEqual([1,
+          3]);
+    });
 
-    component.ngOnInit();
-    fixture.detectChanges();
+    it('should parse activeTeams correctly if query param is already an array', () => {
+      queryParamsSubject.next({ teams: ['2',
+        '3'] });
+      setupComponent();
 
-    expect(component.teams$.next)
-      .toHaveBeenCalledWith(teamList);
-    expect(component.teams$.next)
-      .toHaveBeenCalledTimes(1);
-    expect(component.activeTeams)
-      .toStrictEqual(teamIds);
-    expect(component.changeTeamFilterParams)
-      .toHaveBeenCalledTimes(1);
-  }));
+      expect(component.activeTeamIds())
+        .toEqual([2,
+          3]);
+    });
 
-  it('should have all teams in activeTeams array when all teams are shown', waitForAsync(async() => {
-    const teamIds = teamList.map((e) => e.id);
-    jest.spyOn(component.teams$, 'next');
-    jest.spyOn(component, 'changeTeamFilterParams');
-    const routerHarness = await RouterTestingHarness.create();
+    it('should react to mobile breakpoint changes', () => {
+      breakpointSubject.next({ matches: true });
+      (isMobileDevice as jest.Mock).mockReturnValue(true);
 
-    await routerHarness.navigateByUrl('/?teams=' + teamIds.join(','));
+      setupComponent();
 
-    component.ngOnInit();
-    fixture.detectChanges();
-
-    expect(component.teams$.next)
-      .toHaveBeenCalledWith(teamList);
-    expect(component.teams$.next)
-      .toHaveBeenCalledTimes(1);
-    expect(component.activeTeams.length)
-      .toBe(3);
-    expect(component.changeTeamFilterParams)
-      .toHaveBeenCalledTimes(1);
-  }));
-
-  it('should update route after updating filter', fakeAsync(async() => {
-    component.activeTeams = teamList.map((e) => e.id)
-      .filter((e, i) => i < 2);
-    const routerHarness = await RouterTestingHarness.create();
-    jest.spyOn(component, 'changeTeamFilterParams');
-    jest.spyOn(refreshDataServiceMock, 'markDataRefresh');
-
-    component.activeTeams = [8,
-      5,
-      10];
-    fixture.detectChanges();
-    await component.changeTeamFilterParams();
-    routerHarness.detectChanges();
-    expect(component.changeTeamFilterParams)
-      .toHaveBeenCalledTimes(1);
-    expect(router.url)
-      .toBe('/?teams=8,5,10');
-  }));
-
-  it.each([
-    [[1],
-      2,
-      [1,
-        2]],
-    [[1,
-      2],
-    2,
-    [1]],
-    [[1,
-      2],
-    3,
-    [1,
-      2,
-      3]],
-    [[],
-      3,
-      [3]],
-    [[3],
-      3,
-      []]
-  ])('should toggle Selection', (activeTeams: number[], selected: number, expected: number[]) => {
-    component.activeTeams = activeTeams;
-    jest.spyOn(component, 'areAllTeamsShown');
-    jest.spyOn(component, 'changeTeamFilterParams');
-
-    component.toggleSelection(selected);
-    fixture.detectChanges();
-    expect(component.changeTeamFilterParams)
-      .toHaveBeenCalledTimes(1);
-    expect(component.areAllTeamsShown)
-      .toHaveBeenCalledTimes(1);
-    expect(component.activeTeams)
-      .toStrictEqual(expected);
+      expect(component.isMobileDevice())
+        .toBe(true);
+    });
   });
 
-  it.each([
-    [[1],
-      false],
-    [[1,
-      2],
-    false],
-    [[1,
-      2,
-      3],
-    true],
-    [[],
-      false],
-    [[1,
-      2,
-      4],
-    false]
-  ])('should correctly determine if all teams are shown', (activeTeams: number[], expected: boolean) => {
-    component.activeTeams = activeTeams;
-    expect(component.areAllTeamsShown())
-      .toBe(expected);
+  describe('Computed teams() Signal', () => {
+    it('should return raw teams unsorted on desktop devices', () => {
+      breakpointSubject.next({ matches: false });
+      setupComponent();
+
+      // Original order: Zebra, Apple, Banana
+      expect(component.teams()
+        .map((t) => t.id))
+        .toEqual([1,
+          2,
+          3]);
+    });
+
+    it('should sort active teams first, then alphabetically by name on mobile devices', () => {
+      breakpointSubject.next({ matches: true });
+      queryParamsSubject.next({ teams: '3' });
+      (isMobileDevice as jest.Mock).mockReturnValue(true);
+      setupComponent();
+
+      const sortedIds = component.teams()
+        .map((t) => t.id);
+
+      // Expected: Banana Team (Active: 3), Apple Team (Alpha: 2), Zebra Team (Alpha: 1)
+      expect(sortedIds)
+        .toEqual([3,
+          2,
+          1]);
+    });
   });
 
-  it.each([
-    [[],
-      [1,
-        2,
-        3]],
-    [[1],
-      [1,
-        2,
-        3]],
-    [[1,
-      2],
-    [1,
-      2,
-      3]],
-    [[1,
-      2,
-      3],
-    []]
-  ])('should correctly select all teams', (currentTeams: number[], expectedTeams: number[]) => {
-    component.activeTeams = currentTeams;
-    jest.spyOn(component, 'changeTeamFilterParams');
-    component.toggleAll();
-    expect(component.changeTeamFilterParams)
-      .toHaveBeenCalledTimes(1);
-    expect(component.activeTeams)
-      .toStrictEqual(expectedTeams);
-  });
+  describe('User Actions & Routing', () => {
+    beforeEach(() => {
+      setupComponent();
+    });
 
-  it('should refresh teams on data refresh', () => {
-    component.ngOnInit();
-    component.activeTeams = [team2.id,
-      team3.id];
-    fixture.detectChanges();
-    expect(component.teams$.value)
-      .toStrictEqual(teamList);
-    teamServiceMock.getAllTeams.mockReturnValue(of([team2,
-      team1]));
-    fixture.detectChanges();
-    expect(component.teams$.value)
-      .toStrictEqual(teamList);
-    refreshDataServiceMock.reloadOverviewSubject.next(null);
-    fixture.detectChanges();
-    expect(component.teams$.value)
-      .toStrictEqual([team2,
-        team1]);
-    expect(component.activeTeams)
-      .toStrictEqual([team1.id]);
-  });
+    it('should navigate with merged params when changeTeamFilterParams is called', () => {
+      component.changeTeamFilterParams([1,
+        2]);
 
-  it('should use teams of user if no known teams are in url', async() => {
-    const teamIds = [654,
-      478];
-    jest.spyOn(component.teams$, 'next');
-    jest.spyOn(component, 'changeTeamFilterParams');
-    const routerHarness = await RouterTestingHarness.create();
+      expect(mockRouter.navigate)
+        .toHaveBeenCalledWith([], {
+          queryParams: { teams: '1,2' },
+          queryParamsHandling: 'merge'
+        });
+    });
 
-    await routerHarness.navigateByUrl('/?teams=' + teamIds.join(','));
+    it('toggleSelection: should isolate selection if all teams are currently shown', () => {
+      queryParamsSubject.next({ teams: '1,2,3' });
+      fixture.detectChanges();
 
-    component.ngOnInit();
-    fixture.detectChanges();
+      component.toggleSelection(2);
 
-    expect(component.activeTeams.length)
-      .toBe(1);
-    expect(component.activeTeams)
-      .toStrictEqual(extractTeamsFromUser(testUser)
-        .map((team) => team.id));
-    expect(component.changeTeamFilterParams)
-      .toHaveBeenCalledTimes(1);
-  });
+      expect(mockRouter.navigate)
+        .toHaveBeenCalledWith([], expect.objectContaining({
+          queryParams: { teams: '2' }
+        }));
+    });
 
-  it('should use teams of user if no teams are in url', async() => {
-    jest.spyOn(component.teams$, 'next');
-    jest.spyOn(component, 'changeTeamFilterParams');
-    const routerHarness = await RouterTestingHarness.create();
+    it('toggleSelection: should remove team if already selected', () => {
+      queryParamsSubject.next({ teams: '1,2' });
+      fixture.detectChanges();
 
-    await routerHarness.navigateByUrl('');
+      component.toggleSelection(1);
 
-    component.ngOnInit();
-    fixture.detectChanges();
+      expect(mockRouter.navigate)
+        .toHaveBeenCalledWith([], expect.objectContaining({
+          queryParams: { teams: '2' }
+        }));
+    });
 
-    expect(component.activeTeams.length)
-      .toBe(1);
-    expect(component.activeTeams)
-      .toStrictEqual(extractTeamsFromUser(testUser)
-        .map((team) => team.id));
-    expect(component.changeTeamFilterParams)
-      .toHaveBeenCalledTimes(1);
-  });
+    it('toggleSelection: should add team if not selected', () => {
+      queryParamsSubject.next({ teams: '1' });
+      fixture.detectChanges();
 
-  it.each([[[1,
-    2,
-    3],
-  '1,2,3'],
-  [[],
-    null]])('should navigate after filter update', async(currentTeams: number[], routingTeams: string | null) => {
-    component.activeTeams = currentTeams;
+      component.toggleSelection(2);
 
-    jest.spyOn(router, 'navigate');
+      expect(mockRouter.navigate)
+        .toHaveBeenCalledWith([], expect.objectContaining({
+          queryParams: { teams: '1,2' }
+        }));
+    });
 
-    fixture.detectChanges();
-    await component.changeTeamFilterParams();
+    it('toggleSelection: should NOT remove a team if doing so violates minTeams', () => {
+      component.minTeams = 1;
+      queryParamsSubject.next({ teams: '2' });
+      fixture.detectChanges();
 
-    expect(router.navigate)
-      .toHaveBeenCalledTimes(1);
-    expect(router.navigate)
-      .toHaveBeenCalledWith([], { queryParams: { teams: routingTeams } });
-  });
+      component.toggleSelection(2);
 
-  it('should filter teams by toggled priority and then by name', async() => {
-    const teams: Team[] = [
-      { id: 1,
-        version: 0,
-        name: 'Team D',
-        description: 'Team Delta',
-        isWriteable: true },
-      { id: 2,
-        version: 0,
-        name: 'Team C',
-        description: 'Team Charlie',
-        isWriteable: true },
-      { id: 3,
-        version: 0,
-        name: 'Team B',
-        description: 'Team Bravo',
-        isWriteable: true },
-      { id: 4,
-        version: 0,
-        name: 'Team A',
-        description: 'Team Alpha',
-        isWriteable: true }
-    ];
+      expect(mockRouter.navigate).not.toHaveBeenCalled();
+    });
 
-    component.teams$ = new BehaviorSubject(teams);
-    component.activeTeams = [3,
-      4];
+    it('toggleAll: should select all teams if not all are currently shown', () => {
+      queryParamsSubject.next({ teams: '1' });
+      fixture.detectChanges();
 
-    const sortedTeams = component.sortTeamsToggledPriority();
+      component.toggleAll();
 
-    expect(sortedTeams)
-      .toEqual([
-        { id: 4,
-          version: 0,
-          name: 'Team A',
-          description: 'Team Alpha',
-          isWriteable: true },
-        { id: 3,
-          version: 0,
-          name: 'Team B',
-          description: 'Team Bravo',
-          isWriteable: true },
-        { id: 2,
-          version: 0,
-          name: 'Team C',
-          description: 'Team Charlie',
-          isWriteable: true },
-        { id: 1,
-          version: 0,
-          name: 'Team D',
-          description: 'Team Delta',
-          isWriteable: true }
-      ]);
+      expect(mockRouter.navigate)
+        .toHaveBeenCalledWith([], expect.objectContaining({
+          queryParams: { teams: '1,2,3' }
+        }));
+    });
+
+    it('toggleAll: should clear all teams if all are currently shown', () => {
+      queryParamsSubject.next({ teams: '1,2,3' });
+      fixture.detectChanges();
+
+      component.toggleAll();
+
+      expect(mockRouter.navigate)
+        .toHaveBeenCalledWith([], expect.objectContaining({
+          queryParams: { teams: '' }
+        }));
+    });
+
+    it('toggleAll: should do nothing if all are shown but minTeams > 0', () => {
+      component.minTeams = 1;
+      queryParamsSubject.next({ teams: '1,2,3' });
+      fixture.detectChanges();
+
+      component.toggleAll();
+
+      expect(mockRouter.navigate).not.toHaveBeenCalled();
+    });
   });
 });

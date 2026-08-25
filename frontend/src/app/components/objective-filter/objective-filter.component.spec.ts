@@ -1,5 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-
+import { ComponentFixture, fakeAsync, TestBed, tick, flushMicrotasks } from '@angular/core/testing';
 import { ObjectiveFilterComponent } from './objective-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppRoutingModule } from '../../app-routing.module';
@@ -11,17 +10,18 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatInputHarness } from '@angular/material/input/testing';
-import { Router } from '@angular/router';
-import { RouterTestingHarness } from '@angular/router/testing';
+import { ActivatedRoute, Router } from '@angular/router';
 import { authGuard } from '../../guards/auth.guard';
 import { OverviewComponent } from '../overview/overview.component';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { BehaviorSubject } from 'rxjs';
 
 describe('ObjectiveFilterComponent', () => {
   let component: ObjectiveFilterComponent;
   let fixture: ComponentFixture<ObjectiveFilterComponent>;
   let loader: HarnessLoader;
   let router: Router;
+  let mockActivatedRoute: { queryParams: BehaviorSubject<any> };
 
   const authGuardMock = () => {
     return Promise.resolve(true);
@@ -32,17 +32,19 @@ describe('ObjectiveFilterComponent', () => {
   };
 
   beforeEach(() => {
+    mockActivatedRoute = {
+      queryParams: new BehaviorSubject<any>({})
+    };
+
     TestBed.configureTestingModule({
       declarations: [ObjectiveFilterComponent,
         OverviewComponent],
-      providers: [{
-        provide: authGuard,
-        useValue: authGuardMock
-      },
-      {
-        provide: OAuthService,
-        useValue: oAuthServiceMock
-      }],
+      providers: [{ provide: authGuard,
+        useValue: authGuardMock },
+      { provide: OAuthService,
+        useValue: oAuthServiceMock },
+      { provide: ActivatedRoute,
+        useValue: mockActivatedRoute }],
       imports: [
         HttpClientTestingModule,
         AppRoutingModule,
@@ -53,6 +55,7 @@ describe('ObjectiveFilterComponent', () => {
         NoopAnimationsModule
       ]
     });
+
     fixture = TestBed.createComponent(ObjectiveFilterComponent);
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
@@ -67,37 +70,36 @@ describe('ObjectiveFilterComponent', () => {
   });
 
   it('should route correctly', fakeAsync(() => {
+    let search!: MatInputHarness;
+
     loader.getHarness(MatInputHarness)
-      .then((search) => {
-        jest.spyOn(router, 'navigate');
-        jest.spyOn(component, 'updateUrl');
-        search.setValue('this is a test');
-        fixture.detectChanges();
-        component.refresh.next();
-        tick(200);
-        expect(component.updateUrl)
-          .toHaveBeenCalledTimes(0);
-        tick(200);
-        expect(router.navigate)
-          .toHaveBeenCalledWith([], { queryParams: { objectiveQuery: 'this is a test' } });
-        expect(router.url)
-          .toBe('/?objectiveQuery=this%20is%20a%20test');
-      });
+      .then((h) => search = h);
+    flushMicrotasks();
+
+    jest.spyOn(router, 'navigate')
+      .mockResolvedValue(true);
+    jest.spyOn(component, 'updateUrl');
+
+    search.setValue('this is a test');
+    flushMicrotasks();
+
+    fixture.detectChanges();
+    component.refresh.next();
+
+    tick(200);
+    expect(component.updateUrl)
+      .toHaveBeenCalledTimes(0);
+
+    tick(200);
+    expect(router.navigate)
+      .toHaveBeenCalledWith([], { queryParams: { objectiveQuery: 'this is a test' } });
   }));
 
-  it('should read from query correctly', fakeAsync(() => {
-    const searchPromise = loader.getHarness(MatInputHarness);
-    const routerPromise = RouterTestingHarness.create();
+  it('should read from query correctly', () => {
+    mockActivatedRoute.queryParams.next({ objectiveQuery: 'this is a test' });
+    fixture.detectChanges();
 
-    Promise.all([searchPromise,
-      routerPromise])
-      .then(([search,
-        router]: [MatInputHarness, RouterTestingHarness]) => {
-        router.navigateByUrl('/?objectiveQuery=this%20is%20a%20test');
-        tick(500);
-        fixture.detectChanges();
-        expect(component.query)
-          .toBe('this is a test');
-      });
-  }));
+    expect(component.query)
+      .toBe('this is a test');
+  });
 });

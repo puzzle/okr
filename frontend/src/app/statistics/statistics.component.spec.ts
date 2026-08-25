@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatisticsComponent } from './statistics.component';
-import { ActivatedRoute, provideRouter, RouterModule } from '@angular/router';
-import { EMPTY, of } from 'rxjs';
+import { provideRouter, RouterModule } from '@angular/router'; // ActivatedRoute removed
+import { of } from 'rxjs';
 import { EvaluationService } from '../services/evaluation.service';
 import { QuarterFilterComponent } from '../shared/filter/quarter-filter/quarter-filter.component';
 import { ApplicationPageComponent } from '../shared/application-page/application-page.component';
@@ -13,11 +13,33 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
-import { FilterPageChange } from '../shared/types/model/filter-page-change';
+import { TeamStateService } from '../services/team.state.service';
+import { signal } from '@angular/core';
+import { StatisticsService } from '../services/statistics.service';
 
 const evaluationServiceStub = {
   getStatistics: jest.fn()
 };
+
+const model = {
+  keyResultAmount: 10,
+  objectiveAmount: 5,
+  keyResultsInFailAmount: 2,
+  keyResultsInCommitAmount: 3,
+  keyResultsInTargetAmount: 4,
+  keyResultsInStretchAmount: 1
+};
+
+
+const teamStateServiceMock = {
+  getTeams: jest.fn()
+    .mockReturnValue(signal([]))
+};
+
+const mockStatisticsData = jest.fn()
+  .mockReturnValue(model);
+const mockPublicFilter = jest.fn()
+  .mockReturnValue(false);
 
 describe('StatisticsComponent', () => {
   window.ResizeObserver =
@@ -30,26 +52,9 @@ describe('StatisticsComponent', () => {
       }));
   let component: StatisticsComponent;
   let fixture: ComponentFixture<StatisticsComponent>;
-  let activatedRouteStub: any;
 
   beforeEach(async() => {
-    evaluationServiceStub.getStatistics.mockReturnValue(of({
-      keyResultAmount: 10,
-      objectiveAmount: 5,
-      keyResultsInFailAmount: 2,
-      keyResultsInCommitAmount: 3,
-      keyResultsInTargetAmount: 4,
-      keyResultsInStretchAmount: 1
-    }));
-
-    activatedRouteStub = {
-      snapshot: {
-        queryParams: {
-          quarter: '1',
-          teams: '2,3'
-        }
-      }
-    };
+    evaluationServiceStub.getStatistics.mockReturnValue(of(model));
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -67,13 +72,18 @@ describe('StatisticsComponent', () => {
         FormsModule
       ],
       providers: [
-        { provide: ActivatedRoute,
-          useValue: activatedRouteStub },
         { provide: EvaluationService,
           useValue: evaluationServiceStub },
         provideRouter([]),
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        { provide: TeamStateService,
+          useValue: teamStateServiceMock },
+        { provide: StatisticsService,
+          useValue: {
+            data: mockStatisticsData,
+            publicFilter: mockPublicFilter
+          } }
       ]
     })
       .compileComponents();
@@ -88,47 +98,16 @@ describe('StatisticsComponent', () => {
       .toBeTruthy();
   });
 
-  describe('loadOverview', () => {
-    it('should assign the statistics observable from evaluationService', (done) => {
-      const filterPage = { quarterId: 1,
-        teamIds: [2,
-          3] } as FilterPageChange;
-      component.loadOverview(filterPage);
-
-      component.statistics.subscribe((stat) => {
-        expect(stat)
-          .toEqual({
-            keyResultAmount: 10,
-            objectiveAmount: 5,
-            keyResultsInFailAmount: 2,
-            keyResultsInCommitAmount: 3,
-            keyResultsInTargetAmount: 4,
-            keyResultsInStretchAmount: 1
-          });
-        done();
+  it('should load the right data form Service', () => {
+    expect(component.statistics())
+      .toEqual({
+        keyResultAmount: 10,
+        objectiveAmount: 5,
+        keyResultsInFailAmount: 2,
+        keyResultsInCommitAmount: 3,
+        keyResultsInTargetAmount: 4,
+        keyResultsInStretchAmount: 1
       });
-    });
-
-    it('should handle errors and return an EMPTY observable', (done) => {
-      // Arrange: simulate an error by making getStatistics return EMPTY
-      evaluationServiceStub.getStatistics.mockReturnValueOnce(EMPTY);
-
-      const filterPage = { quarterId: 1,
-        teamIds: [2,
-          3] } as FilterPageChange;
-      component.loadOverview(filterPage);
-
-      // Assert: subscribe and check that no value is emitted (the observable completes without emissions)
-      let emitted = false;
-      component.statistics.subscribe({
-        next: () => emitted = true,
-        complete: () => {
-          expect(emitted)
-            .toBe(false);
-          done();
-        }
-      });
-    });
   });
 
   describe('krObjectiveRelation', () => {

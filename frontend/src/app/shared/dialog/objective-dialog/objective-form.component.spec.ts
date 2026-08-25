@@ -28,7 +28,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogTemplateCoreComponent } from '../../custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { Team } from '../../types/model/team';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const objectiveService = {
@@ -145,7 +144,6 @@ describe('ObjectiveDialogComponent', () => {
       });
       fixture = TestBed.createComponent(ObjectiveFormComponent);
       component = fixture.componentInstance;
-      fixture.detectChanges();
       loader = TestbedHarnessEnvironment.loader(fixture);
     });
 
@@ -156,6 +154,8 @@ describe('ObjectiveDialogComponent', () => {
 
     it.each([['DRAFT'],
       ['ONGOING']])('onSubmit create', fakeAsync((state: string) => {
+      fixture.detectChanges();
+
       // Prepare data
       const title = 'title';
       const description = 'description';
@@ -222,6 +222,7 @@ describe('ObjectiveDialogComponent', () => {
     }));
 
     it('should create objective', () => {
+      fixture.detectChanges();
       matDataMock.objective.objectiveId = undefined;
       component.objectiveForm.setValue({
         title: 'Test title',
@@ -251,6 +252,7 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should update objective', () => {
+      fixture.detectChanges();
       matDataMock.objective.objectiveId = 1;
       component.objectiveForm.setValue({
         title: 'Test title',
@@ -282,7 +284,8 @@ describe('ObjectiveDialogComponent', () => {
     it('should load default values into form onInit with undefined objectiveId', () => {
       matDataMock.objective.objectiveId = undefined;
       matDataMock.objective.teamId = 1;
-      component.ngOnInit();
+      fixture.detectChanges();
+
       const rawFormValue = component.objectiveForm.getRawValue();
       const defaultComponent = component.getDefaultObjective();
       expect(rawFormValue.title)
@@ -304,7 +307,8 @@ describe('ObjectiveDialogComponent', () => {
       await routerHarness.navigateByUrl('/?quarter=2');
       objectiveService.getFullObjective.mockReturnValue(of(objective));
       objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(keyResult));
-      component.ngOnInit();
+      fixture.detectChanges();
+
       const rawFormValue = component.objectiveForm.getRawValue();
       expect(rawFormValue.title)
         .toBe(objective.title);
@@ -316,33 +320,15 @@ describe('ObjectiveDialogComponent', () => {
         .toBe(objective.quarterId);
     });
 
-    it('should set teams$ observable correctly on ngOnInit', () => {
-      const mockTeams = [{ id: 1,
-        name: 'Team A' },
-      { id: 2,
-        name: 'Team B' }];
-      teamService.getAllTeams.mockReturnValue(of(mockTeams));
-
-      component.ngOnInit();
-
-      component.teams$.subscribe((teams: Team[]) => {
-        expect(teams)
-          .toEqual(mockTeams);
-      });
-    });
-
     it('should set keyResults$ observable correctly when objectiveId is defined', () => {
       const mockKeyResults = [{ id: 1,
         name: 'Key Result A' }];
       matDataMock.objective.objectiveId = 1;
       objectiveService.getAllKeyResultsByObjective.mockReturnValue(of(mockKeyResults));
+      fixture.detectChanges();
 
-      component.ngOnInit();
-
-      component.keyResults$.subscribe((keyResults) => {
-        expect(keyResults)
-          .toEqual(mockKeyResults);
-      });
+      expect(component.keyResults)
+        .toEqual(mockKeyResults);
     });
 
     it('should return correct value if allowed to save to backlog', async() => {
@@ -385,47 +371,34 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should return if option is allowed for quarter select', async() => {
+      fixture.detectChanges();
+      fixture.detectChanges();
+
       const quarter: Quarter = new Quarter(
         1, 'Backlog', null, null, true
       );
 
-      const data = {
-        action: 'duplicate',
-        objective: {
-          objectiveId: 22
-        }
-      };
-      component.data = data;
+      component.data = { action: 'duplicate',
+        objective: { objectiveId: 22 } };
       component.state = 'DRAFT';
-      fixture.detectChanges();
 
       expect(component.allowedOption(quarter))
         .toBeTruthy();
 
-      expect(component.allowedOption(quarter))
-        .toBeTruthy();
-      data.action = 'releaseBacklog';
-      fixture.detectChanges();
+      component.data.action = 'releaseBacklog';
       expect(component.allowedOption(quarter))
         .toBeFalsy();
 
-      data.action = 'edit';
-      fixture.detectChanges();
-
+      component.data.action = 'edit';
       expect(component.allowedOption(quarter))
         .toBeTruthy();
 
       component.state = 'ONGOING';
-      fixture.detectChanges();
       expect(component.allowedOption(quarter))
         .toBeFalsy();
 
-      component.data = {
-        action: 'duplicate',
-        objective: {}
-      };
-
-      fixture.detectChanges();
+      component.data = { action: 'duplicate',
+        objective: {} };
       expect(component.allowedOption(quarter))
         .toBeTruthy();
     });
@@ -475,7 +448,6 @@ describe('ObjectiveDialogComponent', () => {
       });
       fixture = TestBed.createComponent(ObjectiveFormComponent);
       component = fixture.componentInstance;
-      fixture.detectChanges();
       loader = TestbedHarnessEnvironment.loader(fixture);
     });
 
@@ -497,7 +469,6 @@ describe('ObjectiveDialogComponent', () => {
       await routerHarness.navigateByUrl('/?quarter=999');
       objectiveService.getFullObjective.mockReturnValue(of(objective));
       fixture.detectChanges();
-      component.ngOnInit();
 
       const rawFormValue = component.objectiveForm.getRawValue();
       expect(rawFormValue.title)

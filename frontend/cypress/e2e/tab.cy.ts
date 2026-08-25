@@ -5,6 +5,7 @@ import { UNIT_CHF } from '../../src/app/shared/test-data';
 
 describe('tabbing workflows', () => {
   let overviewPage = new CyOverviewPage();
+
   beforeEach(() => {
     cy.loginAsUser(users.gl);
     overviewPage = new CyOverviewPage();
@@ -282,7 +283,13 @@ describe('tabbing workflows', () => {
       tabAndCheck('routerLink-to-overview', 'Zurück zur OKR Übersicht');
       tabAndCheck('teamManagementSearch');
       tabAndCheck('add-team', 'Team erfassen');
-      tabAndCheck('all-teams-selector', 'Alle Teams (4)');
+
+      getMemberTabs()
+        .then((teams) => {
+        // We remove one because Alle Teams tab doesn't count as team
+          tabAndCheck('all-teams-selector', `Alle Teams (${teams.length - 1})`);
+        });
+
       tabAndCheck('invite-member', 'Member registrieren');
     });
     it('should tab create team', () => {
@@ -369,4 +376,8 @@ describe('tabbing workflows', () => {
 function tabToThreeDotMenuOption(name: string) {
   cy.pressUntilContains(name, 'ArrowDown');
   cy.realPress('Enter');
+}
+
+function getMemberTabs() {
+  return cy.get('.mat-mdc-list-item');
 }

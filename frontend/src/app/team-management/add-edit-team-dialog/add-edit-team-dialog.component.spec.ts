@@ -8,7 +8,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TeamService } from '../../services/team.service';
 import { of } from 'rxjs';
 import { marketingTeamWriteable, teamFormObject } from '../../shared/test-data';
 import { Team } from '../../shared/types/model/team';
@@ -19,6 +18,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { DialogTemplateCoreComponent } from '../../shared/custom/dialog-template-core/dialog-template-core.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { AddEditTeamDialogComponent } from './add-edit-team-dialog.component';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 const dialogRefMock = {
   close: jest.fn()
@@ -28,10 +28,9 @@ const dialogServiceMock = {
   open: jest.fn()
 };
 
-const teamServiceMock = {
+const teamStateServiceMock = {
   createTeam: jest.fn(),
-  updateTeam: jest.fn(),
-  deleteTeam: jest.fn()
+  updateTeam: jest.fn()
 };
 
 describe('TeamManagementComponent', () => {
@@ -66,8 +65,8 @@ describe('TeamManagementComponent', () => {
           useValue: dialogRefMock
         },
         {
-          provide: TeamService,
-          useValue: teamServiceMock
+          provide: ALL_TEAMS_STATE,
+          useValue: teamStateServiceMock
         },
         {
           provide: MAT_DIALOG_DATA,
@@ -89,27 +88,27 @@ describe('TeamManagementComponent', () => {
 
   it('should call service method to save team', async() => {
     component.teamForm.setValue(teamFormObject);
-    jest.spyOn(teamServiceMock, 'createTeam')
+    jest.spyOn(teamStateServiceMock, 'createTeam')
       .mockReturnValue(of(teamFormObject));
     fixture.detectChanges();
     component.saveTeam();
-    expect(teamServiceMock.createTeam)
+    expect(teamStateServiceMock.createTeam)
       .toHaveBeenCalled();
-    expect(teamServiceMock.createTeam)
+    expect(teamStateServiceMock.createTeam)
       .toHaveBeenCalledWith(teamFormObject as Team);
   });
 
   it('should call service method to update team if data input is not null', async() => {
-    jest.spyOn(teamServiceMock, 'updateTeam')
+    jest.spyOn(teamStateServiceMock, 'updateTeam')
       .mockReturnValue(of(teamFormObject));
     component.data = { team: marketingTeamWriteable };
     component.teamForm.setValue(teamFormObject);
     fixture.detectChanges();
     component.saveTeam();
 
-    expect(teamServiceMock.updateTeam)
+    expect(teamStateServiceMock.updateTeam)
       .toHaveBeenCalled();
-    expect(teamServiceMock.updateTeam)
+    expect(teamStateServiceMock.updateTeam)
       .toHaveBeenCalledWith(expect.objectContaining({
         id: marketingTeamWriteable.id,
         version: marketingTeamWriteable.version
@@ -124,14 +123,14 @@ describe('TeamManagementComponent', () => {
   });
 
   it('should trim description and set to null if empty or only whitespace', () => {
-    jest.spyOn(teamServiceMock, 'createTeam')
+    jest.spyOn(teamStateServiceMock, 'createTeam')
       .mockReturnValue(of({}));
 
     component.teamForm.setValue({ name: 'Whitespace Team',
       description: '   ' });
     component.saveTeam();
 
-    expect(teamServiceMock.createTeam)
+    expect(teamStateServiceMock.createTeam)
       .toHaveBeenCalledWith(expect.objectContaining({
         name: 'Whitespace Team',
         description: null

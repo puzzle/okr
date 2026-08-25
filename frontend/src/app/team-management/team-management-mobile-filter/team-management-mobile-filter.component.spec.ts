@@ -1,7 +1,5 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TeamManagementMobileFilterComponent } from './team-management-mobile-filter.component';
-import { TeamService } from '../../services/team.service';
 import { team1, teamList } from '../../shared/test-data';
 import { BehaviorSubject, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,6 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { getRouteToAllTeams, getRouteToTeam } from '../../shared/route-utils';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { signal } from '@angular/core';
+import { ALL_TEAMS_STATE } from '../../services/team-state.tokens';
 
 describe('TeamManagementMobileFilterComponent', () => {
   let component: TeamManagementMobileFilterComponent;
@@ -27,8 +27,8 @@ describe('TeamManagementMobileFilterComponent', () => {
     get: (): string | undefined => '1'
   });
 
-  const teamServiceMock = {
-    getAllTeams: jest.fn()
+  const teamStateServiceMock = {
+    getTeams: jest.fn()
   };
 
   const activatedRouteMock = {
@@ -63,8 +63,8 @@ describe('TeamManagementMobileFilterComponent', () => {
       ],
       declarations: [TeamManagementMobileFilterComponent,
         SearchTeamManagementComponent],
-      providers: [{ provide: TeamService,
-        useValue: teamServiceMock },
+      providers: [{ provide: ALL_TEAMS_STATE,
+        useValue: teamStateServiceMock },
       { provide: ActivatedRoute,
         useValue: activatedRouteMock },
       { provide: Router,
@@ -72,7 +72,7 @@ describe('TeamManagementMobileFilterComponent', () => {
     })
       .compileComponents();
 
-    teamServiceMock.getAllTeams.mockReturnValue(of(teamList));
+    teamStateServiceMock.getTeams.mockReturnValue(signal(teamList));
 
     fixture = TestBed.createComponent(TeamManagementMobileFilterComponent);
     component = fixture.componentInstance;
@@ -88,24 +88,25 @@ describe('TeamManagementMobileFilterComponent', () => {
       .toBeTruthy();
   });
 
-  it('should set allTeams and selectedTeam correctly', fakeAsync(() => {
-    tick();
-    expect(component.selectedTeam)
+  it('should set allTeams and selectedTeam correctly', () => {
+    expect(component.selectedTeam())
       .toStrictEqual(team1);
-    expect(component.teams)
+    expect(component.teams())
       .toStrictEqual(teamList);
-  }));
+  });
 
-  it('should set allTeams and selectedTeam correctly if no teamId given', fakeAsync(() => {
+  it('should set allTeams and selectedTeam correctly if no teamId given', () => {
     teamIdSubj.next({
       get: () => undefined
     });
-    tick();
-    expect(component.selectedTeam)
+
+    fixture.detectChanges();
+
+    expect(component.selectedTeam())
       .toBe(component.ALL_TEAMS);
-    expect(component.teams)
+    expect(component.teams())
       .toStrictEqual(teamList);
-  }));
+  });
 
   it('should navigate to team ', () => {
     component.navigate(team1);

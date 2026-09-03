@@ -5,6 +5,11 @@ Release Notes Puzzle OKR
 Version     Neuerungen
 -----------------------------------------------------------------------------
 
+3.5.0       - Erweiterung #1736: Teams können nun archiviert werden
+            - Erweiterung #1737: Teams haben nun eine optionale Beschreibung
+
+            - Wartung: Updates diverser Dependencies
+
 3.4.0       - Erweiterung #1303: Delete Button für User hinzugefügt
             - Erweiterung #1677: Styling des Headers angepasst
 

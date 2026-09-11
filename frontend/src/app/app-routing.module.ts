@@ -10,6 +10,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
 import { KeyResultDetailComponent } from './components/key-result-detail/key-result-detail.component';
 import { TeamStateService } from './services/team.state.service';
+import { defaultQueryParamsGuard } from './guards/default-query-params.guard';
 import { overviewDataResolver } from './resolvers/overview-data.resolver';
 import { statisticsDataResolver } from './resolvers/statistics-data.resolver';
 
@@ -25,11 +26,12 @@ const currentUserResolver: ResolveFn<User | undefined> = () => {
 const routes: Routes = [
   {
     path: '',
-    canActivate: [authGuard],
+    canActivate: [authGuard,
+      defaultQueryParamsGuard],
     providers: [TeamStateService],
     children: [{
       // We duplicated the path, because we wanted to split the runGuardsAndResolvers value from resolver and guards
-      canActivate: [],
+      canActivate: [defaultQueryParamsGuard],
       path: '',
       component: OverviewComponent,
       runGuardsAndResolvers: 'paramsOrQueryParamsChange',
@@ -64,7 +66,8 @@ const routes: Routes = [
   {
     path: 'statistics',
     loadChildren: () => import('./statistics/statistics.module').then((m) => m.StatisticsModule),
-    canActivate: [authGuard],
+    canActivate: [authGuard,
+      defaultQueryParamsGuard],
 
     providers: [TeamStateService],
     resolve: { filters: statisticsDataResolver },

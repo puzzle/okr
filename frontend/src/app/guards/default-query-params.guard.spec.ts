@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { convertToParamMap, Router } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { QuarterService } from '../services/quarter.service';
 import { UserService } from '../services/user.service';
 import { TeamStateService } from '../services/team.state.service';
@@ -12,6 +13,7 @@ describe('DefaultQueryParamsGuard', () => {
   let userServiceMock: Partial<UserService>;
   let teamStateServiceMock: Partial<TeamStateService>;
   let routerMock: Partial<Router>;
+  let oAuthServiceMock: Partial<OAuthService>;
 
   const mockUser = testUser;
   const mockCurrentQuarter = quarter1;
@@ -60,6 +62,11 @@ describe('DefaultQueryParamsGuard', () => {
       navigated: false
     };
 
+    oAuthServiceMock = {
+      hasValidAccessToken: jest.fn()
+        .mockReturnValue(true)
+    };
+
     TestBed.configureTestingModule({
       providers: [
         { provide: Router,
@@ -69,7 +76,9 @@ describe('DefaultQueryParamsGuard', () => {
         { provide: UserService,
           useValue: userServiceMock },
         { provide: TeamStateService,
-          useValue: teamStateServiceMock }
+          useValue: teamStateServiceMock },
+        { provide: OAuthService,
+          useValue: oAuthServiceMock }
       ]
     });
   });
@@ -145,5 +154,38 @@ describe('DefaultQueryParamsGuard', () => {
 
     expect(result)
       .toBe(true);
+  });
+
+  it('should wait for the access token to become available before calling the api', async() => {
+    jest.useFakeTimers();
+
+    let hasValidAccessTokenCallCount = 0;
+    oAuthServiceMock.hasValidAccessToken = jest.fn(() => {
+      hasValidAccessTokenCallCount++;
+      return hasValidAccessTokenCallCount > 2;
+    });
+    TestBed.overrideProvider(OAuthService, { useValue: oAuthServiceMock });
+
+    const route = { queryParamMap: convertToParamMap({ quarter: mockCurrentQuarter.id.toString(),
+      teams: mockUserTeamIdsString }) } as any;
+    const state = { url: '' } as any;
+
+    const guardResult = TestBed.runInInjectionContext(() => defaultQueryParamsGuard(route, state));
+    const resultPromise = lastValueFrom(guardResult as any);
+
+    expect(quarterServiceMock.getCurrentQuarter)
+      .not.toHaveBeenCalled();
+
+    await jest.advanceTimersByTimeAsync(200);
+    jest.useRealTimers();
+
+    const result = await resultPromise;
+
+    expect(result)
+      .toBe(true);
+    expect(quarterServiceMock.getCurrentQuarter)
+      .toHaveBeenCalled();
+    expect(hasValidAccessTokenCallCount)
+      .toBeGreaterThan(1);
   });
 });

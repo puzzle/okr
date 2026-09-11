@@ -1,6 +1,7 @@
 import { CanActivateFn, ParamMap, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { inject } from '@angular/core';
-import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { filter, forkJoin, map, Observable, switchMap, take, timer } from 'rxjs';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { QuarterService } from '../services/quarter.service';
 import { UserService } from '../services/user.service';
 import { TeamStateService } from '../services/team.state.service';
@@ -17,19 +18,24 @@ interface ResponseParams {
   teamIds: number[] | undefined;
 }
 
+const TOKEN_POLL_INTERVAL_MS = 50;
+const TOKEN_MAX_WAIT_MS = 2000;
+
 export const defaultQueryParamsGuard: CanActivateFn = (route, state: RouterStateSnapshot): Observable<boolean | UrlTree> => {
   const quarterService = inject(QuarterService);
   const teamStateService = inject(TeamStateService);
+  const oAuthService = inject(OAuthService);
   const router = inject(Router);
   const userService = inject(UserService);
 
   const requestParams = parseParams(route.queryParamMap, router.navigated);
 
-  return forkJoin({
-    currentQuarter: quarterService.getCurrentQuarter(),
-    availableQuarters: quarterService.getAllQuarters(),
-    user: userService.getOrInitCurrentUser()
-  })
+  return waitForAccessToken(oAuthService)
+    .pipe(switchMap(() => forkJoin({
+      currentQuarter: quarterService.getCurrentQuarter(),
+      availableQuarters: quarterService.getAllQuarters(),
+      user: userService.getOrInitCurrentUser()
+    })))
     .pipe(switchMap(({ currentQuarter, availableQuarters, user }) => {
       const targetQuarterId = availableQuarters.some((q) => q.id === requestParams.quarterId)
         ? requestParams.quarterId as number
@@ -53,6 +59,12 @@ export const defaultQueryParamsGuard: CanActivateFn = (route, state: RouterState
         }));
     }));
 };
+
+const waitForAccessToken = (oAuthService: OAuthService): Observable<void> => timer(0, TOKEN_POLL_INTERVAL_MS)
+  .pipe(
+    map((tick) => ({ tick,
+      ready: oAuthService.hasValidAccessToken() })), filter(({ tick, ready }) => ready || tick * TOKEN_POLL_INTERVAL_MS >= TOKEN_MAX_WAIT_MS), take(1), map(() => undefined)
+  );
 
 const resolveTeamIds = (teamIds: number[] | undefined, currentTeamIds: number[], user: User): number[] | undefined => {
   if (teamIds === undefined) {

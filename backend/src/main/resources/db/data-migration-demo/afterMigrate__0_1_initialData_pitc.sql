@@ -18,6 +18,10 @@ $$
             INSERT INTO okr_pitc.person VALUES (1006, 'gaechter@puzzle.ch', 'Christoph', 'Gaechter', 0, false);
             INSERT INTO okr_pitc.person VALUES (1007, 'egli@puzzle.ch', 'Marc', 'Egli', 1, true);
 
+            -- keep sequence_person ahead of the hardcoded demo IDs above, otherwise real
+            -- SSO-provisioned logins eventually collide with them (person_pkey violation)
+            PERFORM setval('sequence_person', (SELECT MAX(id) FROM okr_pitc.person));
+
 
             --
     -- Data for Name: quarter; Type: TABLE DATA; Schema: okr_pitc; Owner: -

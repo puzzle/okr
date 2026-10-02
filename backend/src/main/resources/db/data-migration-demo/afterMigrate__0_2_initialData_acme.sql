@@ -41,6 +41,10 @@ $$
             INSERT INTO okr_acme.person
             VALUES (2, 'leimgruber@puzzle.ch', 'Philipp', 'Leimgruber', 2, false);
 
+            -- keep sequence_person ahead of the hardcoded demo IDs above, otherwise real
+            -- SSO-provisioned logins eventually collide with them (person_pkey violation)
+            PERFORM setval('sequence_person', (SELECT MAX(id) FROM okr_acme.person));
+
 
             --
     -- Data for Name: quarter; Type: TABLE DATA; Schema: okr_acme; Owner: -

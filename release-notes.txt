@@ -5,6 +5,9 @@ Release Notes Puzzle OKR
 Version     Neuerungen
 -----------------------------------------------------------------------------
 
+3.5.3       - Wartung: Rebuild mit neuer Node-Version um CVE-2026-111497 vorzubeugen
+            - Wartung: Updates diverser Dependencies
+
 3.5.2       - Fehlerbehebung: ID-Sequenz für Personen nach Zurücksetzen der Demo-Daten korrekt synchronisiert (verhinderte Logins auf der Demo-Stage)
 
 3.5.1       - Fehlerbehebung #1829: Potentiel einen Endlos-Loop beim Login verhindert

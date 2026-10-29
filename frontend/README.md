@@ -21,6 +21,8 @@ Formatting:
 
 Test and Run:
 
+To open the webapp check out how we handle [multi tenancy](#multi-tenancy)
+
 - Execute the tests: `npm run test`
 - Start the frontend: `npm run start`
 
@@ -67,3 +69,7 @@ Open the html file in browser and you get a beautiful overview
   - stop and restart local Server
   - stop and restart local Client
   - re-run Cypress Tests
+
+## multi tenancy
+
+multi tenancy is used in this project that means when starting the backend you can not access the UI when only typing `localhost:4200`. You have to add a subdomain. In development this is configured to `pitc-okr`.
